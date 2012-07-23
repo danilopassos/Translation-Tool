@@ -1,7 +1,7 @@
 <?php
-require_once 'model/mDicionario.php';
+require_once 'model/mDialogo.php';
 
-class aDicionario extends mDicionario{
+class aDialogo extends mDialogo{
     protected $sqlInsert = "INSERT INTO dicionario(chave , valor) VALUES ('%s', '%s')";
     protected $sqlUpdate = "";
     protected $sqlSelect = "SELECT * FROM dicionario";

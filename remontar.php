@@ -11,7 +11,7 @@
         require_once 'core/util.php';
         require_once 'core/Arc.php';
         require_once 'core/Lang.php';
-        require_once 'core/Dicionario.php';
+        require_once 'core/Dialogo.php';
         require_once 'salvar.php';
 
         echo "<pre>\n";

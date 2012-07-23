@@ -1,10 +1,10 @@
 <?php
-die("isso é prerigoso, vai substituir dialogos já revisados");
+die("isso é perigoso, vai substituir dialogos já revisados");
 
 require_once 'core/util.php';
 require_once 'core/Arc.php';
 require_once 'core/Lang.php';
-require_once 'core/Dicionario.php';
+require_once 'core/Dialogo.php';
 require_once 'salvar.php';
 
 function traduzir($texto) {
@@ -44,7 +44,7 @@ $arc = "5-CenterField.arc";
 foreach (ExtArc::getFileNamesInArc($arc) as $msbt) {
 
     foreach (ExtArc::getFileNamesInArcSubs($arc, $msbt) as $pos) {
-        $o = new Dicionario();
+        $o = new Dialogo();
 
         $o->setLang(new Lang("es_US"));
         $o->setArc($arc);

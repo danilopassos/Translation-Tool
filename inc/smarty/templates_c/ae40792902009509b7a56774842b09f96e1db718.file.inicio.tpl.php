@@ -1,4 +1,4 @@
-<?php /* Smarty version Smarty-3.1.10, created on 2012-07-21 17:41:03
+<?php /* Smarty version Smarty-3.1.10, created on 2012-07-23 05:47:08
          compiled from "view\inicio.tpl" */ ?>
 <?php /*%%SmartyHeaderCode:283694fedd929773b23-67711205%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
@@ -7,7 +7,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     'ae40792902009509b7a56774842b09f96e1db718' => 
     array (
       0 => 'view\\inicio.tpl',
-      1 => 1342884359,
+      1 => 1342998003,
       2 => 'file',
     ),
   ),
@@ -36,13 +36,14 @@ $_valid = $_smarty_tpl->decodeProperties(array (
 
         <table style="background-color: white;">
             <tr>
-                <td><a href="index.php"><img src="style/img/logo2.jpg" alt="logo zelda-ss"/></a></td>
+                <td><a href="index.php"><img src="style/img/logo.jpg" alt="logo zelda-ss"/></a></td>
                 <td><h1>.: The Legend of Zelda: Skyward Sword :.  pt_BR</h1></td>
             </tr>
         </table>
 <hr>
 <a href="index.php"> [ index ] </a> |
 <a href="traduzir.php"> [ traduzir ] </a> |
+<a href="ISO"> [ downloads ] </a> |
 <a href="estatisticas.php"> [ estatisticas ] </a> |
 <a href="extrair.php"> [ extrair ] </a> |
 <a href="remontar.php"> [ remontar ] </a> | 

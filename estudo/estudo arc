@@ -3,10 +3,10 @@ file: ../../ROOT/US/Object/es_US/2-Forest.arc
 filesize: 226518 Bytes
 
 offset	hex 32b           inteiro 32b
-0x0		55aa382d -> valor: 1437218861	# cabeçalho, todos *.arc são assim 
-0x4		00000020 -> valor: 32		# cabeçalho, todos *.arc são assim 
-0x8		0000021e -> valor: 542
-0xc		00000240 -> valor: 576		# ponteiro primeiro arquivo
+0x0	55aa382d -> valor: 1437218861	# cabeçalho, todos *.arc são assim 
+0x4	00000020 -> valor: 32		# cabeçalho, todos *.arc são assim 
+0x8	0000021e -> valor: 542
+0xc	00000240 -> valor: 576		# ponteiro primeiro arquivo
 0x10	00000000 -> valor: 0
 0x14	00000000 -> valor: 0
 0x18	00000000 -> valor: 0

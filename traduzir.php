@@ -4,7 +4,7 @@ require_once "sm.php";
 require_once 'core/util.php';
 require_once 'core/Lang.php';
 require_once 'core/Arc.php';
-require_once 'core/Dicionario.php';
+require_once 'core/Dialogo.php';
 
 $sm->assign("DialogoPT_BR", null);
 $sm->assign("arc", null);
@@ -30,7 +30,7 @@ if (isset($_GET["arc"])) {
             }
             $msgs = array();
             foreach (Lang::getLangs() as $lang) {
-                $o = new Dicionario();
+                $o = new Dialogo();
                 $o->setLang($lang);
                 $o->setArc($arc);
                 $o->setMsbt($msbt);

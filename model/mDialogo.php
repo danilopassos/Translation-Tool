@@ -3,7 +3,7 @@
 require_once 'db/dbConnection.php';
 require_once 'core/util.php';
 
-class mDicionario extends dbConnection {
+class mDialogo extends dbConnection {
 
     protected $valorFormatadoUtf8; //garda a messagem 
     protected $lang; //idioma da mensagem
@@ -158,7 +158,7 @@ class mDicionario extends dbConnection {
         if (file_exists($file)) {
             $handle = fopen($file, "r");
             $fileBin = fread($handle, filesize($file));
-            $this->valorFormatadoUtf8 = mDicionario::formatoBinarioParaFormatoUtf8($fileBin);
+            $this->valorFormatadoUtf8 = mDialogo::formatoBinarioParaFormatoUtf8($fileBin);
         } else {
             printLog("Arquivo não encontrado : " . $file);
         }

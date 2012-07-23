@@ -1,18 +1,18 @@
 <?php
 
 require_once 'core/util.php';
-require_once 'core/Dicionario.php';
+require_once 'core/Dialogo.php';
 require_once 'core/Lang.php';
 
 
 function salvar01($arc, $msbt, $pos, $utf8) {
-    $d = new Dicionario();
+    $d = new Dialogo();
     $d->setLang(new Lang("pt_BR"));
     $d->setArc($arc);
     $d->setMsbt($msbt);
     $d->setPosicao($pos);
 
-    $Bin = Dicionario::formatoUtf8ParaFormatoBinario($utf8);
+    $Bin = Dialogo::formatoUtf8ParaFormatoBinario($utf8);
 
     gravarArquivo($d->getPathTmpFile(), $Bin);
 
