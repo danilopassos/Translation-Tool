@@ -1,0 +1,11 @@
+body{
+    background-image: url("img/fundo.png");
+}
+
+pre{
+  background-color: skyblue;
+}
+
+#corpo{
+    text-align: center;
+}

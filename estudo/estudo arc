@@ -1,0 +1,176 @@
+
+file: ../../ROOT/US/Object/es_US/2-Forest.arc
+filesize: 226518 Bytes
+
+offset	hex 32b           inteiro 32b
+0x0		55aa382d -> valor: 1437218861	# cabeçalho, todos *.arc são assim 
+0x4		00000020 -> valor: 32		# cabeçalho, todos *.arc são assim 
+0x8		0000021e -> valor: 542
+0xc		00000240 -> valor: 576		# ponteiro primeiro arquivo
+0x10	00000000 -> valor: 0
+0x14	00000000 -> valor: 0
+0x18	00000000 -> valor: 0
+0x1c	00000000 -> valor: 0
+
+0x20	01000000 -> valor: 16777216	# cabeçalho, todos *.arc são assim 
+0x24	00000000 -> valor: 0
+0x28	00000014 -> valor: 20		#
+0x2c	01000001 -> valor: 16777217	# cabeçalho, ponteiros aquivos 
+0x30	00000000 -> valor: 0		#
+0x34	00000014 -> valor: 20		#
+
+0x38	0000000a -> valor: 10		## ponteiro relativo nome	arquivo 1
+0x3c	00000240 -> valor: 576		## ponteiro absoluto conteudo	arquivo 1	
+0x40	00002f40 -> valor: 12096	## comprimento			arquivo 1		
+0x44	0000001a -> valor: 26		## ponteiro relativo nome	arquivo 2
+0x48	00003180 -> valor: 12672	## ponteiro absoluto conteudo	arquivo 2
+0x4c	0000c9a0 -> valor: 51616	## comprimento			arquivo 2
+0x50	0000002a -> valor: 42		## 
+0x54	0000fb20 -> valor: 64288	##
+0x58	00001340 -> valor: 4928		##
+0x5c	0000003c -> valor: 60		##
+0x60	00010e60 -> valor: 69216	##
+0x64	00004840 -> valor: 18496	##
+0x68	0000004e -> valor: 78		##
+0x6c	000156a0 -> valor: 87712	##
+0x70	00000470 -> valor: 1136		##
+0x74	00000060 -> valor: 96		##
+0x78	00015b20 -> valor: 88864	##
+0x7c	00000e80 -> valor: 3712		##
+0x80	00000072 -> valor: 114		##
+0x84	000169a0 -> valor: 92576	##
+0x88	00002970 -> valor: 10608	##
+0x8c	00000084 -> valor: 132          ##
+0x90	00019320 -> valor: 103200	##
+0x94	0000c2f0 -> valor: 49904	##
+0x98	00000096 -> valor: 150		##
+0x9c	00025620 -> valor: 153120	##
+0xa0	00000f60 -> valor: 3936		##
+0xa4	000000a8 -> valor: 168		##
+0xa8	00026580 -> valor: 157056	##
+0xac	00003610 -> valor: 13840	##
+0xb0	000000ba -> valor: 186		##
+0xb4	00029ba0 -> valor: 170912	##
+0xb8	00000790 -> valor: 1936		##
+0xbc	000000cf -> valor: 207	        ##
+0xc0	0002a340 -> valor: 172864	##
+0xc4	000028c0 -> valor: 10432	##
+0xc8	000000e4 -> valor: 228		##
+0xcc	0002cc00 -> valor: 183296	##
+0xd0	000003e0 -> valor: 992		##
+0xd4	000000f5 -> valor: 245		##
+0xd8	0002cfe0 -> valor: 184288	##
+0xdc	000012d0 -> valor: 4816		##
+0xe0	00000106 -> valor: 262          ##
+0xe4	0002e2c0 -> valor: 189120	##
+0xe8	000001a0 -> valor: 416		##
+0xec	00000114 -> valor: 276		## ponteiro relativo nome	arquivo 16
+0xf0	0002e460 -> valor: 189536	## ponteiro absoluto conteudo	arquivo 16
+0xf4	00002920 -> valor: 10528	## comprimento			arquivo 16
+
+0xf8	01000122 -> valor: 16777506     #cabeçalho
+0xfc	00000001 -> valor: 1		#
+0x100	00000014 -> valor: 20		#
+0x104	00000126 -> valor: 294		## ponteiro relativo nome	arquivo Final
+0x108	00030d80 -> valor: 200064	## ponteiro absoluto conteudo	arquivo Final
+0x10c	00006756 -> valor: 26454	## comprimento			arquivo Final
+
+0x110	00322d46 -> valor: 3288390	#começa a lista de nomes
+0x114	6f726573 -> valor: 1869768051
+0x118	74003230 -> valor: 1946169904
+0x11c	302d466f -> valor: 808273519
+0x120	72657374 -> valor: 1919251316
+0x124	2e6d7362 -> valor: 778924898
+0x128	66003230 -> valor: 1711288880
+0x12c	302d466f -> valor: 808273519
+0x130	72657374 -> valor: 1919251316
+0x134	2e6d7362 -> valor: 778924898
+0x138	74003230 -> valor: 1946169904
+0x13c	312d466f -> valor: 825050735
+0x140	72657374 -> valor: 1919251316
+0x144	44312e6d -> valor: 1144073837
+0x148	73626600 -> valor: 1935828480
+0x14c	3230312d -> valor: 842019117
+0x150	466f7265 -> valor: 1181708901
+0x154	73744431 -> valor: 1936999473
+0x158	2e6d7362 -> valor: 778924898
+0x15c	74003230 -> valor: 1946169904
+0x160	322d466f -> valor: 841827951
+0x164	72657374 -> valor: 1919251316
+0x168	44322e6d -> valor: 1144139373
+0x16c	73626600 -> valor: 1935828480
+0x170	3230322d -> valor: 842019373
+0x174	466f7265 -> valor: 1181708901
+0x178	73744432 -> valor: 1936999474
+0x17c	2e6d7362 -> valor: 778924898
+0x180	74003230 -> valor: 1946169904
+0x184	332d466f -> valor: 858605167
+0x188	72657374 -> valor: 1919251316
+0x18c	46322e6d -> valor: 1177693805
+0x190	73626600 -> valor: 1935828480
+0x194	3230332d -> valor: 842019629
+0x198	466f7265 -> valor: 1181708901
+0x19c	73744632 -> valor: 1936999986
+0x1a0	2e6d7362 -> valor: 778924898
+0x1a4	74003230 -> valor: 1946169904
+0x1a8	342d466f -> valor: 875382383
+0x1ac	72657374 -> valor: 1919251316
+0x1b0	46332e6d -> valor: 1177759341
+0x1b4	73626600 -> valor: 1935828480
+0x1b8	3230342d -> valor: 842019885
+0x1bc	466f7265 -> valor: 1181708901
+0x1c0	73744633 -> valor: 1936999987
+0x1c4	2e6d7362 -> valor: 778924898
+0x1c8	74003235 -> valor: 1946169909
+0x1cc	302d466f -> valor: 808273519
+0x1d0	72657374 -> valor: 1919251316
+0x1d4	53697265 -> valor: 1399419493
+0x1d8	6e2e6d73 -> valor: 1848536435
+0x1dc	62660032 -> valor: 1650851890
+0x1e0	35302d46 -> valor: 892349766
+0x1e4	6f726573 -> valor: 1869768051
+0x1e8	74536972 -> valor: 1951623538
+0x1ec	656e2e6d -> valor: 1701719661
+0x1f0	73627400 -> valor: 1935832064
+0x1f4	3235312d -> valor: 842346797
+0x1f8	53616c76 -> valor: 1398893686
+0x1fc	6167652e -> valor: 1634166062
+0x200	6d736266 -> valor: 1836278374
+0x204	00323531 -> valor: 3290417
+0x208	2d53616c -> valor: 760439148
+0x20c	76616765 -> valor: 1986094949
+0x210	2e6d7362 -> valor: 778924898
+0x214	74003239 -> valor: 1946169913
+0x218	392d4465 -> valor: 959267941
+0x21c	6d6f2e6d -> valor: 1836002925
+0x220	73626600 -> valor: 1935828480
+0x224	3239392d -> valor: 842610989
+0x228	44656d6f -> valor: 1147497839
+0x22c	2e6d7362 -> valor: 778924898
+0x230	74006461 -> valor: 1946182753
+0x234	74007a65 -> valor: 1946188389
+0x238	762e6461 -> valor: 1982751841
+0x23c	74000000 -> valor: 1946157056
+0x240	4d736746 -> valor: 1299408710		# o inicio do primeiro arquivo
+0x244	6c77426e -> valor: 1819755118
+0x248	feff0000 -> valor: 4278124544
+0x24c	00030002 -> valor: 196610
+0x250	00000000 -> valor: 0
+0x254	2f400000 -> valor: 792723456
+0x258	00000000 -> valor: 0
+0x25c	00000000 -> valor: 0
+0x260	464c5733 -> valor: 1179408179
+0x264	00002c7a -> valor: 11386
+0x268	00000000 -> valor: 0
+0x26c	00000000 -> valor: 0
+0x270	02ac00d5 -> valor: 44826837
+0x274	00000000 -> valor: 0
+0x278	00000000 -> valor: 0
+0x27c	00000000 -> valor: 0
+0x280	04ff0000 -> valor: 83820544
+0x284	00000000 -> valor: 0
+0x288	00360000 -> valor: 3538944
+0x28c	00000000 -> valor: 0
+0x290	01ff0000 -> valor: 33488896
+0x294	00000000 -> valor: 0
+0x298	ffff0087 -> valor: 4294901895
