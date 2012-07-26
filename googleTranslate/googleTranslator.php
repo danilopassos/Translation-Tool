@@ -1,5 +1,5 @@
 <?php
-die("isso é perigoso, vai substituir dialogos já revisados");
+die(utf8_decode("isso está desatualizado, e não é mais nessesario"));
 
 require_once 'core/util.php';
 require_once 'core/Arc.php';

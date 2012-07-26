@@ -1,38 +1,32 @@
 <?php
 
-require_once 'core/util.php';
+require_once 'core/Arc.php';
+require_once 'core/DialogoTraducao.php';
+require_once 'core/DialogoOriginal.php';
+require_once 'core/Extrair.php';
 require_once 'core/Lang.php';
+require_once 'core/Formatacao.php';
+require_once 'core/util.php';
 
-echo "
-<!DOCTYPE HTML>
-<html>
+#$arc = "0-Common.arc";
+#$arc = "1-Town.arc";
+#$arc = "2-Forest.arc";
+#$arc = "3-Mountain.arc";
+#$arc = "4-Desert.arc";
+#$arc = "5-CenterField.arc";
 
-  <head>
-      <meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\"/> 
-      <title> o/</title>
-      
-  </head>
-  <!-- -->
-  <body>    
+echo ("<pre>");
+//foreach (Lang::getLangs() as $lang)
+//foreach (ExtArc::getFileNames() as $arc) {
+//    foreach (ExtArc::getFileNamesInArc($arc) as $msbt) {
+//        foreach (ExtArc::getFileNamesInArcSubs( $msbt) as $pos) { 
 
-<pre>";
-
-printLog("getDirROOT() = " . getDirROOT());
-printLog("getDirTMP()  = " . getDirTMP());
-printLog("");
+//            echo "\n" . $arc ." - ". $msbt." - ". $pos." - ". $lang;
+//        }
+//    }
+//}
 
 
-printLog("Lang::getUmaUnicaLang() = " . Lang::getUmaUnicaLang());
-
-printLog("bin2hex(\"Adriano\") = " . bin2hex("Adriano"));
-
-if (isset($_GET["hex"])) {
-    $hex = $_GET["hex"];
-    $msgBR = hex2bin($hex);
-
-    printLog("\$hex = " . $hex);
-    printLog("\$bin = " . $msgBR);
-    printLog("\$utf-8 = " . utf8_encode($msgBR) );
-    printLog("\$utf16 to 8 = " . utf16ToUtf8($msgBR) );
-}
 ?>
+
+

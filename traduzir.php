@@ -4,14 +4,16 @@ require_once "sm.php";
 require_once 'core/util.php';
 require_once 'core/Lang.php';
 require_once 'core/Arc.php';
-require_once 'core/Dialogo.php';
+require_once 'core/DialogoOriginal.php';
+require_once 'core/DialogoTraducao.php';
 
-$sm->assign("DialogoPT_BR", null);
+$sm->assign("En_US", null );
 $sm->assign("arc", null);
 $sm->assign("msbt", null);
 $sm->assign("msbts", null);
 $sm->assign("poss", null);
-$sm->assign("msgs", null);
+$sm->assign("dialogosTraduzidos",null);
+$sm->assign("dialogosOriginais", null);
 $sm->assign("pos", null);
 $sm->assign("arcs", ExtArc::getFileNames());
 
@@ -22,26 +24,22 @@ if (isset($_GET["arc"])) {
     if (isset($_GET["msbt"])) {
         $msbt = $_GET["msbt"];
         $sm->assign("msbt", $msbt);
-        $sm->assign("poss", ExtArc::getFileNamesInArcSubs($arc, $msbt));
+        $sm->assign("poss", ExtArc::getFileNamesInArcSubs($msbt));
         if (isset($_GET["pos"])) {
             $pos = $_GET["pos"];
             while(strlen($pos) < 3){
                 $pos =  "0" . $pos;
             }
-            $msgs = array();
+            $dialogosOriginais = array();
             foreach (Lang::getLangs() as $lang) {
-                $o = new Dialogo();
-                $o->setLang($lang);
-                $o->setArc($arc);
-                $o->setMsbt($msbt);
-                $o->setPosicao($pos);
-                $o->getLerDoArquivoTmp();
-                if ($o->getLang() == "pt_BR") {
-                    $sm->assign("DialogoPT_BR", $o->getValorFormatadoUtf8());
-                }
-                array_push($msgs, $o);
+                $o = new DialogoOriginal($arc, $msbt, $pos, $lang);
+                 array_push($dialogosOriginais, $o);
+                 if($lang == "en_US"){
+                     $sm->assign("En_US", $o );
+                 }
             }
-            $sm->assign("msgs", $msgs);
+            $sm->assign("dialogosOriginais", $dialogosOriginais);
+            $sm->assign("dialogosTraduzidos", DialogoTraducao::getTodasTradução($arc, $msbt, $pos));
             $sm->assign("pos", $pos);
         }
     }

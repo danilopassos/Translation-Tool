@@ -6,10 +6,7 @@ require_once 'core/Msbt.php';
 
 class Extrair {
 
-    public static function extrairTudo() {
-
-
-
+    public static function extrairMsbt() {
         foreach (Lang::getLangs() as $lang) {
             if ("$lang" != "pt_BR") {
                 rrmdir(getDirTMP() . $lang);
@@ -23,19 +20,22 @@ class Extrair {
                 printLog("Ripando em " . $folder);
 
                 foreach ($files as $file) {
-                    printLog($folder . $file);
-                    ExtArc::rip($folder, $file, $folderOut . $file . ".d" . DIRECTORY_SEPARATOR);
+                    ExtArc::rip($lang, $folder, $file, $folderOut . $file . ".d" . DIRECTORY_SEPARATOR);
                 }
             }
         }
     }
 
-    public static function extrairArcFile($arcfile) {
-        
-    }
+    public static function extrairDialogos() {
 
-    public static function extrairMsbtFile($arcfile) {
-        
+        foreach (Lang::getLangs() as $lang) {
+            foreach (ExtArc::getFileNames() as $arc) {
+                foreach (ExtArc::getFileNamesInArc($arc) as $msbt) {
+                    printLog("extraindo dialogos de: " . $lang . "/" . $arc . "/" . $msbt);
+                    Msbt::rip($lang, $arc, $msbt);
+                }
+            }
+        }
     }
 
 }

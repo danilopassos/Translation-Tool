@@ -7,6 +7,7 @@
  */
 
 require_once 'core/util.php';
+require_once 'core/DialogoOriginal.php';
 
 class Msbt {
 
@@ -31,11 +32,9 @@ class Msbt {
         return $r;
     }
 
-    ################################
+    public static function rip($lang,$arc,$msbt) {
 
-    public static function rip($file_msbt) {
-
-        $folder_output = $file_msbt . ".d" . DIRECTORY_SEPARATOR;
+        $file_msbt = getDirTMP() . $lang . DIRECTORY_SEPARATOR . "$arc.d" . DIRECTORY_SEPARATOR . $msbt;
 
         $handle = fopen($file_msbt, "r");
         $fileBin = fread($handle, filesize($file_msbt));
@@ -62,7 +61,7 @@ class Msbt {
         while (substr($fileBin, $offset, 4) != "ATR1") {
             $offset += 16;
         }
-        printLog("ATR1 in :" . decHex($offset));
+        
         $nrFrases = hexDec(bin2Hex(substr($fileBin, $offset + 16, 4)));
         $offset += 16 + 8;
         for ($i = 0; $i < $nrFrases; $i++) {
@@ -76,7 +75,6 @@ class Msbt {
         while (substr($fileBin, $offset, 4) != "TXT2") {
             $offset += 16;
         }
-        printLog("TXT2 in :" . decHex($offset));
 
         $offset += 16 + 4;
         for ($i = 0; $i < $nrFrases; $i++) {
@@ -100,13 +98,18 @@ class Msbt {
         }
 
         for ($i = 0; $i < $nrFrases; $i++) {
-            $nomeNovo = $i;
-            while (strlen($nomeNovo) < 3) {
-                $nomeNovo = "0" . $nomeNovo;
+            $pos = $i;
+            while (strlen($pos) < 3) {
+                $pos = "0" . $pos;
             }
 
-            gravarArquivo($folder_output . $nomeNovo, $lista_nomes[$i]->msg);
+            $o = new DialogoOriginal($arc, $msbt, $pos, $lang, FALSE);
+            $o->setNome($lista_nomes[$i]->name);
+            $o->setDialogoBinario($lista_nomes[$i]->msg);
+            
+            $o->insert();
         }
+
     }
 
     public static function remount($langBase, $arc, $msbt) {
@@ -142,7 +145,7 @@ class Msbt {
         while (substr($fileBin, $offset, 4) != "ATR1") {
             $offset += 16;
         }
-        printLog("ATR1 in :" . decHex($offset));
+        #printLog("ATR1 in :" . decHex($offset));
         $nrFrases = hexDec(bin2Hex(substr($fileBin, $offset + 16, 4)));
         $offset += 16 + 8;
         for ($i = 0; $i < $nrFrases; $i++) {
@@ -156,7 +159,7 @@ class Msbt {
         while (substr($fileBin, $offset, 4) != "TXT2") {
             $offset += 16;
         }
-        printLog("TXT2 in :" . decHex($offset));
+        #printLog("TXT2 in :" . decHex($offset));
 
         $offset += 16 + 4;
         for ($i = 0; $i < $nrFrases; $i++) {
@@ -176,7 +179,7 @@ class Msbt {
 
         $inicio = substr($fileBin, 0, $offset);
 
-        $nomes = ExtArc::getFileNamesInArcSubs($arc, $msbt);
+        $nomes = ExtArc::getFileNamesInArcSubs($msbt);
         $offsets = myInt2bin(count($nomes));
         $offsetMSG = 4 + (count($nomes) * 4);
 

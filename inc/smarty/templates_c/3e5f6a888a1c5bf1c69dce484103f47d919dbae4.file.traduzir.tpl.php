@@ -1,4 +1,4 @@
-<?php /* Smarty version Smarty-3.1.10, created on 2012-07-23 03:11:06
+<?php /* Smarty version Smarty-3.1.10, created on 2012-07-24 09:41:57
          compiled from "view/traduzir.tpl" */ ?>
 <?php /*%%SmartyHeaderCode:844178791500741bae2c8a6-26760501%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
@@ -7,7 +7,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     '3e5f6a888a1c5bf1c69dce484103f47d919dbae4' => 
     array (
       0 => 'view/traduzir.tpl',
-      1 => 1343023860,
+      1 => 1343131725,
       2 => 'file',
     ),
   ),
@@ -123,7 +123,7 @@ $_smarty_tpl->tpl_vars['msg']->_loop = true;
             <spam> <?php echo $_smarty_tpl->tpl_vars['msg']->value->getLang();?>
  </spam><spam> <?php echo $_smarty_tpl->tpl_vars['msg']->value->getLangName();?>
  </spam>
-            <pre><?php echo $_smarty_tpl->tpl_vars['msg']->value->getValorFormatadoUtf8();?>
+            <pre><?php echo $_smarty_tpl->tpl_vars['msg']->value->getDialogoUtf8();?>
 </pre>
         <?php } ?>
 
