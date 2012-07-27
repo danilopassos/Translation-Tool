@@ -5,20 +5,20 @@ require_once 'model/mDialogoTraducao.php';
 class aDialogoTraducao extends mDialogoTraducao {
 
     protected $sqlInsert = "INSERT INTO `dialogotraducao`(`ARC`, `MSBT`, `POS`, `CRIADOR`, `PONTOS`, `DIALOGO_BASE64`) VALUES ('%s','%s','%s','%s','%s','%s')";
-    #protected $sqlUpdate = "";
+    protected $sqlUpdateDialogo = "UPDATE `dialogotraducao` SET `DIALOGO_BASE64`='%s' WHERE `ID`=%s";
     protected $sqlSelect = "SELECT * FROM `dialogotraducao` WHERE ARC='%s' AND MSBT='%s' AND POS='%s' ORDER BY  `dialogotraducao`.`ID` DESC";
     protected $sqlDelete = "DELETE FROM `dialogotraducao` WHERE `ID`=%s";
 
     public function insert() {
         $sql = sprintf($this->sqlInsert, $this->getArc(), $this->getMsbt(),$this->getPosicao() ,  
-                $this->getCriador(),$this->getPontos(),$this->getDialogoBase64());
-    
-        return $this->RunQuery($sql);
+        $this->getCriador(),$this->getPontos(),$this->getDialogoBase64());
+        $this->RunQuery($sql);
     }
 
-    #public function update(){
-    #    
-    #}
+    public function updateDialogo(){
+        $sql = sprintf($this->sqlUpdateDialogo, $this->getDialogoBase64(), $this->getId());
+        $this->RunQuery($sql);
+    }
     
         public function get($arc, $msbt, $pos) {
         $sql = sprintf($this->sqlSelect, $arc, $msbt, $pos);

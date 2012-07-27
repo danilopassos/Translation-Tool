@@ -7,7 +7,6 @@ abstract class mFormatacao extends dbConnection {
     private $tag;
     private $html;
     
-    
     public function getHex(){
         return $this->hex;
     }
@@ -31,7 +30,6 @@ abstract class mFormatacao extends dbConnection {
     public function setHTML($html){
         $this->html = $html;
     }
-    
-    
+        
 }
 ?>

@@ -26,6 +26,8 @@ echo ("<pre>");
 //    }
 //}
 
+$o = new Formatacao("0000");
+$o->gerarTags();
 
 ?>
 

@@ -1,4 +1,4 @@
-<?php /* Smarty version Smarty-3.1.10, created on 2012-07-26 06:01:43
+<?php /* Smarty version Smarty-3.1.10, created on 2012-07-27 17:23:36
          compiled from "view\traduzir.tpl" */ ?>
 <?php /*%%SmartyHeaderCode:30497500880f776b490-90626745%%*/if(!defined('SMARTY_DIR')) exit('no direct access allowed');
 $_valid = $_smarty_tpl->decodeProperties(array (
@@ -7,7 +7,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
     '99f9ab1ff695f0a131f82068ac0ecbeebf2063d6' => 
     array (
       0 => 'view\\traduzir.tpl',
-      1 => 1343282500,
+      1 => 1343409803,
       2 => 'file',
     ),
   ),
@@ -41,6 +41,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
 <html>
     <head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/> 
         <title>Portal Tradução .: The Legend of Zelda: Skyward Sword :.  pt_BR </title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
         <!link href="style/style.css" rel="stylesheet" type="text/css" media="screen" />
     <style>
         div.inline { float:left; }
@@ -48,7 +49,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
 
         body{
             background-color: green;
-            color: whitesmoke;
+            
         }
 
         #menu{
@@ -83,7 +84,7 @@ $_valid = $_smarty_tpl->decodeProperties(array (
 
         #corpo{
             font-family: Verdana, Arial;
-            font-size: 11px;
+            font-size: 14px;
             position: absolute;
             top: 5px;
             left:  195px;
@@ -141,13 +142,51 @@ $_valid = $_smarty_tpl->decodeProperties(array (
             
             background-color: red;
         }
- 
+        
+        .dialogoHead{
+            border: 1px solid black; 
+            border-top-left-radius: 10px; 
+            border-top-right-radius: 10px; 
+            text-align: center;
+            border-bottom: none;
+            
+            padding: 10px;
+
+            color: black;
+            
+            background-color: tan;
+            
+            vertical-align: center;
+
+        }
+        .dialogoPreview{
+             
+            color: white;
+            border: 1px solid black; 
+            min-width: 400px; 
+            background-color: #9B410E;
+        }
+        .dialogoPreview:hover{
+            background-color: black;
+        }
+        .dialogoPreview:active{
+            
+        }
+        
+        .dialogoEditor{
+            background-color: black;
+            text-align: center;
+        }
+        .dialogoEditorTextArea{
+            width: 98%;
+        }
         
     </style> 
 </head>
 <body>
     <div id="menu">
         <div class="borda" style="text-align: center">
+            <img src="style/img/75px-Triforce.png" alt="logo"><br>
             <strong>The Legend of Zelda</br>Skyward Sword<br/></strong>
         </div>
         <br>
@@ -218,54 +257,60 @@ $_smarty_tpl->tpl_vars['ipos']->_loop = true;
         <div id="traducao">
             <?php if ($_smarty_tpl->tpl_vars['pos']->value!=null){?>
                 <div class="borda" style="height: 30px;">
-                
-
- <input readonly="true" type="text" name="arc" value="<?php echo $_smarty_tpl->tpl_vars['arc']->value;?>
+                    <input readonly="true" type="text" name="arc" value="<?php echo $_smarty_tpl->tpl_vars['arc']->value;?>
 " />
-                <input readonly="true" type="text" name="msbt" value="<?php echo $_smarty_tpl->tpl_vars['msbt']->value;?>
+                    <input readonly="true" type="text" name="msbt" value="<?php echo $_smarty_tpl->tpl_vars['msbt']->value;?>
 " />
-            <?php if ($_smarty_tpl->tpl_vars['pos']->value>0){?><a href="?arc=<?php echo $_smarty_tpl->tpl_vars['arc']->value;?>
+                    <?php if ($_smarty_tpl->tpl_vars['pos']->value>0){?><a href="?arc=<?php echo $_smarty_tpl->tpl_vars['arc']->value;?>
 &msbt=<?php echo $_smarty_tpl->tpl_vars['msbt']->value;?>
 &pos=<?php echo $_smarty_tpl->tpl_vars['pos']->value-1;?>
 " > <span class="bt"><<<<< </span></a><?php }else{ ?> <<<<< <?php }?>
-                <input readonly="true" type="text" name="pos" size="3" value="<?php echo $_smarty_tpl->tpl_vars['pos']->value;?>
+                    <input readonly="true" type="text" name="pos" size="3" value="<?php echo $_smarty_tpl->tpl_vars['pos']->value;?>
 " />
-                <?php if ($_smarty_tpl->tpl_vars['pos']->value<$_smarty_tpl->tpl_vars['ipos']->value){?><a href="?arc=<?php echo $_smarty_tpl->tpl_vars['arc']->value;?>
+                    <?php if ($_smarty_tpl->tpl_vars['pos']->value<$_smarty_tpl->tpl_vars['ipos']->value){?><a href="?arc=<?php echo $_smarty_tpl->tpl_vars['arc']->value;?>
 &msbt=<?php echo $_smarty_tpl->tpl_vars['msbt']->value;?>
 &pos=<?php echo $_smarty_tpl->tpl_vars['pos']->value+1;?>
-"><span class="bt"> >>>>> </span></a><?php }else{ ?> >>>>> <?php }?>   
-            </div>
+"><span class="bt"> >>>>> </span></a><?php }else{ ?> >>>>> <?php }?>
+                    &nbsp; <span id="novaTradu" class="bt"> [ Criar Nova Tradução ] </span>
+                </div>
             <?php }?>
 </div>
-<br><br>
+
     
     <!-- Postar nova tradução -->
     <?php if ($_smarty_tpl->tpl_vars['pos']->value!=null){?> 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-    <div id="formT1" style="text-align: center;" class="bt">
-        <h2>Clique aqui para adicionar uma tradução melhor para este dialogo.</h2>
+    
+    <div id="dialogoNovaTradu">
+        <div class="dialogoHead">
+            <img style="position: absolute ; left: 20px;" src="style/img/pt_BR.png" alt="flag"/> 
+            Crie aqui sua sujestão para esse dialogo tradução:
+            <span id="buttonPrev" class="bt" >[ Prever ]</span>
+            <span id="buttonPostar" class="bt" > [Postar nova tradução ]</span>
+        </div>
+        
+        <div class="dialogoPreview" id="prever"> &nbsp; </div>
+        
+        <div class="dialogoEditor">
+            <textarea id="tradu" rows="<?php echo $_smarty_tpl->tpl_vars['En_US']->value->getNumeroLinhas();?>
+" class="dialogoEditorTextArea" name="utf8"><?php echo $_smarty_tpl->tpl_vars['En_US']->value->getDialogoUtf8();?>
+</textarea>
+        </div>
+        
+        <br class="clearBoth" />
+
     </div>
-    <div id="formT2" class="borda">
-        Crie aqui sua sujestão para esse dialogo tradução:<br/>
-        <span> <textarea id="tradu" rows="<?php echo $_smarty_tpl->tpl_vars['En_US']->value->getNumeroLinhas();?>
-" cols="80" name="utf8"><?php echo $_smarty_tpl->tpl_vars['En_US']->value->getDialogoUtf8();?>
-</textarea></span> 
-             <span><div class="borda" style="width: 400px;" id="prever"></div></span>  
-        <span id="buttonPrev" class="bt" >[ Prever ]</span>
-        <span id="buttonPostar" class="bt" > [Postar nova tradução ]</span>
-    </div>
+    
+        
     <script>
         $(document).ready(function(){
-            $("#formT2").hide();
-            $("#formT1").click(function(){
-                $("#formT1").hide();
-                $("#formT2").show();
-                $("#prever").hide();
+            $("#dialogoNovaTradu").hide();
+            $("#novaTradu").click(function(){
+                $("#novaTradu").hide();
+                $("#dialogoNovaTradu").show();
             });
             $("#buttonPrev").click(function(){
                 $.get('preview.php', { tradu: $('#tradu').val() }, function(data) {
-                    $('#prever').html(data);
-                    $("#prever").show();
+                    $('#prever').html("<b>" + data + "</b>");
                 });
             });
             $("#buttonPostar").click(function(){
@@ -295,8 +340,18 @@ $_smarty_tpl->tpl_vars['dialogoTraduzido']->_loop = true;
 ?>
     <div id="dialogoTraduzido<?php echo $_smarty_tpl->tpl_vars['dialogoTraduzido']->value->getId();?>
 " style="">
-        <div style="height: 25px;border: 1px solid black; border-top-left-radius: 10px; border-top-right-radius: 10px; text-align: center;border-bottom: none;min-width: 150px; background-color: tan;">
-            <img src="style/img/pt_BR.png" alt="flag"/> 
+        <div id="headEditor<?php echo $_smarty_tpl->tpl_vars['dialogoTraduzido']->value->getId();?>
+" class="dialogoHead" >
+            Poder editar o dialogo agora.
+            <span id="buttonPrev<?php echo $_smarty_tpl->tpl_vars['dialogoTraduzido']->value->getId();?>
+" class="bt" >[ Prever ]</span>
+            <span id="buttonUpdate<?php echo $_smarty_tpl->tpl_vars['dialogoTraduzido']->value->getId();?>
+" class="bt" > [ Salvar alteração ]</span>
+        </div>
+            
+        <div id="viewEditor<?php echo $_smarty_tpl->tpl_vars['dialogoTraduzido']->value->getId();?>
+" class="dialogoHead" >
+            <img style="position: absolute ; left: 20px;" src="style/img/pt_BR.png" alt="flag"/> 
             [id:<?php echo $_smarty_tpl->tpl_vars['dialogoTraduzido']->value->getId();?>
 ]
             [por:<?php echo $_smarty_tpl->tpl_vars['dialogoTraduzido']->value->getCriador();?>
@@ -306,24 +361,48 @@ $_smarty_tpl->tpl_vars['dialogoTraduzido']->_loop = true;
             
             <span class="bt">[gostei + 3pt]</span>
             <span class="bt">[não gostei -3pt]</span>
-            <span class="bt">[Editar]</span>
-            <span id="apagar<?php echo $_smarty_tpl->tpl_vars['dialogoTraduzido']->value->getId();?>
+            <span id="btEditor<?php echo $_smarty_tpl->tpl_vars['dialogoTraduzido']->value->getId();?>
+" class="bt">[Editar]</span>
+            <span id="btApagar<?php echo $_smarty_tpl->tpl_vars['dialogoTraduzido']->value->getId();?>
 " class="btApagar">[Apagar]</span>
             
         </div>
-        <div class="inline" style="border: 1px solid black; border-right: none  ;min-width: 400px; background-color: tan;">
+        
+        <div id="dialogoPreview<?php echo $_smarty_tpl->tpl_vars['dialogoTraduzido']->value->getId();?>
+" class="dialogoPreview">
             <b><?php echo $_smarty_tpl->tpl_vars['dialogoTraduzido']->value->getDialogoHTML();?>
 </b> 
         </div>
-        <div class="inline" style="background-color:  black; top:0px;">
-            <textarea readonly="true" cols="80" rows="<?php echo $_smarty_tpl->tpl_vars['dialogoTraduzido']->value->getNumeroLinhas();?>
+        
+        <div  class="dialogoEditor">
+            <textarea id="ta<?php echo $_smarty_tpl->tpl_vars['dialogoTraduzido']->value->getId();?>
+" readonly="true" class="dialogoEditorTextArea" rows="<?php echo $_smarty_tpl->tpl_vars['dialogoTraduzido']->value->getNumeroLinhas();?>
 "><?php echo $_smarty_tpl->tpl_vars['dialogoTraduzido']->value->getDialogoUtf8();?>
 </textarea>
-        </div><br class="clearBoth" />
-    </div><br>
+        </div>
+        
+        <br class="clearBoth" />
+    </div>
         <script>
         $(document).ready(function(){
-            $("#apagar<?php echo $_smarty_tpl->tpl_vars['dialogoTraduzido']->value->getId();?>
+            $("#headEditor<?php echo $_smarty_tpl->tpl_vars['dialogoTraduzido']->value->getId();?>
+").hide();
+                        
+            $("#btEditor<?php echo $_smarty_tpl->tpl_vars['dialogoTraduzido']->value->getId();?>
+").click(function(){
+                
+                $("#headEditor<?php echo $_smarty_tpl->tpl_vars['dialogoTraduzido']->value->getId();?>
+").show();
+                $("#viewEditor<?php echo $_smarty_tpl->tpl_vars['dialogoTraduzido']->value->getId();?>
+").hide();
+               $("#ta<?php echo $_smarty_tpl->tpl_vars['dialogoTraduzido']->value->getId();?>
+").removeAttr('readonly');
+            });
+            
+            
+            
+            
+            $("#btApagar<?php echo $_smarty_tpl->tpl_vars['dialogoTraduzido']->value->getId();?>
 ").click(function(){
                 var r=confirm("Tem certeza, \nquer apagar a tradução id:<?php echo $_smarty_tpl->tpl_vars['dialogoTraduzido']->value->getId();?>
  ?");
@@ -339,33 +418,76 @@ $_smarty_tpl->tpl_vars['dialogoTraduzido']->_loop = true;
                     });
                 }
             });
+            
+            $("#buttonPrev<?php echo $_smarty_tpl->tpl_vars['dialogoTraduzido']->value->getId();?>
+").click(function(){
+                $.get('preview.php', { tradu: $("#ta<?php echo $_smarty_tpl->tpl_vars['dialogoTraduzido']->value->getId();?>
+").val() }, function(data) {
+                    $('#dialogoPreview<?php echo $_smarty_tpl->tpl_vars['dialogoTraduzido']->value->getId();?>
+').html("<b>" + data + "</b>");
+                });
+            });
+            $("#buttonUpdate<?php echo $_smarty_tpl->tpl_vars['dialogoTraduzido']->value->getId();?>
+").click(function(){
+                var r=confirm("Tem certeza,\n que quer salvar ?");
+                if (r==true)
+                {
+                
+                    $.get('gravar.php', { a:'u',arc:'<?php echo $_smarty_tpl->tpl_vars['arc']->value;?>
+', msbt:'<?php echo $_smarty_tpl->tpl_vars['msbt']->value;?>
+', pos:'<?php echo $_smarty_tpl->tpl_vars['pos']->value;?>
+', id : '<?php echo $_smarty_tpl->tpl_vars['dialogoTraduzido']->value->getId();?>
+' ,utf8: $('#ta<?php echo $_smarty_tpl->tpl_vars['dialogoTraduzido']->value->getId();?>
+').val() }, function(data) {
+
+                        location.reload();
+                    });
+                }
+            });
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
         });
     </script>
     
 <?php } ?>
-<br><br>
+
 <?php  $_smarty_tpl->tpl_vars['dialogoOriginal'] = new Smarty_Variable; $_smarty_tpl->tpl_vars['dialogoOriginal']->_loop = false;
  $_from = $_smarty_tpl->tpl_vars['dialogosOriginais']->value; if (!is_array($_from) && !is_object($_from)) { settype($_from, 'array');}
 foreach ($_from as $_smarty_tpl->tpl_vars['dialogoOriginal']->key => $_smarty_tpl->tpl_vars['dialogoOriginal']->value){
 $_smarty_tpl->tpl_vars['dialogoOriginal']->_loop = true;
 ?>
-    <div id="original" style="">
-        <div style="border: 1px solid black; border-top-left-radius: 10px; border-top-right-radius: 10px; text-align: center;border-bottom: none;min-width: 150px; background-color: tan;">
-            <img src="style/img/<?php echo $_smarty_tpl->tpl_vars['dialogoOriginal']->value->getLang();?>
-.png" alt="flag"/> 
-            <?php echo $_smarty_tpl->tpl_vars['dialogoOriginal']->value->getLangName();?>
+    <div id="dialogo<?php echo $_smarty_tpl->tpl_vars['dialogoOriginal']->value->getLang();?>
+" >
+        
+        <div class="dialogoHead">
+            <img style="position: absolute ; left: 20px;" src="style/img/<?php echo $_smarty_tpl->tpl_vars['dialogoOriginal']->value->getLang();?>
+.png" alt="flag"/> <?php echo $_smarty_tpl->tpl_vars['dialogoOriginal']->value->getLangName();?>
  - Texto Original
         </div>
-        <div class="inline" style="border: 1px solid black; border-right: none  ;min-width: 400px; background-color: tan;">
+        
+        <div class="dialogoPreview">
             <b><?php echo $_smarty_tpl->tpl_vars['dialogoOriginal']->value->getDialogoHTML();?>
 </b> 
         </div>
-        <div class="inline" style="background-color: black; top:0px;">
-            <textarea readonly="true" cols="80" rows="<?php echo $_smarty_tpl->tpl_vars['dialogoOriginal']->value->getNumeroLinhas();?>
+       
+        
+        <div class="dialogoEditor">
+            <textarea class="dialogoEditorTextArea" readonly="true" rows="<?php echo $_smarty_tpl->tpl_vars['dialogoOriginal']->value->getNumeroLinhas();?>
 "><?php echo $_smarty_tpl->tpl_vars['dialogoOriginal']->value->getDialogoUtf8();?>
 </textarea>
-        </div><br class="clearBoth" />
-    </div><br>
+        </div>
+        
+        <br class="clearBoth" />
+        
+    </div>
 <?php } ?>
 </div>                    
 </body>

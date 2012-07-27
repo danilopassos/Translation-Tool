@@ -18,15 +18,15 @@ abstract class mDialogo extends dbConnection {
         $linhas = explode("\n", $this->getDialogoUtf8());
         
         $i = 1; //inclemento por garantia
-        if(count($linhas) > 3){
-          $i++;  
-        }
-        if(count($linhas) > 6){
-          $i++;  
-        }
-        if(count($linhas) > 9){
-          $i++;  
-        }
+//        if(count($linhas) > 3){
+//          $i++;  
+//        }
+//        if(count($linhas) > 6){
+//          $i++;  
+//        }
+//        if(count($linhas) > 9){
+//          $i++;  
+//        }
         
         return count($linhas) + $i;
     }

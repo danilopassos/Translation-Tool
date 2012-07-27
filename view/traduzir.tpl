@@ -2,6 +2,7 @@
 <html>
     <head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/> 
         <title>Portal Tradução .: The Legend of Zelda: Skyward Sword :.  pt_BR </title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
         <!link href="style/style.css" rel="stylesheet" type="text/css" media="screen" />
     <style>
         div.inline { float:left; }
@@ -9,7 +10,7 @@
 
         body{
             background-color: green;
-            color: whitesmoke;
+            
         }
 
         #menu{
@@ -44,7 +45,7 @@
 
         #corpo{
             font-family: Verdana, Arial;
-            font-size: 11px;
+            font-size: 14px;
             position: absolute;
             top: 5px;
             left:  195px;
@@ -102,13 +103,51 @@
             
             background-color: red;
         }
- 
+        
+        .dialogoHead{
+            border: 1px solid black; 
+            border-top-left-radius: 10px; 
+            border-top-right-radius: 10px; 
+            text-align: center;
+            border-bottom: none;
+            
+            padding: 10px;
+
+            color: black;
+            
+            background-color: tan;
+            
+            vertical-align: center;
+
+        }
+        .dialogoPreview{
+             
+            color: white;
+            border: 1px solid black; 
+            min-width: 400px; 
+            background-color: #9B410E;
+        }
+        .dialogoPreview:hover{
+            background-color: black;
+        }
+        .dialogoPreview:active{
+            
+        }
+        
+        .dialogoEditor{
+            background-color: black;
+            text-align: center;
+        }
+        .dialogoEditorTextArea{
+            width: 98%;
+        }
         
     </style> 
 </head>
 <body>
     <div id="menu">
         <div class="borda" style="text-align: center">
+            <img src="style/img/75px-Triforce.png" alt="logo"><br>
             <strong>The Legend of Zelda</br>Skyward Sword<br/></strong>
         </div>
         <br>
@@ -157,43 +196,49 @@
         <div id="traducao">
             {if $pos != null}
                 <div class="borda" style="height: 30px;">
-                
-
- <input readonly="true" type="text" name="arc" value="{$arc}" />
-                <input readonly="true" type="text" name="msbt" value="{$msbt}" />
-            {if $pos > 0}<a href="?arc={$arc}&msbt={$msbt}&pos={$pos - 1}" > <span class="bt"><<<<< </span></a>{else} <<<<< {/if}
-                <input readonly="true" type="text" name="pos" size="3" value="{$pos}" />
-                {if $pos < $ipos}<a href="?arc={$arc}&msbt={$msbt}&pos={$pos + 1}"><span class="bt"> >>>>> </span></a>{else} >>>>> {/if}   
-            </div>
+                    <input readonly="true" type="text" name="arc" value="{$arc}" />
+                    <input readonly="true" type="text" name="msbt" value="{$msbt}" />
+                    {if $pos > 0}<a href="?arc={$arc}&msbt={$msbt}&pos={$pos - 1}" > <span class="bt"><<<<< </span></a>{else} <<<<< {/if}
+                    <input readonly="true" type="text" name="pos" size="3" value="{$pos}" />
+                    {if $pos < $ipos}<a href="?arc={$arc}&msbt={$msbt}&pos={$pos + 1}"><span class="bt"> >>>>> </span></a>{else} >>>>> {/if}
+                    &nbsp; <span id="novaTradu" class="bt"> [ Criar Nova Tradução ] </span>
+                </div>
             {/if}
 </div>
-<br><br>
+
     
     <!-- Postar nova tradução -->
     {if $pos != null} 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-    <div id="formT1" style="text-align: center;" class="bt">
-        <h2>Clique aqui para adicionar uma tradução melhor para este dialogo.</h2>
+    
+    <div id="dialogoNovaTradu">
+        <div class="dialogoHead">
+            <img style="position: absolute ; left: 20px;" src="style/img/pt_BR.png" alt="flag"/> 
+            Crie aqui sua sujestão para esse dialogo tradução:
+            <span id="buttonPrev" class="bt" >[ Prever ]</span>
+            <span id="buttonPostar" class="bt" > [Postar nova tradução ]</span>
+        </div>
+        
+        <div class="dialogoPreview" id="prever"> &nbsp; </div>
+        
+        <div class="dialogoEditor">
+            <textarea id="tradu" rows="{$En_US->getNumeroLinhas()}" class="dialogoEditorTextArea" name="utf8">{$En_US->getDialogoUtf8()}</textarea>
+        </div>
+        
+        <br class="clearBoth" />
+
     </div>
-    <div id="formT2" class="borda">
-        Crie aqui sua sujestão para esse dialogo tradução:<br/>
-        <span> <textarea id="tradu" rows="{$En_US->getNumeroLinhas()}" cols="80" name="utf8">{$En_US->getDialogoUtf8()}</textarea></span> 
-             <span><div class="borda" style="width: 400px;" id="prever"></div></span>  
-        <span id="buttonPrev" class="bt" >[ Prever ]</span>
-        <span id="buttonPostar" class="bt" > [Postar nova tradução ]</span>
-    </div>
+    
+        
     <script>
         $(document).ready(function(){
-            $("#formT2").hide();
-            $("#formT1").click(function(){
-                $("#formT1").hide();
-                $("#formT2").show();
-                $("#prever").hide();
+            $("#dialogoNovaTradu").hide();
+            $("#novaTradu").click(function(){
+                $("#novaTradu").hide();
+                $("#dialogoNovaTradu").show();
             });
             $("#buttonPrev").click(function(){
                 $.get('preview.php', { tradu: $('#tradu').val() }, function(data) {
-                    $('#prever').html(data);
-                    $("#prever").show();
+                    $('#prever').html("<b>" + data + "</b>");
                 });
             });
             $("#buttonPostar").click(function(){
@@ -215,28 +260,50 @@
 <!-- lista das traduçoes -->
 {foreach from=$dialogosTraduzidos item=dialogoTraduzido}
     <div id="dialogoTraduzido{$dialogoTraduzido->getId()}" style="">
-        <div style="height: 25px;border: 1px solid black; border-top-left-radius: 10px; border-top-right-radius: 10px; text-align: center;border-bottom: none;min-width: 150px; background-color: tan;">
-            <img src="style/img/pt_BR.png" alt="flag"/> 
+        <div id="headEditor{$dialogoTraduzido->getId()}" class="dialogoHead" >
+            Poder editar o dialogo agora.
+            <span id="buttonPrev{$dialogoTraduzido->getId()}" class="bt" >[ Prever ]</span>
+            <span id="buttonUpdate{$dialogoTraduzido->getId()}" class="bt" > [ Salvar alteração ]</span>
+        </div>
+            
+        <div id="viewEditor{$dialogoTraduzido->getId()}" class="dialogoHead" >
+            <img style="position: absolute ; left: 20px;" src="style/img/pt_BR.png" alt="flag"/> 
             [id:{$dialogoTraduzido->getId()}]
             [por:{$dialogoTraduzido->getCriador()}]
             [pontos:{$dialogoTraduzido->getPontos()}]
             
             <span class="bt">[gostei + 3pt]</span>
             <span class="bt">[não gostei -3pt]</span>
-            <span class="bt">[Editar]</span>
-            <span id="apagar{$dialogoTraduzido->getId()}" class="btApagar">[Apagar]</span>
+            <span id="btEditor{$dialogoTraduzido->getId()}" class="bt">[Editar]</span>
+            <span id="btApagar{$dialogoTraduzido->getId()}" class="btApagar">[Apagar]</span>
             
         </div>
-        <div class="inline" style="border: 1px solid black; border-right: none  ;min-width: 400px; background-color: tan;">
+        
+        <div id="dialogoPreview{$dialogoTraduzido->getId()}" class="dialogoPreview">
             <b>{$dialogoTraduzido->getDialogoHTML()}</b> 
         </div>
-        <div class="inline" style="background-color:  black; top:0px;">
-            <textarea readonly="true" cols="80" rows="{$dialogoTraduzido->getNumeroLinhas()}">{$dialogoTraduzido->getDialogoUtf8()}</textarea>
-        </div><br class="clearBoth" />
-    </div><br>
+        
+        <div  class="dialogoEditor">
+            <textarea id="ta{$dialogoTraduzido->getId()}" readonly="true" class="dialogoEditorTextArea" rows="{$dialogoTraduzido->getNumeroLinhas()}">{$dialogoTraduzido->getDialogoUtf8()}</textarea>
+        </div>
+        
+        <br class="clearBoth" />
+    </div>
         <script>
         $(document).ready(function(){
-            $("#apagar{$dialogoTraduzido->getId()}").click(function(){
+            $("#headEditor{$dialogoTraduzido->getId()}").hide();
+                        
+            $("#btEditor{$dialogoTraduzido->getId()}").click(function(){
+                
+                $("#headEditor{$dialogoTraduzido->getId()}").show();
+                $("#viewEditor{$dialogoTraduzido->getId()}").hide();
+               $("#ta{$dialogoTraduzido->getId()}").removeAttr('readonly');
+            });
+            
+            
+            
+            
+            $("#btApagar{$dialogoTraduzido->getId()}").click(function(){
                 var r=confirm("Tem certeza, \nquer apagar a tradução id:{$dialogoTraduzido->getId()} ?");
                 if (r==true)
                 {
@@ -245,24 +312,57 @@
                     });
                 }
             });
+            
+            $("#buttonPrev{$dialogoTraduzido->getId()}").click(function(){
+                $.get('preview.php', { tradu: $("#ta{$dialogoTraduzido->getId()}").val() }, function(data) {
+                    $('#dialogoPreview{$dialogoTraduzido->getId()}').html("<b>" + data + "</b>");
+                });
+            });
+            $("#buttonUpdate{$dialogoTraduzido->getId()}").click(function(){
+                var r=confirm("Tem certeza,\n que quer salvar ?");
+                if (r==true)
+                {
+                
+                    $.get('gravar.php', { a:'u',arc:'{$arc}', msbt:'{$msbt}', pos:'{$pos}', id : '{$dialogoTraduzido->getId()}' ,utf8: $('#ta{$dialogoTraduzido->getId()}').val() }, function(data) {
+
+                        location.reload();
+                    });
+                }
+            });
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
         });
     </script>
     
 {/foreach}
-<br><br>
+
 {foreach from=$dialogosOriginais item=dialogoOriginal}
-    <div id="original" style="">
-        <div style="border: 1px solid black; border-top-left-radius: 10px; border-top-right-radius: 10px; text-align: center;border-bottom: none;min-width: 150px; background-color: tan;">
-            <img src="style/img/{$dialogoOriginal->getLang()}.png" alt="flag"/> 
-            {$dialogoOriginal->getLangName()} - Texto Original
+    <div id="dialogo{$dialogoOriginal->getLang()}" >
+        
+        <div class="dialogoHead">
+            <img style="position: absolute ; left: 20px;" src="style/img/{$dialogoOriginal->getLang()}.png" alt="flag"/> {$dialogoOriginal->getLangName()} - Texto Original
         </div>
-        <div class="inline" style="border: 1px solid black; border-right: none  ;min-width: 400px; background-color: tan;">
+        
+        <div class="dialogoPreview">
             <b>{$dialogoOriginal->getDialogoHTML()}</b> 
         </div>
-        <div class="inline" style="background-color: black; top:0px;">
-            <textarea readonly="true" cols="80" rows="{$dialogoOriginal->getNumeroLinhas()}">{$dialogoOriginal->getDialogoUtf8()}</textarea>
-        </div><br class="clearBoth" />
-    </div><br>
+       
+        
+        <div class="dialogoEditor">
+            <textarea class="dialogoEditorTextArea" readonly="true" rows="{$dialogoOriginal->getNumeroLinhas()}">{$dialogoOriginal->getDialogoUtf8()}</textarea>
+        </div>
+        
+        <br class="clearBoth" />
+        
+    </div>
 {/foreach}
 </div>                    
 </body>

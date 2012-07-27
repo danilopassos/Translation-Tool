@@ -21,6 +21,15 @@ $pos = $_GET["pos"];
 $user = "adri3d@gmail.com";
 
 
+if($a == "u"){
+    $id = $_GET["id"];
+    $utf8 = $_GET["utf8"];
+    $d = new DialogoTraducao();
+    $d->setId($id);
+    $d->setDialogoUtf8($utf8);
+    $d->updateDialogo();
+    echo "ok";
+}
 
 if($a == "i"){
     $utf8 = $_GET["utf8"];
@@ -33,6 +42,8 @@ if($a == "i"){
     $d->setCriador($user);
     
     $d->insert();
+    
+    echo "ok";
 }
 if($a == "d"){
     $id = $_GET["id"];   
