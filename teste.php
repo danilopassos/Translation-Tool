@@ -15,19 +15,21 @@ require_once 'core/util.php';
 #$arc = "4-Desert.arc";
 #$arc = "5-CenterField.arc";
 
-echo ("<pre>");
-//foreach (Lang::getLangs() as $lang)
-//foreach (ExtArc::getFileNames() as $arc) {
-//    foreach (ExtArc::getFileNamesInArc($arc) as $msbt) {
-//        foreach (ExtArc::getFileNamesInArcSubs( $msbt) as $pos) { 
+//echo ("<pre>");
+////foreach (Lang::getLangs() as $lang)
+////foreach (ExtArc::getFileNames() as $arc) {
+////    foreach (ExtArc::getFileNamesInArc($arc) as $msbt) {
+////        foreach (ExtArc::getFileNamesInArcSubs( $msbt) as $pos) { 
+//
+////            echo "\n" . $arc ." - ". $msbt." - ". $pos." - ". $lang;
+////        }
+////    }
+////}
+//
+//$o = new Formatacao("0000");
+//$o->gerarTags()
 
-//            echo "\n" . $arc ." - ". $msbt." - ". $pos." - ". $lang;
-//        }
-//    }
-//}
-
-$o = new Formatacao("0000");
-$o->gerarTags();
+require_once 'ajax/get_file_tree.php';
 
 ?>
 

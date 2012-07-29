@@ -53,12 +53,6 @@ if($a == "d"){
     echo "ok";
 }
 
-//if (isset($_GET["arc"])) {
-//    //echo "<pre>";
-//    salvar01($_GET["arc"], $_GET["msbt"], $_GET["pos"],  ( $_GET["utf8"]));
-//    
-//    $link = "traduzir.php?arc=" . $_GET["arc"] . "&msbt=" . $_GET["msbt"] . "&pos=" . $_GET["pos"] ;
-//    //echo "<a href=\"$link\" > Voltar </a>" ;
-//    header("location:$link");
-//}
+
+
 ?>

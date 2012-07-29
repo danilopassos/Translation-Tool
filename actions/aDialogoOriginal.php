@@ -4,9 +4,9 @@ require_once 'model/mDialogoOriginal.php';
 
 class aDialogoOriginal extends mDialogoOriginal {
 
-    protected $sqlInsert = "INSERT INTO `dialogooriginal`(`POS`, `ARC`, `MSBT`, `NOME`, `DIALOGO_BASE64`, `LANG`) VALUES ('%s' ,'%s' ,'%s' ,'%s' ,'%s' ,'%s' )";
+    protected $sqlInsert = "INSERT INTO `dialogo`(`POS`, `ARC`, `MSBT`, `NOME`, `DIALOGO_BASE64`, `LANG`) VALUES ('%s' ,'%s' ,'%s' ,'%s' ,'%s' ,'%s' )";
     #protected $sqlUpdate = "";
-    protected $sqlSelect = "SELECT * FROM `dialogooriginal` WHERE ARC='%s' AND MSBT='%s' AND POS='%s' AND LANG='%s'";
+    protected $sqlSelect = "SELECT * FROM `dialogo` WHERE ARC='%s' AND MSBT='%s' AND POS='%s' AND LANG='%s'";
 
     #protected $sqlDelete = "";
 

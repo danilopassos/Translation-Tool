@@ -1,12 +1,14 @@
 <?php
 
 require_once 'model/mDialogoTraducao.php';
+require_once 'core/Usuario.php';
 
 class aDialogoTraducao extends mDialogoTraducao {
 
-    protected $sqlInsert = "INSERT INTO `dialogotraducao`(`ARC`, `MSBT`, `POS`, `CRIADOR`, `PONTOS`, `DIALOGO_BASE64`) VALUES ('%s','%s','%s','%s','%s','%s')";
-    protected $sqlUpdateDialogo = "UPDATE `dialogotraducao` SET `DIALOGO_BASE64`='%s' WHERE `ID`=%s";
+    protected $sqlInsert = "INSERT INTO `dialogotraducao`(`ARC`, `MSBT`, `POS`, `CRIADOR`, `DIALOGO_BASE64` , `CRIADOEM`) VALUES ('%s','%s','%s','%s','%s', NOW())";
+    protected $sqlUpdateDialogo = "UPDATE `dialogotraducao` SET `DIALOGO_BASE64`='%s',CRIADOEM=NOW() WHERE `ID`=%s";
     protected $sqlSelect = "SELECT * FROM `dialogotraducao` WHERE ARC='%s' AND MSBT='%s' AND POS='%s' ORDER BY  `dialogotraducao`.`ID` DESC";
+    protected $sqlSelectAMelhor = "SELECT * FROM `dialogotraducao` WHERE ARC='%s' AND MSBT='%s' AND POS='%s' ORDER BY `PONTOS`";
     protected $sqlDelete = "DELETE FROM `dialogotraducao` WHERE `ID`=%s";
 
     public function insert() {
@@ -20,8 +22,8 @@ class aDialogoTraducao extends mDialogoTraducao {
         $this->RunQuery($sql);
     }
     
-        public function get($arc, $msbt, $pos) {
-        $sql = sprintf($this->sqlSelect, $arc, $msbt, $pos);
+    protected function getAMelhor($arc, $msbt, $pos) {
+        $sql = sprintf($this->sqlSelectAMelhor, $arc, $msbt, $pos);
 
         $r = $this->runSelect($sql);
         $o = new DialogoTraducao();
@@ -31,14 +33,15 @@ class aDialogoTraducao extends mDialogoTraducao {
             $o->setMsbt($row["MSBT"]);
             $o->setPosicao($row["POS"]);
             $o->setCriador($row["CRIADOR"]);
-            $o->setPontos($row["PONTOS"]);
+
             $o->setDialogoBase64($row["DIALOGO_BASE64"]);
+            $o->setCriadoEm($row["CRIADOEM"]);
         }
-        
+
         return $o;
     }
     
-    public function getTodas($arc, $msbt, $pos) {
+    protected function getTodas($arc, $msbt, $pos) {
         $sql = sprintf($this->sqlSelect, $arc, $msbt, $pos);
 
         $r = $this->runSelect($sql);
@@ -50,8 +53,9 @@ class aDialogoTraducao extends mDialogoTraducao {
             $o->setMsbt($row["MSBT"]);
             $o->setPosicao($row["POS"]);
             $o->setCriador($row["CRIADOR"]);
-            $o->setPontos($row["PONTOS"]);
+
             $o->setDialogoBase64($row["DIALOGO_BASE64"]);
+            $o->setCriadoEm($row["CRIADOEM"]);
             array_push($todas, $o);
         }
         
@@ -60,9 +64,10 @@ class aDialogoTraducao extends mDialogoTraducao {
 
     public function delete(){
         $sql = sprintf($this->sqlDelete, $this->getId());
-        echo $sql;
-        return $this->RunQuery($sql);    
+        $this->RunQuery($sql);    
     }
+   
+    
 }
 
 ?>

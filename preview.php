@@ -1,13 +1,37 @@
 <?php
 
 require_once 'core/DialogoTraducao.php';
+require_once 'core/DialogoOriginal.php';
 
-if(isset($_GET["tradu"])){
+if (isset($_GET["tradu"])) {
     $o = new DialogoTraducao();
-    $o->setDialogoUtf8( $_GET["tradu"] );
+    $o->setDialogoUtf8($_GET["tradu"]);
     echo $o->getDialogoHtml();
-}else{
-    echo "falhou";
 }
 
+$modo="html";
+if(isset($_GET["modo"])){
+    $modo = $_GET["modo"];
+}
+
+if ( isset($_GET["pos"]) ) {
+    $arc = $_GET["arc"];
+    $msbt = $_GET["msbt"];
+    $pos = $_GET["pos"];
+    $lang = "en_US";
+
+    $o = new DialogoOriginal($arc, $msbt, $pos, $lang);
+    
+    if($modo == "html"){
+        echo $o->getDialogoHtml();
+    
+    }
+    if($modo == "tag"){
+        echo "<pre>" . $o->getDialogoUtf8() . "</pre>";
+    }
+    if($modo == "json"){
+        echo json_encode($o);
+    }
+    
+}
 ?>

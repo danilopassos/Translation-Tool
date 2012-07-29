@@ -6,8 +6,16 @@ class mDialogoTraducao extends mDialogo{
     
     protected $id; //numero da tradução para o dialogo
     protected $criador;//usuario que a criou
-    protected $pontos; //pontuçao da tradução gostei/não gostei
+    protected $criadoEm;
     
+    public function getCriadoEm(){
+        return $this->criadoEm;
+    }
+    
+    public function setCriadoEm($value){
+        $this->criadoEm = $value;
+    }
+
     public function getId(){
         return $this->id;
     }
@@ -31,7 +39,6 @@ class mDialogoTraducao extends mDialogo{
     public function setPontos($pontos){
         $this->pontos = $pontos;
     }
-   
 }
 
 ?>

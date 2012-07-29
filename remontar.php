@@ -13,20 +13,18 @@
         require_once 'core/Lang.php';
         require_once 'core/DialogoTraducao.php';
 
-
         echo "<pre>\n";
 
-
-//        foreach (ExtArc::getFileNames() as $arc) {
-//            foreach (ExtArc::getFileNamesInArc($arc) as $msbt) {
-//                foreach (ExtArc::getFileNamesInArcSubs($msbt) as $pos) {
-//                    $o = DialogoTraducao::getMelhorTradução($arc, $msbt, $pos);
-//                    $c = getDirTMP() . "pt_BR" . DIRECTORY_SEPARATOR . "$arc.d" . DIRECTORY_SEPARATOR . "$msbt.d" . DIRECTORY_SEPARATOR . $pos;
-//                    gravarArquivo($c, $o->getDialogoBinario());
-//                    echo "\n" . $arc . " - " . $msbt . " - " . $pos;
-//                }
-//            }
-//        }
+        foreach (ExtArc::getFileNames() as $arc) {
+            foreach (ExtArc::getFileNamesInArc($arc) as $msbt) {
+                foreach (ExtArc::getFileNamesInArcSubs($msbt) as $pos) {
+                    $o = DialogoTraducao::getMelhorTradução($arc, $msbt, $pos);
+                    $c = getDirTMP() . "pt_BR" . DIRECTORY_SEPARATOR . "$arc.d" . DIRECTORY_SEPARATOR . "$msbt.d" . DIRECTORY_SEPARATOR . $pos;
+                    gravarArquivo($c, $o->getDialogoBinario());
+                    echo "\n" . $arc . " - " . $msbt . " - " . $pos;
+                }
+            }
+        }
 
 
         foreach (ExtArc::getFileNames() as $arc) {

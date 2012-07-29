@@ -7,9 +7,3 @@ ferramenta baseada na web para a tradução do jogo "The Legend of Zelda: Skywar
 
 demonstrações aqui http://www.youtube.com/playlist?list=PL36064785B703DAF1
 
-#Notas Gerais:
--------------
-- Esta ferramenta utiliza PHP OO e o framework Smart, para lidar com templates de forma similar a utilzada aqui http://www.youtube.com/playlist?list=PL9FA1317A2BF91ACF 
-
-
-
