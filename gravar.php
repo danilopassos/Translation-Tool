@@ -1,5 +1,5 @@
 <?php
-require_once 'core/DialogoTraducao.php';
+require_once 'core/Dialogo.php';
 /*
  * valores para "a"
  * i - inserte, salvar tradução
@@ -18,33 +18,30 @@ if (isset($_GET["a"])){
 $arc = $_GET["arc"]; 
 $msbt = $_GET["msbt"]; 
 $pos = $_GET["pos"];
-$user = "adri3d@gmail.com";
 
 
 if($a == "u"){
-    $id = $_GET["id"];
     $utf8 = $_GET["utf8"];
-    $d = new DialogoTraducao();
-    $d->setId($id);
+    $d = new Dialogo($arc, $msbt , $pos , "pt_BR");
     $d->setDialogoUtf8($utf8);
     $d->updateDialogo();
     echo "ok";
 }
 
-if($a == "i"){
-    $utf8 = $_GET["utf8"];
-    
-    $d = new DialogoTraducao();
-    $d->setArc($arc);
-    $d->setMsbt($msbt);
-    $d->setPosicao($pos);
-    $d->setDialogoUtf8($utf8);
-    $d->setCriador($user);
-    
-    $d->insert();
-    
-    echo "ok";
-}
+//if($a == "i"){
+//    $utf8 = $_GET["utf8"];
+//    
+//    $d = new DialogoTraducao();
+//    $d->setArc($arc);
+//    $d->setMsbt($msbt);
+//    $d->setPosicao($pos);
+//    $d->setDialogoUtf8($utf8);
+//    $d->setCriador($user);
+//    
+//    $d->insert();
+//    
+//    echo "ok";
+//}
 if($a == "d"){
     $id = $_GET["id"];   
     $d = new DialogoTraducao();
@@ -52,7 +49,5 @@ if($a == "d"){
     $d->delete();
     echo "ok";
 }
-
-
 
 ?>

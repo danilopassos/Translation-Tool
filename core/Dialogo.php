@@ -1,10 +1,10 @@
 <?php
 
-require_once 'actions/aDialogoOriginal.php';
+require_once 'actions/aDialogo.php';
 
-class DialogoOriginal extends aDialogoOriginal {
+class Dialogo extends aDialogo {
 
-    function __construct($arc, $msbt, $pos, $lang, $autoCaregarDialogo = true) {
+    function __construct($arc = null, $msbt = null, $pos = null, $lang = null, $autoCaregarDialogo = true) {
         if ($autoCaregarDialogo) {
             $this->get($arc, $msbt, $pos, $lang);
         } else {
@@ -14,9 +14,6 @@ class DialogoOriginal extends aDialogoOriginal {
             $this->setLang($lang);
         }
     }
-    
-    
-
 }
 
 ?>

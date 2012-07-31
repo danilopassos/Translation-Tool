@@ -7,7 +7,7 @@
  */
 
 require_once 'core/util.php';
-require_once 'core/DialogoOriginal.php';
+require_once 'core/Dialogo.php';
 
 class Msbt {
 
@@ -103,7 +103,7 @@ class Msbt {
                 $pos = "0" . $pos;
             }
 
-            $o = new DialogoOriginal($arc, $msbt, $pos, $lang, FALSE);
+            $o = new Dialogo($arc, $msbt, $pos, $lang, false);
             $o->setNome($lista_nomes[$i]->name);
             $o->setDialogoBinario($lista_nomes[$i]->msg);
             

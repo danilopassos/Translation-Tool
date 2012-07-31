@@ -12,8 +12,8 @@ Ext.require([
     'Ext.menu.Menu.*',
     'Ext.tab.Tab.*',
     'Ext.MessageBox*',
-    //    'Ext.TaskManager.*',
-    //    'Ext.ComponentQuery.*',
+    'Ext.TaskManager.*',
+    'Ext.ComponentQuery.*',
     'Ext.tab.*',
     'Ext.ux.TabCloseMenu'
     ]);
@@ -82,12 +82,148 @@ Ext.onReady(function() {
     //        addTab(index % 2);
     //    }
     
+    
+    function editar(arc, msbt, pos){
+            var lang = "pt_BR";
+    
+            var form = Ext.create('Ext.form.Panel', {
+                plain: true,
+                border: 0,
+                bodyPadding: 5,
+                url: 'save-form.php',
+
+                fieldDefaults: {
+                    labelWidth: 55,
+                    anchor: '100%'
+                },
+
+                layout: {
+                    type: 'hbox',
+                    align: 'stretch'  // Child items are stretched to full width
+                },
+
+                items: [{
+                        xtype: 'textarea',
+                        id : 'editorTA' + arc + msbt + pos,
+                        fieldLabel: 'Dialogo modo TAG',
+            
+                        hideLabel: true,
+            
+                        name: 'msg',
+                        style: 'margin:0', // Remove default margin
+                        flex: 1,  // Take up all *remaining* vertical space
+                        
+                        listeners: {
+                            render : function( este, eOpts ){
+                                Ext.Ajax.request({
+                                
+                                    url: 'preview.php',
+                                    method : 'GET',
+                                    params: {
+                                        arc: arc,
+                                        msbt: msbt,
+                                        pos : pos,
+                                        lang : lang,
+                                        modo: 'tag',
+                                        nopre: ''
+                                    },
+                                    success: function(response){
+                                        este.setValue(response.responseText);
+                                    }
+                                });
+                            
+                            }
+                        }
+                          
+                    },{
+                        xtype: 'panel',
+                        id: 'preview' + arc + msbt + pos,
+                        flex:1
+            
+                    }
+    
+                ]
+            });
+
+            var win = Ext.create('Ext.window.Window', {
+                title: 'Compose message',
+                collapsible: true,
+                animCollapse: true,
+                maximizable: true,
+                width: 750,
+                height: 500,
+                minWidth: 300,
+                minHeight: 200,
+                layout: 'fit',
+                items: form,
+                dockedItems: [{
+                        xtype: 'toolbar',
+                        dock: 'bottom',
+                        ui: 'footer',
+                        layout: {
+                            pack: 'center'
+                        },
+                        items: [{
+                                minWidth: 80,
+                                text: 'Salvar',
+                
+                                listeners: {
+                                    click: function( bt, e, eOpts ){
+                                        var tag = Ext.getCmp('editorTA' + arc + msbt + pos).getValue();
+                                        Ext.Ajax.request({
+                                            url: 'gravar.php',
+                                            method : 'GET',
+                                            params: {
+                                                a : 'u',
+                                                arc : arc,
+                                                msbt : msbt,
+                                                pos : pos,
+                                                utf8 : tag 
+                                            },
+                                
+                                            success: function(response){
+                                                alert(response.responseText);
+                                            }
+
+                                        })
+                                    }
+                                }
+                            },{
+                                minWidth: 80,
+                                text: 'Prever',
+                
+                                listeners: {
+                                    click: function( bt, e, eOpts ){
+                                        var tag = Ext.getCmp('editorTA' + arc + msbt + pos).getValue();
+                                        Ext.Ajax.request({
+                                            url: 'preview.php',
+                                            method : 'GET',
+                                            params: { tag : tag },
+                                
+                                            success: function(response){
+                                                Ext.getCmp('preview' + arc + msbt + pos).update(response.responseText);
+                                            }
+
+                                        })
+                                    }
+                
+                                }
+                
+                            }]
+                    }]
+            });
+            win.show();
+        }
+    
     function addWindowDialogo(arc, msbt, pos, onde){
         Ext.create('Ext.window.Window', {
             title: 'dialogo: ' + arc + '/'+ msbt + '/' + pos,
 
             //closeAction: 'hide',
             autoScroll:true,
+            collapsible: true,
+            animCollapse: true,
+            maximizable: true,
             width: '80%',
             height: '95%',
             
@@ -102,14 +238,12 @@ Ext.onReady(function() {
                 margins:'2 2 2 2'
             },
             
-            items:[
-            {
+            items:[{
                 xtype:'tabpanel',
                 //                title : 'editar tradução',
                 id: "tabOriginais" + msbt + pos,
                 
-                items:[
-                {
+                items:[{
                     xtype:'panel',
                     title : 'Informações',
                     flex:1,
@@ -119,25 +253,10 @@ Ext.onReady(function() {
                         url : 'info.php?arc=' + arc + 
                         '&msbt=' + msbt + '&pos=' + pos
                     }
-                },{
-                    xtype:'panel',
-                    title : 'editar tradução',
-                    flex:1,
-                
-                    minHeight: 100,
-                    autoLoad:{
-                        url : 'editor.php?arc=' + arc + 
-                        '&msbt=' + msbt + '&pos=' + pos + '&lang=en_US'
-                    }
                 }
-
                 ]
                 
-            }
-                
-            ]
-            
-            ,
+            }],
             
             listeners: {
                 render: function(w, opt) {
@@ -160,7 +279,7 @@ Ext.onReady(function() {
                                 xtype:'panel',
                                 title : 'TAG',
                                 width: '65%',
-//                                flex:3,
+                                //                                flex:3,
                                 autoLoad:{
                                     url : 'preview.php?arc=' + arc + 
                                     '&msbt=' + msbt + '&pos=' + pos +'&lang=' + lang + '&modo=tag'
@@ -168,7 +287,7 @@ Ext.onReady(function() {
                             },{
                                 xtype:'panel',
                                 title : 'HTML',
-//                                flex:3,
+                                //                                flex:3,
                                 
                                 width: '35%',
                                 autoLoad:{
@@ -185,9 +304,7 @@ Ext.onReady(function() {
                     });
                 }
             }
-
-        }).show();
-             
+        }).show();      
     }
     
     
@@ -233,6 +350,7 @@ Ext.onReady(function() {
                         var pos = record.get('id');
                         var onde = Ext.get('p' + msbt);
                         addWindowDialogo(arc, msbt, pos, onde);
+                        editar(arc, msbt, pos);
                     }
                 }
             },

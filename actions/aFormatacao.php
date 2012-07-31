@@ -40,10 +40,8 @@ class aFormatacao extends mFormatacao {
         }
     }
 
-    
-    
 /*
- * Usada para popular as tags não reconhecidas com #[um numero]
+ * Usado para popular as tags não reconhecidas com #[um numero]
  * 
  */
 //    public function gerarTags() {

@@ -6,14 +6,58 @@ require_once 'core/Formatacao.php';
 
 abstract class mDialogo extends dbConnection {
 
+    private $id;
     private $arc;  //de qual arquivo arc ela pertence
     private $msbt; // de qual msbt ela pertence
     //é usado a posição como nome de arquivo, porque a chave possui caracteres
     //não permetidos nos sistemas de arquivo.
     private $posicao; //posicao dentro do msbt
     private $nome;   //nome usado dentro do msbt
-    protected $dialogoBase64; //conteudo binario formatado em base64//
+    private $dialogoBase64; //conteudo binario formatado em base64//
 
+    private $lang; 
+
+    
+    public function getId(){
+        return $this->id;
+    }
+    
+    public function setId($id){
+        $this->id = $id;
+    }
+
+    public function getLang(){
+        return $this->lang;
+    }
+    
+    public function setLang($lang){
+        $this->lang = $lang;
+    }
+    
+    public function getLangName() {
+        return Lang::getNameLang($this->lang);
+    }
+    
+    public function getPathTmpFile() {
+        return getDirTMP() .
+                $this->lang . DIRECTORY_SEPARATOR .
+                $this->arc . ".d" . DIRECTORY_SEPARATOR .
+                $this->msbt . ".d" . DIRECTORY_SEPARATOR . $this->posicao;
+    }
+
+    public function getLerDoArquivoTmp() {
+        $file = $this->getPathTmpFile();
+        
+        
+        if (file_exists($file)) {
+            $handle = fopen($file, "r");
+            $fileBin = fread($handle, filesize($file));
+            $this->dialogoBase64 = base64_encode($fileBin);
+        } else {
+            printLog("Arquivo não encontrado : " . $file);
+        }
+    }
+    
     public function getNumeroLinhas() {
         $linhas = explode("\n", $this->getDialogoUtf8());
         
@@ -88,14 +132,28 @@ abstract class mDialogo extends dbConnection {
     }
 
     public function getDialogoHtml() {
-        $html = base64_decode($this->dialogoBase64);    
-                
+        $html = base64_decode($this->dialogoBase64);            
         $html = mDialogo::dialogoBinarioParaUtf8($html,true);
+        
+        
+        //alerta de comprimento
+        $alertas = "";
+        $linhas = explode("\n", $html);
+        for($i = 0; $i < count($linhas); $i++ ){
+            if( mb_strlen(strip_tags($linhas[$i]),"utf8") > 40){
+                $alertas .= "<br><p style=\" background-color: red \"> a Linha " . ($i + 1) . " passou de 40 caracteres</p>";
+            }
+        }
+        
         $html = str_replace("\n", "<br/>", $html);
         
         #para evitar bugs em textos mal formatados
         #exitem varios dialos em en_US bugados.
         $html .= "</font></font></font>";
+        $html .= "<br>".$alertas;
+        
+        
+        
         return $html;
     }
 
