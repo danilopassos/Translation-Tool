@@ -14,6 +14,8 @@ class DialogoOriginal extends aDialogoOriginal {
             $this->setLang($lang);
         }
     }
+    
+    
 
 }
 

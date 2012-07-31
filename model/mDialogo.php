@@ -94,7 +94,8 @@ abstract class mDialogo extends dbConnection {
         $html = str_replace("\n", "<br/>", $html);
         
         #para evitar bugs em textos mal formatados
-        $html .= "</font>";
+        #exitem varios dialos em en_US bugados.
+        $html .= "</font></font></font>";
         return $html;
     }
 
@@ -149,9 +150,11 @@ abstract class mDialogo extends dbConnection {
                 /* são restos do containeer devem ser iginorados */
             } elseif (bin2hex(substr($bin, $offset, 2)) === "0000") {
                 $utf8 .=  mDialogo::hexToTag("0000", $emHtml) ;
+            } elseif (bin2hex(substr($bin, $offset, 2)) === "03cd") {
+                $utf8 .=  mDialogo::hexToTag("03cd", $emHtml) ;
             } elseif (bin2hex(substr($bin, $offset, 2)) === "ffff") {
                 $utf8 .=  mDialogo::hexToTag("ffff", $emHtml) ;
-            } else {
+            }else {
                 $utf8 .= utf16ToUtf8($bin[$offset] . $bin[$offset + 1]);
             }
         }

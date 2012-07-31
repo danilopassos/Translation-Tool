@@ -8,7 +8,7 @@ class aDialogoTraducao extends mDialogoTraducao {
     protected $sqlInsert = "INSERT INTO `dialogotraducao`(`ARC`, `MSBT`, `POS`, `CRIADOR`, `DIALOGO_BASE64` , `CRIADOEM`) VALUES ('%s','%s','%s','%s','%s', NOW())";
     protected $sqlUpdateDialogo = "UPDATE `dialogotraducao` SET `DIALOGO_BASE64`='%s',CRIADOEM=NOW() WHERE `ID`=%s";
     protected $sqlSelect = "SELECT * FROM `dialogotraducao` WHERE ARC='%s' AND MSBT='%s' AND POS='%s' ORDER BY  `dialogotraducao`.`ID` DESC";
-    protected $sqlSelectAMelhor = "SELECT * FROM `dialogotraducao` WHERE ARC='%s' AND MSBT='%s' AND POS='%s' ORDER BY `PONTOS`";
+    protected $sqlSelectAMelhor = "SELECT * FROM `dialogotraducao` WHERE ARC='%s' AND MSBT='%s' AND POS='%s' ORDER BY `ID`";
     protected $sqlDelete = "DELETE FROM `dialogotraducao` WHERE `ID`=%s";
 
     public function insert() {

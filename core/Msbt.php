@@ -107,7 +107,12 @@ class Msbt {
             $o->setNome($lista_nomes[$i]->name);
             $o->setDialogoBinario($lista_nomes[$i]->msg);
             
+            /* grava no banco */
             $o->insert();
+            
+            /*grava no arquivo*/
+//            $file = getDirTMP() . $lang . DIRECTORY_SEPARATOR . $arc . ".d" . DIRECTORY_SEPARATOR . $msbt . ".d" . DIRECTORY_SEPARATOR . $pos;
+//            gravarArquivo($file, $o->getDialogoBinario());
         }
 
     }

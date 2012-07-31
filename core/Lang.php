@@ -42,14 +42,14 @@ class Lang {
         //$americanas = array("eu_US", "es_US", "fr_US");
         return array(
             
-            //new Lang("en_GB"),
-            new Lang("en_US"),
-            //new Lang("es_ES"),
-            new Lang("es_US"),
-            //new Lang("fr_FR"),
-            new Lang("fr_US"),
-            //new Lang("it_IT"),
-            //new Lang("de_DE"),
+//            //new Lang("en_GB"),
+//            new Lang("en_US"),
+//            //new Lang("es_ES"),
+//            new Lang("es_US"),
+//            //new Lang("fr_FR"),
+//            new Lang("fr_US"),
+            new Lang("it_IT"),
+            new Lang("de_DE"),
             //new Lang("nl_NL"),
         );
     }

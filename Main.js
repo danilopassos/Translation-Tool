@@ -82,6 +82,101 @@ Ext.onReady(function() {
         addTab(index % 2);
     }
     
+    function addWindowDialogo(arc, msbt, pos, onde){
+        Ext.create('Ext.window.Window', {
+            title: 'dialogo: ' + arc + '/'+ msbt + '/' + pos,
+
+            //closeAction: 'hide',
+            autoScroll:true,
+            width: 700,
+            height: 400,
+            
+            
+            renderTo: onde,
+            layout: {
+                type:'vbox',
+                padding:'2',
+                align:'stretch'
+            },
+            defaults:{
+                margins:'2 2 2 2'
+            },
+            items:[
+            {
+                xtype:'panel',
+                title : 'Informações',
+                flex:1,
+                
+                minHeight: 100,
+                autoLoad:{
+                    url : 'info.php?arc=' + arc + 
+                    '&msbt=' + msbt + '&pos=' + pos
+                }
+            },{
+                xtype:'panel',
+                title : 'editar tradução',
+                flex:1,
+                
+                minHeight: 100,
+                autoLoad:{
+                    url : 'editor.php?arc=' + arc + 
+                    '&msbt=' + msbt + '&pos=' + pos + '&lang=en_US'
+                }
+            }
+            ],
+            
+            listeners: {
+                render: function(w, opt) {
+                    //                        alert("render");
+                    var langs = Array('en_US','es_US','fr_US','it_IT','de_DE' );
+
+                    Ext.each(langs, function(lang, index, arraylangs){
+
+                        var p = Ext.create('Ext.panel.Panel', {
+                            title: lang,
+                            collapsible: true,                           
+
+                            
+                            layout: {
+                                type:'hbox',
+                                padding:'0',
+                                align:'stretch'
+                            },
+                            items:[
+                            {
+                                xtype:'panel',
+                                title : 'TAG',
+                                
+                                flex:3,
+                                autoLoad:{
+                                    url : 'preview.php?arc=' + arc + 
+                                    '&msbt=' + msbt + '&pos=' + pos +'&lang=' + lang + '&modo=tag'
+                                }
+                            },{
+                                xtype:'panel',
+                                title : 'HTML',
+                                flex:3,
+                                
+                                autoLoad:{
+                                    url : 'preview.php?arc=' + arc + 
+                                    '&msbt=' + msbt + '&pos=' + pos + '&lang=' + lang
+                                }
+                            }
+                            ]
+                    
+                        });
+                            
+                        w.add(p);
+                            
+                    });
+                }
+            }
+
+        }).show();
+             
+    }
+    
+    
     function addTabDialogos(arc,msbt){
         ++index;
         tabs.add({
@@ -101,17 +196,16 @@ Ext.onReady(function() {
             items:[
             {
                 xtype:'treepanel',
-                title : 'lista de dialogos',
+                //title : 'lista de dialogos',
                 
                 store: Ext.create('Ext.data.TreeStore', {
                     proxy: {
                         type: 'ajax',
-                        url: 'get.php?quero=pos&msbt='+msbt
-
+                        url: 'get.php?quero=pos&msbt=' + msbt
                     }
                 }),
 
-                width: 100,
+                width: 80,
                 
                 useArrows:true,
                 autoScroll:true,
@@ -122,64 +216,17 @@ Ext.onReady(function() {
                 split: true,
                 listeners: {
                     itemclick: function(view, record, item, index, event) {
-
-
-
-
-
-Ext.create('Ext.window.Window', {
-                        title: 'Layout Window',
-
-                        closeAction: 'hide',
-                        width: 600,
-                        minWidth: 350,
-                        height: 350,
-                        renderTo: Ext.get('p' + msbt),
-                        layout: {
-                            type:'vbox',
-                            padding:'5',
-                            align:'stretch'
-                        },
-                        defaults:{margins:'0 0 5 0'},
-                        items:[
-                            {
-                                xtype:'panel',
-                                title : 'Editor',
-                                flex:1,
-                                autoLoad:{
-                                    url : 'preview.php?arc=' + arc + 
-                                        '&msbt=' + msbt + '&pos=' + record.get('id') +'&modo=tag'
-                                }
-                            },{
-                                xtype:'panel',
-                                title : 'Preview',
-                                flex:1,
-                                
-                                autoLoad:{
-                                    url : 'preview.php?arc=' + arc + 
-                                        '&msbt=' + msbt + '&pos=' + record.get('id')
-                                }
-                            }
-                        ]
-
-
-                    }).show();
-
-
-
-
-
-
-
+                        var pos = record.get('id');
+                        var onde = Ext.get('p' + msbt);
+                        addWindowDialogo(arc, msbt, pos, onde);
                     }
                 }
             },
                 
             {
                 xtype:'panel',
-                title : 'Preview',
                 id: "p" + msbt,
-                flex:1,
+                flex:1
                                 
             }
             ]
@@ -210,7 +257,6 @@ Ext.create('Ext.window.Window', {
         proxy: {
             type: 'ajax',
             url: 'get.php'
-        //url: 'ajax/get_file_tree[exemplo].js'
         }
     });
 

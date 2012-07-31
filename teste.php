@@ -17,19 +17,30 @@ require_once 'core/util.php';
 
 //echo ("<pre>");
 ////foreach (Lang::getLangs() as $lang)
-////foreach (ExtArc::getFileNames() as $arc) {
-////    foreach (ExtArc::getFileNamesInArc($arc) as $msbt) {
-////        foreach (ExtArc::getFileNamesInArcSubs( $msbt) as $pos) { 
-//
-////            echo "\n" . $arc ." - ". $msbt." - ". $pos." - ". $lang;
-////        }
-////    }
-////}
-//
-//$o = new Formatacao("0000");
-//$o->gerarTags()
+//foreach (ExtArc::getFileNames() as $arc) {
+//    foreach (ExtArc::getFileNamesInArc($arc) as $msbt) {
+//        foreach (ExtArc::getFileNamesInArcSubs( $msbt) as $pos) { 
+//            echo "\n<br>" . $arc ."/". $msbt."/". $pos;
+//        }
+//    }
+//}
 
-require_once 'ajax/get_file_tree.php';
+
+
+/*
+ * Extrai todos os textos de um idioma para html
+ */
+$lang = "en_US";
+foreach (ExtArc::getFileNames() as $arc) {
+    foreach (ExtArc::getFileNamesInArc($arc) as $msbt) {
+        foreach (ExtArc::getFileNamesInArcSubs( $msbt) as $pos) { 
+            echo "\n<br>" . $arc ."/". $msbt."/". $pos;
+            $o = new DialogoOriginal($arc, $msbt, $pos, $lang);
+            echo "\n<br>". $o->getDialogoHtml() . "<br>\n\n";
+        }
+    }
+}
+
 
 ?>
 

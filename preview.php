@@ -18,16 +18,16 @@ if ( isset($_GET["pos"]) ) {
     $arc = $_GET["arc"];
     $msbt = $_GET["msbt"];
     $pos = $_GET["pos"];
-    $lang = "en_US";
+    $lang = $_GET["lang"];
 
     $o = new DialogoOriginal($arc, $msbt, $pos, $lang);
     
     if($modo == "html"){
-        echo $o->getDialogoHtml();
+        echo "" . $o->getDialogoHtml();
     
     }
     if($modo == "tag"){
-        echo "<pre>" . $o->getDialogoUtf8() . "</pre>";
+        echo "<pre>" . $o->getDialogoUtf8() . "";
     }
     if($modo == "json"){
         echo json_encode($o);

@@ -10,7 +10,7 @@ require_once 'core/Extrair.php';
  * 
  * caso seja nessesario rodar isso  é recomendado  via terminal/console/cmd e não via http por causa do timerout do php  
  */ 
-die(utf8_decode("não precisa fazer isso agora"));
+//die(utf8_decode("não precisa fazer isso agora"));
 
 
 
@@ -21,13 +21,13 @@ die(utf8_decode("não precisa fazer isso agora"));
 /*
  * estrai para arquivos na pasta ISO/tmp é rapido cerca de 15 segundos 
  */
-#Extrair::extrairMsbt();
+Extrair::extrairMsbt();
 
 
 /*
  * estrai para o banco de dados é lento cerca de 20 MINUTOS 
  */
-#Extrair::extrairDialogos();
+Extrair::extrairDialogos();
 
 
 echo("\n\n");
