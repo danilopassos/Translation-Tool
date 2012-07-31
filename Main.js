@@ -12,8 +12,8 @@ Ext.require([
     'Ext.menu.Menu.*',
     'Ext.tab.Tab.*',
     'Ext.MessageBox*',
-    'Ext.TaskManager.*',
-    'Ext.ComponentQuery.*',
+    //    'Ext.TaskManager.*',
+    //    'Ext.ComponentQuery.*',
     'Ext.tab.*',
     'Ext.ux.TabCloseMenu'
     ]);
@@ -34,12 +34,12 @@ Ext.onReady(function() {
             autoScroll: true,
             bodyPadding: 0
         },
-        items: [{
-            title: 'Tab 1',
-            iconCls: 'tabs',
-            html: 'Tab Body<br/><br/>',
-            closable: true
-        }],
+        //        items: [{
+        //            title: 'Tab 1',
+        //            iconCls: 'tabs',
+        //            html: 'Tab Body<br/><br/>',
+        //            closable: true
+        //        }],
         plugins: Ext.create('Ext.ux.TabCloseMenu', {
             extraItemsTail: [
             '-',
@@ -78,9 +78,9 @@ Ext.onReady(function() {
     // tab generation code
     var index = 0;
 
-    while(index < 3) {
-        addTab(index % 2);
-    }
+    //    while(index < 3) {
+    //        addTab(index % 2);
+    //    }
     
     function addWindowDialogo(arc, msbt, pos, onde){
         Ext.create('Ext.window.Window', {
@@ -88,8 +88,8 @@ Ext.onReady(function() {
 
             //closeAction: 'hide',
             autoScroll:true,
-            width: 700,
-            height: 400,
+            width: '80%',
+            height: '95%',
             
             
             renderTo: onde,
@@ -101,42 +101,55 @@ Ext.onReady(function() {
             defaults:{
                 margins:'2 2 2 2'
             },
+            
             items:[
             {
-                xtype:'panel',
-                title : 'Informações',
-                flex:1,
+                xtype:'tabpanel',
+                //                title : 'editar tradução',
+                id: "tabOriginais" + msbt + pos,
                 
-                minHeight: 100,
-                autoLoad:{
-                    url : 'info.php?arc=' + arc + 
-                    '&msbt=' + msbt + '&pos=' + pos
-                }
-            },{
-                xtype:'panel',
-                title : 'editar tradução',
-                flex:1,
+                items:[
+                {
+                    xtype:'panel',
+                    title : 'Informações',
+                    flex:1,
                 
-                minHeight: 100,
-                autoLoad:{
-                    url : 'editor.php?arc=' + arc + 
-                    '&msbt=' + msbt + '&pos=' + pos + '&lang=en_US'
+                    minHeight: 100,
+                    autoLoad:{
+                        url : 'info.php?arc=' + arc + 
+                        '&msbt=' + msbt + '&pos=' + pos
+                    }
+                },{
+                    xtype:'panel',
+                    title : 'editar tradução',
+                    flex:1,
+                
+                    minHeight: 100,
+                    autoLoad:{
+                        url : 'editor.php?arc=' + arc + 
+                        '&msbt=' + msbt + '&pos=' + pos + '&lang=en_US'
+                    }
                 }
+
+                ]
+                
             }
-            ],
+                
+            ]
+            
+            ,
             
             listeners: {
                 render: function(w, opt) {
                     //                        alert("render");
-                    var langs = Array('en_US','es_US','fr_US','it_IT','de_DE' );
+                    var langs = Array('pt_BR','en_US','es_US','fr_US','it_IT','de_DE' );
 
                     Ext.each(langs, function(lang, index, arraylangs){
 
                         var p = Ext.create('Ext.panel.Panel', {
-                            title: lang,
+                            title: '<img src=\"img/'+ lang + '.png\">' +  lang,
                             collapsible: true,                           
-
-                            
+                                                        
                             layout: {
                                 type:'hbox',
                                 padding:'0',
@@ -146,8 +159,8 @@ Ext.onReady(function() {
                             {
                                 xtype:'panel',
                                 title : 'TAG',
-                                
-                                flex:3,
+                                width: '65%',
+//                                flex:3,
                                 autoLoad:{
                                     url : 'preview.php?arc=' + arc + 
                                     '&msbt=' + msbt + '&pos=' + pos +'&lang=' + lang + '&modo=tag'
@@ -155,8 +168,9 @@ Ext.onReady(function() {
                             },{
                                 xtype:'panel',
                                 title : 'HTML',
-                                flex:3,
+//                                flex:3,
                                 
+                                width: '35%',
                                 autoLoad:{
                                     url : 'preview.php?arc=' + arc + 
                                     '&msbt=' + msbt + '&pos=' + pos + '&lang=' + lang
@@ -165,7 +179,7 @@ Ext.onReady(function() {
                             ]
                     
                         });
-                            
+
                         w.add(p);
                             
                     });

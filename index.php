@@ -14,7 +14,13 @@
 		<!-- ENDLIBS --> 
 		
 		<script src="Main.js?<?php echo filemtime('Main.js'); ?>"></script>
-	
+                
+                <style>
+                    .htmlpreview:hover{
+                        background-color: black;
+                        color: white;
+                    }
+                </style>
 	</head>
 
 	<body onload="">

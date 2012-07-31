@@ -23,14 +23,11 @@ if ( isset($_GET["pos"]) ) {
     $o = new DialogoOriginal($arc, $msbt, $pos, $lang);
     
     if($modo == "html"){
-        echo "" . $o->getDialogoHtml();
+        echo "<div class=\"htmlpreview\">" . $o->getDialogoHtml() . "</div>";
     
     }
     if($modo == "tag"){
-        echo "<pre>" . $o->getDialogoUtf8() . "";
-    }
-    if($modo == "json"){
-        echo json_encode($o);
+        echo "<pre>" . $o->getDialogoUtf8() . "</pre>";
     }
     
 }
