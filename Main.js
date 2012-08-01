@@ -83,14 +83,14 @@ Ext.onReady(function() {
     //    }
     
     
-    function editar(arc, msbt, pos){
+    function editar(arc, msbt, pos, onde){
             var lang = "pt_BR";
     
             var form = Ext.create('Ext.form.Panel', {
                 plain: true,
                 border: 0,
-                bodyPadding: 5,
-                url: 'save-form.php',
+                bodyPadding: 0,
+
 
                 fieldDefaults: {
                     labelWidth: 55,
@@ -99,7 +99,10 @@ Ext.onReady(function() {
 
                 layout: {
                     type: 'hbox',
-                    align: 'stretch'  // Child items are stretched to full width
+                    align: 'stretch',  // Child items are stretched to full width
+                                
+                                padding:'0'
+                                
                 },
 
                 items: [{
@@ -109,10 +112,11 @@ Ext.onReady(function() {
             
                         hideLabel: true,
             
-                        name: 'msg',
+                        
                         style: 'margin:0', // Remove default margin
                         flex: 1,  // Take up all *remaining* vertical space
-                        
+
+                        title: 'TAG',
                         listeners: {
                             render : function( este, eOpts ){
                                 Ext.Ajax.request({
@@ -131,29 +135,26 @@ Ext.onReady(function() {
                                         este.setValue(response.responseText);
                                     }
                                 });
-                            
                             }
                         }
-                          
                     },{
                         xtype: 'panel',
                         id: 'preview' + arc + msbt + pos,
-                        flex:1
-            
+                        flex: 1  // Take up all *remaining* vertical space
                     }
     
                 ]
             });
 
-            var win = Ext.create('Ext.window.Window', {
-                title: 'Compose message',
-                collapsible: true,
-                animCollapse: true,
-                maximizable: true,
-                width: 750,
-                height: 500,
-                minWidth: 300,
-                minHeight: 200,
+            var win = Ext.create('Ext.panel.Panel', {
+                title: 'Editor',
+//                collapsible: true,
+//                animCollapse: true,
+//                maximizable: true,
+//                width: 750,
+//                height: 500,
+//                minWidth: 300,
+//                minHeight: 200,
                 layout: 'fit',
                 items: form,
                 dockedItems: [{
@@ -198,7 +199,7 @@ Ext.onReady(function() {
                                         Ext.Ajax.request({
                                             url: 'preview.php',
                                             method : 'GET',
-                                            params: { tag : tag },
+                                            params: {tag : tag},
                                 
                                             success: function(response){
                                                 Ext.getCmp('preview' + arc + msbt + pos).update(response.responseText);
@@ -209,10 +210,39 @@ Ext.onReady(function() {
                 
                                 }
                 
+                            },{
+                                minWidth: 80,
+                                text: 'Marcar como revisado',
+                
+                                listeners: {
+                                    click: function( bt, e, eOpts ){
+                                        
+                                        Ext.Ajax.request({
+                                            url: 'gravar.php',
+                                            method : 'GET',
+                                            params: {
+                                                a: 'r',
+                                                arc : arc,
+                                                msbt : msbt,
+                                                pos : pos,
+                                                lang: 'pt_BR'
+                                                
+                                            },
+                                
+                                            success: function(response){
+                                                alert(response.responseText);
+                                            }
+
+                                        })
+                                    }
+                
+                                }
+                
                             }]
                     }]
             });
-            win.show();
+//            win.show();
+onde.add(win);
         }
     
     function addWindowDialogo(arc, msbt, pos, onde){
@@ -221,14 +251,14 @@ Ext.onReady(function() {
 
             //closeAction: 'hide',
             autoScroll:true,
-            collapsible: true,
-            animCollapse: true,
+//            collapsible: true,
+//            animCollapse: true,
             maximizable: true,
             width: '80%',
-            height: '95%',
+            height: '80%',
             
             
-            renderTo: onde,
+//            renderTo: onde,
             layout: {
                 type:'vbox',
                 padding:'2',
@@ -244,15 +274,15 @@ Ext.onReady(function() {
                 id: "tabOriginais" + msbt + pos,
                 
                 items:[{
-                    xtype:'panel',
-                    title : 'Informações',
-                    flex:1,
-                
-                    minHeight: 100,
-                    autoLoad:{
-                        url : 'info.php?arc=' + arc + 
-                        '&msbt=' + msbt + '&pos=' + pos
-                    }
+//                    xtype:'panel',
+//                    title : 'Informações',
+//                    flex:1,
+//                
+//                    minHeight: 30,
+//                    autoLoad:{
+//                        url : 'info.php?arc=' + arc + 
+//                        '&msbt=' + msbt + '&pos=' + pos
+//                    }
                 }
                 ]
                 
@@ -260,7 +290,8 @@ Ext.onReady(function() {
             
             listeners: {
                 render: function(w, opt) {
-                    //                        alert("render");
+                    
+                    editar(arc, msbt, pos, w);
                     var langs = Array('pt_BR','en_US','es_US','fr_US','it_IT','de_DE' );
 
                     Ext.each(langs, function(lang, index, arraylangs){
@@ -277,8 +308,8 @@ Ext.onReady(function() {
                             items:[
                             {
                                 xtype:'panel',
-                                title : 'TAG',
-                                width: '65%',
+//                                title : 'TAG',
+                                width: '50%',
                                 //                                flex:3,
                                 autoLoad:{
                                     url : 'preview.php?arc=' + arc + 
@@ -286,10 +317,10 @@ Ext.onReady(function() {
                                 }
                             },{
                                 xtype:'panel',
-                                title : 'HTML',
+//                                title : 'HTML',
                                 //                                flex:3,
                                 
-                                width: '35%',
+                                width: '50%',
                                 autoLoad:{
                                     url : 'preview.php?arc=' + arc + 
                                     '&msbt=' + msbt + '&pos=' + pos + '&lang=' + lang
@@ -350,7 +381,6 @@ Ext.onReady(function() {
                         var pos = record.get('id');
                         var onde = Ext.get('p' + msbt);
                         addWindowDialogo(arc, msbt, pos, onde);
-                        editar(arc, msbt, pos);
                     }
                 }
             },

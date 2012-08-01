@@ -6,7 +6,7 @@
 		<title>Tadução Z:SS</title>
 		
 		<!-- CSS -->
-		<link rel="stylesheet" type="text/css" href="http://cdn.sencha.io/ext-4.1.1-gpl/resources/css/ext-all-gray.css" />
+		<link rel="stylesheet" type="text/css" href="http://cdn.sencha.io/ext-4.1.1-gpl/resources/css/ext-all.css" />
 		<!-- ENDCSS -->
 
 		<!-- LIBS --> 
@@ -21,6 +21,9 @@
                         color: white;
                     }
                 </style>
+                
+                <script>
+                </script>
 	</head>
 
 	<body onload="">

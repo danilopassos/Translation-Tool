@@ -22,7 +22,7 @@ if ( isset($_GET["pos"]) ) {
     $o = new Dialogo($arc, $msbt, $pos, $lang);
     
     if($modo == "html"){
-        echo "<div class=\"htmlpreview\">" . $o->getDialogoHtml() . "</div>";
+        echo $o->getDialogoHtml();
     }
     
     if($modo == "tag"){

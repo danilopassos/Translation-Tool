@@ -2,10 +2,14 @@
 
 class Usuario{
     
-    public static function getName(){
-        return "adri3d@gmail.com";
+    public static function getId(){
+        return 9884;
     }
-    public static function isAdmin(){
+
+    public static function getName(){
+        return "adri3d";
+    }
+    public static function isRevisor(){
         return false;
     }
 }

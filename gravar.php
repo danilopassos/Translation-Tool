@@ -28,20 +28,20 @@ if($a == "u"){
     echo "ok";
 }
 
-//if($a == "i"){
-//    $utf8 = $_GET["utf8"];
-//    
-//    $d = new DialogoTraducao();
-//    $d->setArc($arc);
-//    $d->setMsbt($msbt);
-//    $d->setPosicao($pos);
-//    $d->setDialogoUtf8($utf8);
-//    $d->setCriador($user);
-//    
-//    $d->insert();
-//    
-//    echo "ok";
-//}
+//revisao
+if($a == "r"){
+    $arc = $_GET["arc"];
+    $msbt = $_GET["msbt"];
+    $pos = $_GET["pos"];
+    $lang = $_GET["lang"];
+
+    $o = new Dialogo($arc, $msbt, $pos, $lang);
+    
+    $o->marcarRevisado();
+    
+    echo "marcado como revisado";
+}
+
 if($a == "d"){
     $id = $_GET["id"];   
     $d = new DialogoTraducao();

@@ -1,6 +1,7 @@
 <?php
 
 require_once 'model/mDialogo.php';
+require_once 'core/Usuario.php';
 
 class aDialogo extends mDialogo {
 
@@ -9,14 +10,21 @@ class aDialogo extends mDialogo {
     protected $sqlSelect = "SELECT * FROM `dialogo` WHERE ARC='%s' AND MSBT='%s' AND POS='%s' AND LANG='%s'";
     #protected $sqlDelete = "";
     protected $sqlUpdateDialogo = "UPDATE `dialogo` SET `DIALOGO_BASE64`='%s' WHERE `ID`=%s";
-
-
+    private $sqlHistorico = "INSERT INTO `dialogohistorico`(`IDDIALOGO`, `QUANDO`, `IDUSUARIOALTEROU`, `DIALOGOANTIGO`) VALUES ( %s, NOW() , %s , '%s' )";
+    private $sqlRevisao = "INSERT INTO `dialogorevisadopor`(`IDDIALOGO`, `IDUSUARIO`, `QUANDO`) VALUES ( %s, %s, NOW() )";
 
     public function updateDialogo(){
         $sql = sprintf($this->sqlUpdateDialogo, $this->getDialogoBase64(), $this->getId());
         $this->RunQuery($sql);
+        
+        $sqlH = sprintf($this->sqlHistorico,$this->getId(), Usuario::getId() ,$this->getDialogoBase64() );
+        $this->RunQuery($sqlH);
     }
-    
+    public function marcarRevisado(){
+        $sql = sprintf($this->sqlRevisao, $this->getId(), Usuario::getId() );
+        $this->RunQuery($sql);
+    }
+
     public function insert() {
         $sql = sprintf($this->sqlInsert, $this->getPosicao(), $this->getArc(), $this->getMsbt(), $this->getNome(), $this->getDialogoBase64(), $this->getLang());
 
