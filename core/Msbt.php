@@ -50,7 +50,7 @@ class Msbt {
             $name = substr($fileBin, $offset + 1, $comprimento_string);
             $pos = hexDec(bin2Hex(substr($fileBin, $offset + $comprimento_string + 1, 4)));
 
-            $lista_nomes[$i] = new Msbt($name, $pos);
+            $lista_nomes[$pos] = new Msbt($name, $pos);
             $i++;
 
             $offset = $offset + 1 + $comprimento_string + 4;
@@ -108,11 +108,19 @@ class Msbt {
             $o->setDialogoBinario($lista_nomes[$i]->msg);
             
             /* grava no banco */
-            $o->insert();
+//            $o->insert();
             
             /*grava no arquivo*/
 //            $file = getDirTMP() . $lang . DIRECTORY_SEPARATOR . $arc . ".d" . DIRECTORY_SEPARATOR . $msbt . ".d" . DIRECTORY_SEPARATOR . $pos;
 //            gravarArquivo($file, $o->getDialogoBinario());
+            
+            //codigo para corigir os nomes no bando do primeiro dump
+            $sql = "UPDATE `dialogo` SET `NOME`='%s' WHERE `ARC`='%s' AND `MSBT`='%s' AND `POS`='%s'";
+            $sql = sprintf($sql, $lista_nomes[$i]->name,$arc, $msbt, $pos );
+            $ob = new Dialogo();
+            $ob->runQuery($sql);
+            
+            
         }
 
     }

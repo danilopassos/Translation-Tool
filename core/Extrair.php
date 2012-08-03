@@ -27,7 +27,6 @@ class Extrair {
     }
 
     public static function extrairDialogos() {
-
         foreach (Lang::getLangs() as $lang) {
             foreach (ExtArc::getFileNames() as $arc) {
                 foreach (ExtArc::getFileNamesInArc($arc) as $msbt) {

@@ -49,6 +49,38 @@ class aDialogo extends mDialogo {
             $this->setLang($row["LANG"]);
         }
     }
+    public static function getArray($msbt, $lang) {
+    $sql = sprintf("SELECT * FROM `dialogo` WHERE MSBT='%s' AND LANG='%s'", $msbt, $lang);
+    
+    $st = new aDialogo();
+    $r = $st->runSelect($sql);
+    $ret = array();
+    foreach ($r as $row) {
+        $o = new aDialogo();
+        $o->setId($row["ID"]);
+        $o->setArc($row["ARC"]);
+        $o->setMsbt($row["MSBT"]);
+        $o->setPosicao($row["POS"]);
+        $o->setNome($row["NOME"]);
+        $o->setDialogoBase64($row["DIALOGO_BASE64"]);
+        $o->setLang($row["LANG"]);
+        array_push($ret, $o);
+    }
+    return $ret;
+}
+    
+       
+    public function isRevisado() {
+        $sql = sprintf("SELECT * FROM `dialogorevisadopor` WHERE `IDDIALOGO`='%s'", $this->getId());
+
+        $r = $this->runSelect($sql);
+        $ret = false;
+        foreach ($r as $row) {
+            $ret = true;
+        }
+        
+        return $ret;
+    }
 
     #public function delete(){
     #    

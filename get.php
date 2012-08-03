@@ -33,13 +33,22 @@ if($quero == ""){
 
 if($quero == "pos"){
     $r =  array();
-    foreach (ExtArc::getFileNamesInArcSubs($_GET["msbt"]) as $pos){
-        $p = array();
-        $p['id'] = $pos;
-        $p['text'] = $pos;
-        $p["leaf"] = true;
-        
-        array_push($r, $p);
+    foreach (Dialogo::getArray($_GET["msbt"], "pt_BR") as $d){
+        if(!$d->isDialogoVazil()){
+            $p = array();
+            $p['id'] = $d->getPosicao();
+            $p['POS'] = $d->getPosicao();
+            $p['Nome'] = $d->getNome();
+            if($d->isRevisado()){
+                $p["Estado"] = 'ok';
+            }else{
+                $p["Estado"] = 'no_ok';
+            }
+            $p["por"] = Usuario::getName();
+            $p["em"] = '' ;
+
+            array_push($r, $p);
+        }
     }
 
     echo json_encode($r);

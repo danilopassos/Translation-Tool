@@ -38,6 +38,11 @@ abstract class mDialogo extends dbConnection {
         return Lang::getNameLang($this->lang);
     }
     
+    public function isDialogoVazil(){
+        return strlen($this->getDialogoBinario()) <= 2;
+    }
+
+
     public function getPathTmpFile() {
         return getDirTMP() .
                 $this->lang . DIRECTORY_SEPARATOR .
@@ -140,7 +145,7 @@ abstract class mDialogo extends dbConnection {
         $linhas = explode("\n", $html);
         for($i = 0; $i < count($linhas); $i++ ){
             if( mb_strlen(strip_tags($linhas[$i]),"utf8") > 40){
-                $alertas .= "<br><p style=\" background-color: red \"> a Linha " . ($i + 1) . " passou de 40 caracteres</p>";
+                $alertas .= "<p style=\" background-color: red \"> a Linha " . ($i + 1) . " passou de 40 caracteres</p>";
             }
         }
         
@@ -201,6 +206,9 @@ abstract class mDialogo extends dbConnection {
         }
     }
     public static function tagToHex($tag){
+        //remove possiveis espaões enter []
+        $tag = str_replace(" ", "", $tag);
+        
         if(substr($tag, 0, 2) == "0x"){
             return substr($tag, 2);
         }else{

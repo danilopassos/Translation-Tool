@@ -12,7 +12,8 @@
 		<!-- LIBS --> 
 		<script type="text/javascript" charset="utf-8" src="http://cdn.sencha.io/ext-4.1.1-gpl/ext-all.js"></script>
 		<!-- ENDLIBS --> 
-		
+		<script src="windowDialogo.js?<?php echo filemtime('windowDialogo.js'); ?>"></script>
+                <script src="gridDialogos.js?<?php echo filemtime('gridDialogos.js'); ?>"></script>
 		<script src="Main.js?<?php echo filemtime('Main.js'); ?>"></script>
                 
                 <style>

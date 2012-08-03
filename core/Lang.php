@@ -15,6 +15,10 @@ class Lang {
     }
 
     public function getRegion() {
+        if($this->value == "ja_JP"){
+            return "JP";
+        }
+        
         if ($this->value == "pt_BR") {
             return "BR";
         } else {
@@ -48,9 +52,10 @@ class Lang {
 //            new Lang("es_US"),
 //            //new Lang("fr_FR"),
 //            new Lang("fr_US"),
-            new Lang("it_IT"),
-            new Lang("de_DE"),
+//            new Lang("it_IT"),
+//            new Lang("de_DE"),
             //new Lang("nl_NL"),
+            new Lang("ja_JP")
         );
     }
 
