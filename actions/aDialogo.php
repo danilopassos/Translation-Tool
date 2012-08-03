@@ -1,11 +1,14 @@
 <?php
 
+// current
+
+
 require_once 'model/mDialogo.php';
 require_once 'core/Usuario.php';
 
 class aDialogo extends mDialogo {
 
-    protected $sqlInsert = "INSERT INTO `dialogo`(`POS`, `ARC`, `MSBT`, `NOME`, `DIALOGO_BASE64`, `LANG`) VALUES ('%s' ,'%s' ,'%s' ,'%s' ,'%s' ,'%s' )";
+    protected $sqlInsert = "INSERT INTO dialogo(`POS`, `ARC`, `MSBT`, `NOME`, `DIALOGO_BASE64`, `LANG`) VALUES ('%s' ,'%s' ,'%s' ,'%s' ,'%s' ,'%s' )";
     #protected $sqlUpdate = "";
     protected $sqlSelect = "SELECT * FROM `dialogo` WHERE ARC='%s' AND MSBT='%s' AND POS='%s' AND LANG='%s'";
     #protected $sqlDelete = "";
