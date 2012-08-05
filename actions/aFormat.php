@@ -1,8 +1,8 @@
 <?php
 
-require_once 'model/mFormatacao.php';
+require_once 'model/mFormat.php';
 
-class aFormatacao extends mFormatacao {
+class aFormat extends mFormat{
 
     protected $sqlInsert = "INSERT INTO `formatacao`(`HEX`, `TAG`, `HTML`) VALUES ( '%s',NULL,NULL)";
     protected $sqlSelect = "SELECT * FROM `formatacao` WHERE HEX='%s'";

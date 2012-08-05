@@ -1,5 +1,5 @@
 <?php
-require_once 'core/Dialogo.php';
+require_once 'core/Dialog.php';
 /*
  * valores para "a"
  * i - inserte, salvar tradução
@@ -17,37 +17,31 @@ if (isset($_GET["a"])){
 
 $arc = $_GET["arc"]; 
 $msbt = $_GET["msbt"]; 
-$pos = $_GET["pos"];
+$id = $_GET["id"];
 
 
 if($a == "u"){
     $utf8 = $_GET["utf8"];
-    $d = new Dialogo($arc, $msbt , $pos , "pt_BR");
-    $d->setDialogoUtf8($utf8);
-    $d->updateDialogo();
+    $d = new Dialog();
+    $d->setDialogId($id);
+    $d->setDialogTag($utf8);
+    $d->updateDialog();
     echo "ok";
 }
 
-//revisao
-if($a == "r"){
-    $arc = $_GET["arc"];
-    $msbt = $_GET["msbt"];
-    $pos = $_GET["pos"];
-    $lang = $_GET["lang"];
 
-    $o = new Dialogo($arc, $msbt, $pos, $lang);
-    
-    $o->marcarRevisado();
-    
-    echo "marcado como revisado";
+if($a == "Approved"){
+    $d = new Dialog();
+    $d->setDialogId($id);
+    $d->updateDialogApproved();
+    echo "Approved";
 }
 
-if($a == "d"){
-    $id = $_GET["id"];   
-    $d = new DialogoTraducao();
-    $d->setId($id);
-    $d->delete();
-    echo "ok";
+if($a == "Rejected"){
+    $d = new Dialog();
+    $d->setDialogId($id);  
+    $d->updateDialogRejected();
+    echo "Rejected";
 }
 
 ?>

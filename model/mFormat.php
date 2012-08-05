@@ -2,7 +2,7 @@
 require_once 'db/dbConnection.php';
 require_once 'core/util.php';
 
-abstract class mFormatacao extends dbConnection {
+abstract class mFormat extends dbConnection {
     private $hex;
     private $tag;
     private $html;

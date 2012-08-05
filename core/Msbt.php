@@ -1,16 +1,10 @@
 <?php
 
-/*
- * Classe destinada a manipulação dos arquivos *.msbt 
- * contidos dentro de arquivos *.arc 
- * 
- */
-
 require_once 'core/util.php';
-require_once 'core/Dialogo.php';
+require_once 'core/Dialog.php';
 
 class Msbt {
-
+    static $cont = 0;
     var $name;
     var $pos;
     var $msg;
@@ -33,7 +27,11 @@ class Msbt {
     }
 
     public static function rip($lang,$arc,$msbt) {
-
+        
+        if($msbt == "001-Action.msbt"){
+            self::$cont = 0;
+        }
+        
         $file_msbt = getDirTMP() . $lang . DIRECTORY_SEPARATOR . "$arc.d" . DIRECTORY_SEPARATOR . $msbt;
 
         $handle = fopen($file_msbt, "r");
@@ -103,23 +101,24 @@ class Msbt {
                 $pos = "0" . $pos;
             }
 
-            $o = new Dialogo($arc, $msbt, $pos, $lang, false);
-            $o->setNome($lista_nomes[$i]->name);
-            $o->setDialogoBinario($lista_nomes[$i]->msg);
+//            $o = new Dialog();
+//            $o->setArc($arc);
+//            $o->setMsbt($msbt);
+//            $o->setPos($pos);
+//            $o->setLang($lang);
+//            $o->setName($lista_nomes[$i]->name);
+//            $o->setDialogBin($lista_nomes[$i]->msg);
+//            
+//            self::$cont++;
+//            echo self::$cont . "\n";
+//            $sql = sprintf("INSERT INTO `tt_dialog_lang`(`dialog_id`, `lang_id`, `dialog_status_id`, `dialog`, `version`  ) VALUES ( %s, 7, 1 , '%s' , '1.0')",self::$cont, mysql_real_escape_string($o->getDialogTagHex()) ) ;
+//            $o->runQuery($sql);
             
-            /* grava no banco */
-//            $o->insert();
+
             
             /*grava no arquivo*/
 //            $file = getDirTMP() . $lang . DIRECTORY_SEPARATOR . $arc . ".d" . DIRECTORY_SEPARATOR . $msbt . ".d" . DIRECTORY_SEPARATOR . $pos;
 //            gravarArquivo($file, $o->getDialogoBinario());
-            
-            //codigo para corigir os nomes no bando do primeiro dump
-            $sql = "UPDATE `dialogo` SET `NOME`='%s' WHERE `ARC`='%s' AND `MSBT`='%s' AND `POS`='%s'";
-            $sql = sprintf($sql, $lista_nomes[$i]->name,$arc, $msbt, $pos );
-            $ob = new Dialogo();
-            $ob->runQuery($sql);
-            
             
         }
 
@@ -192,16 +191,16 @@ class Msbt {
 
         $inicio = substr($fileBin, 0, $offset);
 
-        $nomes = ExtArc::getFileNamesInArcSubs($msbt);
-        $offsets = myInt2bin(count($nomes));
-        $offsetMSG = 4 + (count($nomes) * 4);
+        $fileNames = Arc::getFileNamesInArcSubs($msbt);
+        $offsets = myInt2bin(count($fileNames));
+        $offsetMSG = 4 + (count($fileNames) * 4);
 
         $mensages = "";
-        foreach ($nomes as $nome) {
-            if (file_exists($folderPt_BR . $nome)) {
-                $handle = fopen($folderPt_BR . $nome, "r");
+        foreach ($fileNames as $name) {
+            if (file_exists($folderPt_BR . $name)) {
+                $handle = fopen($folderPt_BR . $name, "r");
             } else {
-                $handle = fopen($folderBase . $nome, "r");
+                $handle = fopen($folderBase . $name, "r");
             }
             $msg = fread($handle, filesize($fileBase));
 

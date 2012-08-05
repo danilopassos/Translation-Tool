@@ -28,9 +28,9 @@ class Extrair {
 
     public static function extrairDialogos() {
         foreach (Lang::getLangs() as $lang) {
-            foreach (ExtArc::getFileNames() as $arc) {
-                foreach (ExtArc::getFileNamesInArc($arc) as $msbt) {
-                    printLog("extraindo dialogos de: " . $lang . "/" . $arc . "/" . $msbt);
+            foreach (Arc::getFileNames() as $arc) {
+                foreach (Arc::getFileNamesInArc($arc) as $msbt) {
+                    printLog("extracting the dialogues: " . $lang . "/" . $arc . "/" . $msbt);
                     Msbt::rip($lang, $arc, $msbt);
                 }
             }

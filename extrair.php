@@ -21,7 +21,7 @@ require_once 'core/Extrair.php';
 /*
  * estrai para arquivos na pasta ISO/tmp é rapido cerca de 15 segundos 
  */
-Extrair::extrairMsbt();
+#Extrair::extrairMsbt();
 
 
 /*

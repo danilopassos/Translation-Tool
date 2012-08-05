@@ -8,7 +8,7 @@ require_once 'core/util.php';
 require_once 'core/Msbt.php';
 require_once 'core/Lang.php';
 
-class ExtArc {
+class Arc {
 
     private static $files = array(
         "0-Common.arc", 
@@ -20,7 +20,7 @@ class ExtArc {
         );
 
     public static function getFileNames() {
-        return ExtArc::$files;
+        return self::$files;
     }
 
     public static function getFileNamesInArc($arc) {

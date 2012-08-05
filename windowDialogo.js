@@ -1,4 +1,4 @@
-function editar(arc, msbt, pos, onde){
+function editar(arc, msbt, id, onde){
     var lang = "pt_BR";
     
     var form = Ext.create('Ext.form.Panel', {
@@ -26,7 +26,7 @@ function editar(arc, msbt, pos, onde){
             items: [
             {
                 xtype: 'textarea',
-                id : 'editorTA' + arc + msbt + pos,
+                id : 'editorTA' + arc + msbt + id,
                 fieldLabel: 'Dialogo modo TAG',
                 
                 hideLabel: true,
@@ -44,7 +44,7 @@ function editar(arc, msbt, pos, onde){
                             params: {
                                 arc: arc,
                                 msbt: msbt,
-                                pos : pos,
+                                id : id,
                                 lang : lang,
                                 modo: 'tag',
                                 nopre: ''
@@ -62,7 +62,7 @@ function editar(arc, msbt, pos, onde){
         ,
         {
             xtype: 'panel',
-            id: 'preview' + arc + msbt + pos,
+            id: 'preview' + arc + msbt + id,
             width: '40%'
         }
     
@@ -70,7 +70,7 @@ function editar(arc, msbt, pos, onde){
     });
 
     var painelEditor = Ext.create('Ext.panel.Panel', {
-        title: '<img src=\"img/'+ lang + '.png\">' +  lang + "\tEditor:",
+        title: '<img src=\"img/'+ lang + '.png\">&nbsp;' +  lang ,
         //                collapsible: true,
         //                animCollapse: true,
         //                maximizable: true,
@@ -93,7 +93,7 @@ function editar(arc, msbt, pos, onde){
                 
                 listeners: {
                     click: function( bt, e, eOpts ){
-                        var tag = Ext.getCmp('editorTA' + arc + msbt + pos).getValue();
+                        var tag = Ext.getCmp('editorTA' + arc + msbt + id).getValue();
                         Ext.Ajax.request({
                             url: 'gravar.php',
                             method : 'GET',
@@ -101,7 +101,7 @@ function editar(arc, msbt, pos, onde){
                                 a : 'u',
                                 arc : arc,
                                 msbt : msbt,
-                                pos : pos,
+                                id : id,
                                 utf8 : tag 
                             },
                                 
@@ -118,7 +118,7 @@ function editar(arc, msbt, pos, onde){
                 
                 listeners: {
                     click: function( bt, e, eOpts ){
-                        var tag = Ext.getCmp('editorTA' + arc + msbt + pos).getValue();
+                        var tag = Ext.getCmp('editorTA' + arc + msbt + id).getValue();
                         Ext.Ajax.request({
                             url: 'preview.php',
                             method : 'GET',
@@ -127,7 +127,7 @@ function editar(arc, msbt, pos, onde){
                             },
                                 
                             success: function(response){
-                                Ext.getCmp('preview' + arc + msbt + pos).update(response.responseText);
+                                Ext.getCmp('preview' + arc + msbt + id).update(response.responseText);
                             }
 
                         })
@@ -137,8 +137,8 @@ function editar(arc, msbt, pos, onde){
                 
             },{
                 minWidth: 80,
-                text: 'Marcar como revisado',
-                id: 'btPreview' + msbt + pos,
+                text: 'set Approved',
+                id: 'btApprov' + msbt + id,
                 listeners: {
                     click: function( bt, e, eOpts ){
                                         
@@ -146,10 +146,10 @@ function editar(arc, msbt, pos, onde){
                             url: 'gravar.php',
                             method : 'GET',
                             params: {
-                                a: 'r',
+                                a: 'Approved',
                                 arc : arc,
                                 msbt : msbt,
-                                pos : pos,
+                                id : id,
                                 lang: 'pt_BR'
                                                 
                             },
@@ -163,7 +163,42 @@ function editar(arc, msbt, pos, onde){
                 
                 }
                 
-            }]
+            },
+            {
+                    minWidth: 80,
+                    text: 'set Rejected',
+                    id: 'btReject' + msbt + id,
+                    listeners: {
+                        click: function( bt, e, eOpts ){
+
+                            Ext.Ajax.request({
+                                url: 'gravar.php',
+                                method : 'GET',
+                                params: {
+                                    a: 'Rejected',
+                                    arc : arc,
+                                    msbt : msbt,
+                                    id : id,
+                                    lang: 'pt_BR'
+
+                                },
+
+                                success: function(response){
+                                    alert(response.responseText);
+                                }
+
+                            })
+                        }
+
+                    }
+
+                }
+    
+
+]
+
+
+
         }]
     });
 
@@ -171,9 +206,9 @@ function editar(arc, msbt, pos, onde){
 
 }
     
-function criarWindowDialogo(arc, msbt, pos){
+function criarWindowDialogo(arc, msbt, id){
     Ext.create('Ext.window.Window', {
-        title: 'dialogo: ' + arc + '/'+ msbt + '/' + pos,
+        title: 'dialogo: ' + arc + '/'+ msbt + '/' + id,
 
         //closeAction: 'hide',
         autoScroll:true,
@@ -199,14 +234,14 @@ function criarWindowDialogo(arc, msbt, pos){
         listeners: {
             render: function(w, opt) {
                     
-                editar(arc, msbt, pos, w);
-                var langs = Array('en_US','es_US','fr_US','it_IT','de_DE', 'ja_JP' );
-                //                      var langs = Array('en_US','es_US', 'ja_JP' );
+                editar(arc, msbt, id, w);
+//                var langs = Array('en_US','es_US','fr_US','it_IT','de_DE', 'ja_JP' );
+                                      var langs = Array('en_US','es_US' );
                 Ext.each(langs, function(lang, index, arraylangs){
 
                     var p = Ext.create('Ext.panel.Panel', {
-                        title: '<img src=\"img/'+ lang + '.png\">' +  lang,
-                        id: 'PainelDialogOriginal' + arc + msbt + pos + lang,
+                        title: '<img src=\"img/'+ lang + '.png\">&nbsp;' +  lang,
+                        id: 'PainelDialogOriginal' + arc + msbt + id + lang,
                             
                         collapsible: true,                           
                         collapsed: true,
@@ -219,11 +254,11 @@ function criarWindowDialogo(arc, msbt, pos){
                         items:[
                         {
                             xtype:'panel',
-                            id: 'TAG' + msbt+ pos + lang,
+                            id: 'TAG' + msbt+ id + lang,
                             width: '60%'
                         },{
                             xtype:'panel',
-                            id : 'HTML' + msbt+ pos + lang,                                
+                            id : 'HTML' + msbt+ id + lang,                                
                             width: '40%'
                         }
                         ],
@@ -236,13 +271,13 @@ function criarWindowDialogo(arc, msbt, pos){
                                     params: {
                                         arc : arc,
                                         msbt: msbt,
-                                        pos: pos,
+                                        id:   id,
                                         lang: lang,
                                         modo: 'tag'
                                     },
                                 
                                     success: function(response){
-                                        Ext.getCmp('TAG' + msbt+ pos + lang).update(response.responseText);
+                                        Ext.getCmp('TAG' + msbt+ id + lang).update(response.responseText);
                                     }
 
                                 });
@@ -252,12 +287,11 @@ function criarWindowDialogo(arc, msbt, pos){
                                     params: {
                                         arc : arc,
                                         msbt: msbt,
-                                        pos: pos,
+                                        id: id,
                                         lang: lang
                                     },
-                                
                                     success: function(response){
-                                        Ext.getCmp('HTML' + msbt+ pos + lang).update(response.responseText);
+                                        Ext.getCmp('HTML' + msbt+ id + lang).update(response.responseText);
                                     }
 
                                 });
@@ -268,12 +302,10 @@ function criarWindowDialogo(arc, msbt, pos){
                     w.add(p);
                             
                 });
-                    
-                    
-                    
+   
             }
         }
     }).show();
-    Ext.getCmp('PainelDialogOriginal' + arc + msbt + pos + 'en_US').toggleCollapse();
+    Ext.getCmp('PainelDialogOriginal' + arc + msbt + id + 'en_US').toggleCollapse();
 }
    

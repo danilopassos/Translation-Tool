@@ -1,11 +1,11 @@
 <?php
 
-require_once 'core/Dialogo.php';
+require_once 'core/Dialog.php';
 
 if (isset($_GET["tag"])) {
-    $o = new Dialogo();
-    $o->setDialogoUtf8($_GET["tag"]);
-    echo $o->getDialogoHtml();
+    $o = new Dialog();
+    $o->setDialogTag($_GET["tag"]);
+    echo $o->getDialogHtml();
 }
 
 $modo="html";
@@ -13,23 +13,26 @@ if(isset($_GET["modo"])){
     $modo = $_GET["modo"];
 }
 
-if ( isset($_GET["pos"]) ) {
-    $arc = $_GET["arc"];
-    $msbt = $_GET["msbt"];
-    $pos = $_GET["pos"];
+if ( isset($_GET["id"]) ) {
+    $id = $_GET["id"];
     $lang = $_GET["lang"];
 
-    $o = new Dialogo($arc, $msbt, $pos, $lang);
-    
+    $sql="SELECT tt_dialog_lang.dialog `dialogTagHex`
+     FROM tt_dialog_lang 
+inner join tt_lang on (tt_dialog_lang.lang_id = tt_lang.lang_id) 
+    WHERE tt_lang.lang_name = '" .$lang . "'  and tt_dialog_lang.dialog_id=" . $id;
+    $o = new Dialog();
+    $ret = $o->runSelect($sql);
+    $o->setDialogTagHex( $ret[0]['dialogTagHex'] );
     if($modo == "html"){
-        echo $o->getDialogoHtml();
+        echo $o->getDialogTagHex();
     }
     
     if($modo == "tag"){
         if(isset($_GET['nopre'])){
-            echo $o->getDialogoUtf8();
+            echo $o->getDialogTagHex();
         }else{
-            echo "<pre>" . $o->getDialogoUtf8() . "</pre>";
+            echo "<pre>" . $o->getDialogTagHex() . "</pre>";
         }
     }
     

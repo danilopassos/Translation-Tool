@@ -1,20 +1,35 @@
 Ext.define('Dialogos', {
     extend: 'Ext.data.Model',
     fields: [
-        {name: 'POS',        type: 'string'},
-        {name: 'Nome',       type: 'string'},
-        {name: 'Estado',     type: 'string'},
-        {name: 'por',        type: 'string'},
+        {name: 'pos',        type: 'string'},
+        {name: 'name',       type: 'string'},
+        {name: 'status',     type: 'string'},
+//        {name: 'por',        type: 'string'},
         {name: 'em',         type: 'string'}
-    ],
+    ]
 });
 
 function iconeEstado(val){
-    if(val == 'ok'){
-        return "<img src=\"img/i_ok.png\" />";
-    }else{
-        return "<img src=\"img/i_no_ok.png\" />";
+    if(val == "1"){
+        return "<div class=\"st01\"> Peding Translation</div>";
     }
+    if(val == "2"){
+        return "<div class=\"st02\"> Waiting for Review</div>";
+    }
+    if(val == "3"){
+        return "<div class=\"st03\"> Review / Problems</div>";
+    }
+    if(val == "4"){
+        return "<div class=\"st04\"> Approved</div>";
+    }
+    if(val == "5"){
+        return "<div class=\"st05\"> Rejected</div>";
+    }
+    if(val == "6"){
+        return "<div class=\"st06\"> Final</div>";
+    }
+
+return val;
 }
 
 function criarGridDialogos(arc, msbt) {
@@ -40,34 +55,34 @@ function criarGridDialogos(arc, msbt) {
         stateId: 'stateGrid',
         columns: [
         {
-            text     : 'POS',
+            text     : 'id',
             width    : 50,
             sortable : true,
-            dataIndex: 'POS'
+            dataIndex: 'pos'
         },
         {
             text     : 'Nome',
-//            width    : 75,
+            width    : 150,
             sortable : true,
             //                renderer : 'usMoney',
-            dataIndex: 'Nome'
+            dataIndex: 'name'
         },
         {
             text     : 'Estado',
-//            width    : 75,
+            width    : 150,
             sortable : true,
             renderer : iconeEstado,
-            dataIndex: 'Estado'
+            dataIndex: 'status'
         },
+//        {
+//            text     : 'ultima alteração',
+////            width    : 75,
+//            sortable : true,
+//            dataIndex: 'por'
+//        },
         {
             text     : 'ultima alteração',
-//            width    : 75,
-            sortable : true,
-            dataIndex: 'por'
-        },
-        {
-            text     : 'em',
-//            width    : 85,
+            width    : 150,
             sortable : true,
             dataIndex: 'em'
         }
@@ -82,9 +97,9 @@ function criarGridDialogos(arc, msbt) {
         },
         listeners: {
             beforeitemclick: function(view, record, item, index, event) {
-                var pos = record.get('POS');
+                var id = record.get('id');
                 var onde = Ext.get('p' + msbt);
-                criarWindowDialogo(arc, msbt, pos);
+                criarWindowDialogo(arc, msbt, id);
             }
         }
 

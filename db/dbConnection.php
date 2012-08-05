@@ -1,6 +1,6 @@
 <?php
 
-#require_once '';
+require_once 'config.php';
 
 class dbConnection {
 
@@ -8,8 +8,6 @@ class dbConnection {
 	private $pass = "";
 	private $host = "localhost";
 	private $database = "ZeldaSS_Translate_Tool";
-        const PREFIX = 'taducaozss_';
-
 
         private function connect(){
 		$conn = new PDO("mysql:host=$this->host;dbname=$this->database",$this->user, $this->pass);

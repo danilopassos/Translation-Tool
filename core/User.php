@@ -1,6 +1,6 @@
 <?php
 
-class Usuario{
+class User{
     
     public static function getId(){
         return 9884;
@@ -9,7 +9,7 @@ class Usuario{
     public static function getName(){
         return "adri3d";
     }
-    public static function isRevisor(){
+    public static function isRev(){
         return false;
     }
 }

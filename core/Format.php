@@ -1,7 +1,7 @@
 <?php
-require_once 'actions/aFormatacao.php';
+require_once 'actions/aFormat.php';
 
-class Formatacao extends aFormatacao{
+class Format extends aFormat{
     
     public function __construct($hex) {
         $this->setHex($hex);
