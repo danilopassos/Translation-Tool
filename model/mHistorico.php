@@ -2,11 +2,6 @@
 
 require_once 'model/mDialogo.php';
 
-/**
- * Description of mHistorico
- *
- * @author Adriano
- */
 class mHistorico extends dbConnection{
     private $idUsuario;
     private $idDialogo;

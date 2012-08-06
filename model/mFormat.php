@@ -16,7 +16,12 @@ abstract class mFormat extends dbConnection {
     }
     
     public function getTag(){
-        return $this->tag;
+        if(($this->tag == "") || ($this->tag == null)){
+            return $this->hex;
+        }else{
+            return $this->tag;
+        
+        }
     }
     
     public function setTag($tag){

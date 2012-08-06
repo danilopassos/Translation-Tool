@@ -215,7 +215,7 @@ function criarWindowDialogo(arc, msbt, id){
         //            collapsible: true,
         //            animCollapse: true,
         maximizable: true,
-        width: 600,
+        width: 700,
         height: '90%',
             
             
@@ -235,8 +235,7 @@ function criarWindowDialogo(arc, msbt, id){
             render: function(w, opt) {
                     
                 editar(arc, msbt, id, w);
-//                var langs = Array('en_US','es_US','fr_US','it_IT','de_DE', 'ja_JP' );
-                                      var langs = Array('en_US','es_US' );
+                var langs = Array('en_US','es_US','fr_US','it_IT','de_DE', 'ja_JP' );  
                 Ext.each(langs, function(lang, index, arraylangs){
 
                     var p = Ext.create('Ext.panel.Panel', {

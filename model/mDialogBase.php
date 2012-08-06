@@ -21,6 +21,7 @@ class mDialogBase extends dbConnection{
     private $dialogStatusId;
     private $arc;
     private $msbt;
+    private $pos;
     private $name;
     private $dialogTagHex;
     private $version;
@@ -43,18 +44,18 @@ class mDialogBase extends dbConnection{
         $this->dialogLangId = $dialogLangId;
     }
     
-//    //position of dialog on msbt container
-//    public function getPos(){
-//        $pos = $this->dialogMultiLangId;
-//        while (strlen($pos) < 3) {
-//            $pos = "0" . $pos;
-//        }
-//        return $pos;
-//    }
-//    
-//    public function setPos($pos){
-//        $this->dialogMultiLangId = (int)$pos;
-//    }
+    //position of dialog on msbt container
+    public function getPos(){
+        $pos = $this->pos;
+        while (strlen($pos) < 3) {
+            $pos = "0" . $pos;
+        }
+        return $pos;
+    }
+    
+    public function setPos($pos){
+        $this->pos = $pos;
+    }
 
     
     public function getLangId(){
@@ -66,22 +67,11 @@ class mDialogBase extends dbConnection{
     }
     
     public function getLang(){
-    //    return $this->langId;
+        return Lang::getLangName($this->langId);
     }
     
     public function setLang($lang){
-     
-        $tt_lang = array(
-            array('lang_id' => '1','lang_name' => 'en_US'),
-            array('lang_id' => '2','lang_name' => 'es_US'),
-            array('lang_id' => '3','lang_name' => 'fr_US'),
-            array('lang_id' => '4','lang_name' => 'it_IT'),
-            array('lang_id' => '5','lang_name' => 'de_DE'),
-            array('lang_id' => '6','lang_name' => 'ja_JP'),
-            array('lang_id' => '7','lang_name' => 'pt_BR')
-        );
-        
-        $this->langId = 1;
+        $this->langId = Lang::getId($lang);
     }
     
     public function getDialogStatusId(){

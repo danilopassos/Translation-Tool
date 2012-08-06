@@ -15,10 +15,10 @@ class Lang {
     }
 
     public function getRegion() {
-        if($this->value == "ja_JP"){
+        if ($this->value == "ja_JP") {
             return "JP";
         }
-        
+
         if ($this->value == "pt_BR") {
             return "BR";
         } else {
@@ -37,26 +37,20 @@ class Lang {
     public function getName() {
         return $this->getNameLang($this->value);
     }
-    
+
     public static function getUmaUnicaLang() {
         return new Lang("en_US");
     }
+
     public static function getLangs() {
-        //$europeias = array("de_DE","en_GB","es_ES","fr_FR", "it_IT","nl_NL");
-        //$americanas = array("eu_US", "es_US", "fr_US");
         return array(
-            new Lang("pt_BR")
-            
-//            //new Lang("en_GB"),
+//            new Lang("pt_BR"),
 //            new Lang("en_US"),
-            //new Lang("es_ES"),
-//           new Lang("es_US"),
-//            //new Lang("fr_FR"),
+//            new Lang("es_US"),
 //            new Lang("fr_US"),
 //            new Lang("it_IT"),
 //            new Lang("de_DE"),
-            //new Lang("nl_NL"),
-//            new Lang("ja_JP")
+            new Lang("ja_JP")
         );
     }
 
@@ -74,14 +68,46 @@ class Lang {
         $nomes["fr_US"] = "Francês";
         $nomes["it_IT"] = "Italiano";
         $nomes["nl_NL"] = "Holandês";
-        
-        if(isset($nomes["$lang"])){
+
+        if (isset($nomes["$lang"])) {
             return $nomes["$lang"];
-        }else{
+        } else {
             return "idioma desconhecido";
         }
-        
-        
+    }
+
+    public static function getId($lang) {
+        $ids = array();
+        $ids["en_US"] = "1";
+        $ids["es_US"] = "2";
+        $ids["fr_US"] = "3";
+        $ids["it_IT"] = "4";
+        $ids["de_DE"] = "5";
+        $ids["ja_JP"] = "6";
+        $ids["pt_BR"] = "7";
+
+        if (isset($ids["$lang"])) {
+            return $ids["$lang"];
+        } else {
+            die("lang $lang unknown");
+        }
+    }
+
+    public static function getLangName($id) {
+        $names = array();
+        $names["1"] = "en_US";
+        $names["2"] = "es_US";
+        $names["3"] = "fr_US";
+        $names["4"] = "it_IT";
+        $names["5"] = "de_DE";
+        $names["6"] = "ja_JP";
+        $names["7"] = "pt_BR";
+
+        if (isset($names["$id"])) {
+            return $names["$id"];
+        } else {
+            die("lang_id $id unknown");
+        }
     }
 
 }

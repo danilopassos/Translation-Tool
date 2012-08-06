@@ -1,22 +1,12 @@
 <?php
-/*
-    * Codigo pra extrair todos os dialogos 
-    * em um html, util pra procupar a posição
-    * de textos, por feramentas de pesquisa(CTRL + F)
-    * 
-    * dica: melhor chamar isso via cliente php, porque 
-    * é bem lento mais de 5 minutos para um idioma inteiro
-    */
 
 require_once 'core/Arc.php';
-require_once 'core/Dialogo.php';
+require_once 'core/Dialog.php';
 require_once 'core/Extrair.php';
 require_once 'core/Lang.php';
-require_once 'core/Formatacao.php';
+require_once 'core/Format.php';
 require_once 'core/util.php';
 
-$lang = "pt_BR";
-//$lang = "en_US";
 
 ?>
 
@@ -37,16 +27,40 @@ $lang = "pt_BR";
     </head>
 
     <body>
-<?php
-    foreach (ExtArc::getFileNames() as $arc) {
-        foreach (ExtArc::getFileNamesInArc($arc) as $msbt) {
-            foreach (ExtArc::getFileNamesInArcSubs($msbt) as $pos) {
-                echo "\n<br>" . $arc . "/" . $msbt . "/" . $pos;
-                $o = new Dialogo($arc, $msbt, $pos, $lang);
-                echo "\n<br>" . $o->getDialogoHtml(false) . "<br>\n\n";
+        <pre>
+            <?php
+            if(isset($_GET["lang"])){
+                $lang = $_GET["lang"];
+            }else{
+                $lang = "pt_BR"; 
             }
-        }
-    }
-?>
+
+            $o = new Dialog();
+            $sql = "SELECT * 
+            FROM  `tt_dialog_lang` 
+            WHERE  `lang_id` =" . Lang::getId($lang);
+
+            $r = $o->runSelect($sql);
+
+            $cont = 0;
+            foreach (Arc::getFileNames() as $arc) {
+                foreach (Arc::getFileNamesInArc($arc) as $msbt) {
+                    foreach (Arc::getFileNamesInArcSubs( $msbt) as $pos) { 
+            //            echo "\n " . ($r[$cont]['dialog_id']) ;
+                        echo "\t\n " . $arc ."/". $msbt."/". $pos . "  id: " . ($r[$cont]['dialog_id']);
+
+                        $o = new Dialog();
+                        $o->setDialogTagHex($r[$cont]['dialog']);
+
+                        echo "\n" . $o->getDialogTagHex();
+            //            echo "\n" . $o->getDialogHtml();
+
+
+                        $cont++;
+                    }
+                }
+            }
+            ?>
+        </pre>
     </body>
 </html>

@@ -4,26 +4,26 @@ require_once 'model/mFormat.php';
 
 class aFormat extends mFormat{
 
-    protected $sqlInsert = "INSERT INTO `formatacao`(`HEX`, `TAG`, `HTML`) VALUES ( '%s',NULL,NULL)";
-    protected $sqlSelect = "SELECT * FROM `formatacao` WHERE HEX='%s'";
-    protected $sqlSelectByTag = "SELECT * FROM `formatacao` WHERE TAG='%s'";
+#    protected $sqlInsert = "INSERT INTO `tt_format`(`HEX`, `TAG`, `HTML`) VALUES ( '%s',NULL,NULL)";
+    protected $sqlSelect = "SELECT * FROM `tt_format` WHERE hex='%s'";
+    protected $sqlSelectByTag = "SELECT * FROM `tt_format` WHERE tag='%s'";
 
         
-    public function insert() {
-        $sql = sprintf($this->sqlInsert, $this->getHex());
-        return $this->RunQuery($sql);
-    }
+//    public function insert() {
+//        $sql = sprintf($this->sqlInsert, $this->getHex());
+//        return $this->RunQuery($sql);
+//    }
 
     #public function update(){
     #    
     #}
     public static function getHexOf($tag) {
-        $o = new aFormatacao();
+        $o = new aFormat();
         $sql = sprintf($o->sqlSelectByTag, $tag);
 
         $r = $o->runSelect($sql);
         foreach ($r as $row) {
-            return $row["HEX"];
+            return $row["hex"];
         }
         
         return null;
@@ -35,8 +35,8 @@ class aFormat extends mFormat{
 
         $r = $this->runSelect($sql);
         foreach ($r as $row) {
-            $this->setTag($row["TAG"]);
-            $this->setHTML($row["HTML"]);
+            $this->setTag($row["tag"]);
+            $this->setHTML($row["html"]);
         }
     }
 

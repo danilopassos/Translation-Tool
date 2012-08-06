@@ -5,7 +5,7 @@ require_once 'core/Msbt.php';
 require_once 'core/Dialog.php';
 require_once 'core/Extrair.php';
 require_once 'core/Lang.php';
-require_once 'core/Formatacao.php';
+require_once 'core/Format.php';
 require_once 'core/util.php';
 
 #$arc = "0-Common.arc";
@@ -54,6 +54,7 @@ require_once 'core/util.php';
 //echo "\n total dialogos Nulos\t\t" .$contNull; 
 //
 //echo "\n Estado da tradução: " .( ($contRevisados / ($cont - $contNull)) * 100) . "%";
+
 
 ?>
 

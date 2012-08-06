@@ -5,7 +5,7 @@ require_once 'core/Dialog.php';
 if (isset($_GET["tag"])) {
     $o = new Dialog();
     $o->setDialogTag($_GET["tag"]);
-    echo $o->getDialogHtml();
+    echo $o->getDialogHtml(true);
 }
 
 $modo="html";
@@ -25,14 +25,14 @@ inner join tt_lang on (tt_dialog_lang.lang_id = tt_lang.lang_id)
     $ret = $o->runSelect($sql);
     $o->setDialogTagHex( $ret[0]['dialogTagHex'] );
     if($modo == "html"){
-        echo $o->getDialogTagHex();
+        echo $o->getDialogHtml(true);
     }
     
     if($modo == "tag"){
         if(isset($_GET['nopre'])){
-            echo $o->getDialogTagHex();
+            echo $o->getDialogTag();
         }else{
-            echo "<pre>" . $o->getDialogTagHex() . "</pre>";
+            echo "<pre>" . $o->getDialogTag() . "</pre>";
         }
     }
     

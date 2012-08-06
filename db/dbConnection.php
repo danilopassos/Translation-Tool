@@ -8,6 +8,8 @@ class dbConnection {
 	private $pass = "";
 	private $host = "localhost";
 	private $database = "ZeldaSS_Translate_Tool";
+        protected $prefix = "tt_";
+
 
         private function connect(){
 		$conn = new PDO("mysql:host=$this->host;dbname=$this->database",$this->user, $this->pass);

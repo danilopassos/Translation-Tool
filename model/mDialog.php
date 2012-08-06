@@ -34,16 +34,16 @@ abstract class mDialog extends mDialogBase {
     }
 
     public function getDialogTag(){
-        return mDialogo::dialogoBinarioParaUtf8(base64_decode($this->dialogoBase64));
+        return self::replaceTag( $this->getDialogTagHex() ) ;
     }
 
     public function setDialogTag($dialogTag) {
-        $this->setDialogTagHex($dialogTag);
+        $this->setDialogTagHex( self::replaceTag($dialogTag,'hex') );
     }
 
     public function getDialogHtml($comAlertas = true) {
         $html = $this->getDialogTagHex();            
-//        $html = mDialogo::dialogoBinarioParaUtf8($html,true);
+        $html = self::replaceTag($html,'html');
 //         
 //        $alertas = "";
 //        $linhas = explode("\n", $html);
@@ -53,9 +53,9 @@ abstract class mDialog extends mDialogBase {
 //            }
 //        }
 //        
-//        $html = str_replace("\n", "<br/>", $html);
+        $html = str_replace("\n", "<br/>", $html);
 //        
-//        $html = $this->closetags($html);
+        $html = $this->closeHtmlTags($html);
 //        
 //        if($comAlertas){
 //            $html .= "<br>".$alertas;
@@ -64,6 +64,44 @@ abstract class mDialog extends mDialogBase {
         return "<div class=\"htmlpreview\">" . $html . "</div>";
     }
     
+    public static function replaceTag($dialogTagIn, $mode = 'tag'){
+        $dialogTagOut = "";
+        
+        $utf8Temp = null;
+        
+        for ($offset = 0; $offset < strlen($dialogTagIn); $offset += 1) {
+
+            if ($dialogTagIn[$offset] == "[") {
+                $offset++;
+
+                $temp = "";
+
+                while ($dialogTagIn[$offset] != "]") {
+                    $temp .= $dialogTagIn[$offset];
+                    $offset++;
+                    if ($offset > strlen($dialogTagIn)) {
+                        die("\$offset > strlen(\$utf8)");
+                    }
+                }
+                if (!($utf8Temp === null)) {
+                    $dialogTagOut .= $utf8Temp;
+                    $utf8Temp = null;
+                }
+                $temp = self::tagTo($temp, $mode);
+                $dialogTagOut .= $temp;
+            } else {
+                $utf8Temp .= $dialogTagIn[$offset];
+            }
+        }
+
+        if (!($utf8Temp === null)) {
+            $dialogTagOut .= $utf8Temp;
+        }
+            
+        return $dialogTagOut; 
+    }
+
+
     private function closeHtmlTags($html) {
         $result = "";
         #put all opened tags into an array
@@ -96,10 +134,31 @@ abstract class mDialog extends mDialogBase {
         if(substr($tag, 0, 2) == "0x"){
             return substr($tag, 2);
         }else{
-            #return Formatacao::getHexOf($tag);
+
         }
     }
     
+    public  static function tagTo($tag , $mode="tag"){
+        //remove 0x
+        if( substr($tag, 0, 2) == "0x"){
+            $tag = substr($tag, 2);
+        }
+        
+        if($mode == "tag"){
+            $format = new Format($tag);
+            $tag = "[" . $format->getTag() . "]";
+        }
+        if($mode == "html"){
+            $format = new Format($tag);
+            $tag = $format->getHTML();
+        }
+        if($mode == "hex"){
+            $tag = "[0x" . Format::getHexOf($tag) . "]";
+        }
+        return $tag;
+    }
+
+
 
     public static function dialogBinToDialogTagHex($dialogBin) {
         $dialogTagHex = "";

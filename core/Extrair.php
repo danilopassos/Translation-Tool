@@ -17,7 +17,7 @@ class Extrair {
                 $folderOut = getDirTMP() . $lang . DIRECTORY_SEPARATOR;
                 $files = getFiles($folder, ".arc");
 
-                printLog("Ripando em " . $folder);
+                echo ("\nRipando em " . $folder);
 
                 foreach ($files as $file) {
                     ExtArc::rip($lang, $folder, $file, $folderOut . $file . ".d" . DIRECTORY_SEPARATOR);
@@ -30,7 +30,7 @@ class Extrair {
         foreach (Lang::getLangs() as $lang) {
             foreach (Arc::getFileNames() as $arc) {
                 foreach (Arc::getFileNamesInArc($arc) as $msbt) {
-                    printLog("extracting the dialogues: " . $lang . "/" . $arc . "/" . $msbt);
+                    echo ("\nextracting the dialogues: " . $lang . "/" . $arc . "/" . $msbt);
                     Msbt::rip($lang, $arc, $msbt);
                 }
             }

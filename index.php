@@ -19,7 +19,7 @@
         <style>
             .htmlpreview:hover{
                 background-color: black;
-
+                color: white;
             }
             .st01{
 /*              background-color: whitesmoke;*/

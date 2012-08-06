@@ -5,7 +5,7 @@ Ext.define('Dialogos', {
         {name: 'name',       type: 'string'},
         {name: 'status',     type: 'string'},
 //        {name: 'por',        type: 'string'},
-        {name: 'em',         type: 'string'}
+        {name: 'em', type: 'date', dateFormat: 'Y-m-d H:i:s'}
     ]
 });
 
@@ -84,7 +84,9 @@ function criarGridDialogos(arc, msbt) {
             text     : 'ultima alteração',
             width    : 150,
             sortable : true,
-            dataIndex: 'em'
+            dataIndex: 'em',
+            renderer: Ext.util.Format.dateRenderer('H:i:s d/m/Y')
+            
         }
         ],
 //        height: 350,

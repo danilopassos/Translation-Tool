@@ -146,7 +146,11 @@ Ext.onReady(function() {
             itemclick: function(view, record, item, index, event) {
                 
                 if (record.isLeaf()) {
-                    addTabDialogos(record.get('parentId'),record.get('id'));
+                    if(Ext.getCmp("tab" + record.get('parentId') + record.get('id')) == undefined ){
+                        addTabDialogos(record.get('parentId'),record.get('id'));
+                    }else{
+                        Ext.getCmp("tab" + record.get('parentId') + record.get('id')).show();
+                    }
                 }else{
                     if(record.isExpanded()){
                         record.collapse();
