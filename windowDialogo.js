@@ -1,5 +1,22 @@
-function editar(arc, msbt, id, onde){
+/*function editar(id, onde){
     var lang = "pt_BR";
+	
+    var action = Ext.create('Ext.Action', {
+        text: 'Action 1',
+        iconCls: 'icon-add',
+        handler: function(){
+            Ext.example.msg('Click', 'You clicked on "Action 1".');
+        }
+    });
+	
+    function onItemClick(item){
+        alert('You clicked save.');
+    }	
+	
+    function onItemToggle(item, pressed){
+        Ext.getCmp('source' + id).getEl().toggle();
+		Ext.getCmp('preview' + id).getEl().toggle();
+    }
     
     var form = Ext.create('Ext.form.Panel', {
         plain: true,
@@ -10,216 +27,110 @@ function editar(arc, msbt, id, onde){
             labelWidth: 55,
             anchor: '100%'
         },
-
+        dockedItems: {
+            itemId: 'toolbar',
+            xtype: 'toolbar',
+            items: [{
+						text: 'Save',
+						handler: onItemClick
+					}, '-', {
+						text: 'HTML Mode',
+						enableToggle: true,
+						toggleHandler: onItemToggle,
+						pressed: false
+					}, '-', {
+						text: 'Mark Status',
+						menu: {
+							xtype: 'menu',
+							plain: true,
+							items: {
+								xtype: 'buttongroup',
+								columns: 1,
+								defaults: {
+									xtype: 'button',
+									scale: 'large',
+									iconAlign: 'left'
+								},
+								items: statusListMenu
+							}
+						}
+					}
+            ]
+        },	
         layout: {
             type: 'hbox',
             align: 'stretch',  // Child items are stretched to full width            
             padding:'0'         
         },
+        items: [{
+					xtype: 'panel',
+					flex: 1,  // Take up all *remaining* vertical space
+					width: '100%',
+					layout:'fit',
+					id: 'source' + id,
+					items: [{
+						xtype: 'textarea',
+						id : 'editorTA' + id,
+						fieldLabel: 'Dialogo modo TAG',
+						
+						hideLabel: true,
+					
+						style: 'margin:0', // Remove default margin
+						flex: 1,  // Take up all *remaining* vertical space
 
-        items: [
-        {
-            xtype: 'panel',
-            flex: 1,  // Take up all *remaining* vertical space
-            width: '60%',
-            layout:'fit',
-            items: [
-            {
-                xtype: 'textarea',
-                id : 'editorTA' + arc + msbt + id,
-                fieldLabel: 'Dialogo modo TAG',
-                
-                hideLabel: true,
-            
-                style: 'margin:0', // Remove default margin
-                flex: 1,  // Take up all *remaining* vertical space
-
-                title: 'TAG',
-                listeners: {
-                    render : function( este, eOpts ){
-                        Ext.Ajax.request({
-                                
-                            url: 'preview.php',
-                            method : 'GET',
-                            params: {
-                                arc: arc,
-                                msbt: msbt,
-                                id : id,
-                                lang : lang,
-                                modo: 'tag',
-                                nopre: ''
-                            },
-                            success: function(response){
-                                este.setValue(response.responseText);
-                            }
-                                    
-                        });
-                    }
-                }
-            }
-            ]
-        }
-        ,
-        {
-            xtype: 'panel',
-            id: 'preview' + arc + msbt + id,
-            width: '40%'
-        }
-    
-        ]
+						title: 'TAG',
+						listeners: {
+							render : function( este, eOpts ){
+								Ext.Ajax.request({
+										
+									url: 'preview.php',
+									method : 'GET',
+									params: {
+										id : id,
+										lang : lang,
+										modo: 'tag',
+										nopre: ''
+									},
+									success: function(response){
+										este.setValue(response.responseText);
+									}
+											
+								});
+							}
+						}
+					}]
+				},{
+					xtype: 'panel',
+					id: 'preview' + id,
+					width: '100%',
+					layout:'fit',
+					flex: 1  // Take up all *remaining* vertical space					
+				}]
     });
 
     var painelEditor = Ext.create('Ext.panel.Panel', {
         title: '<img src=\"img/'+ lang + '.png\">&nbsp;' +  lang ,
-        //                collapsible: true,
-        //                animCollapse: true,
-        //                maximizable: true,
-        //                width: 750,
-        //                height: 500,
-        //                minWidth: 300,
-        //                minHeight: 200,
         layout: 'fit',
         items: form,
-        dockedItems: [{
-            xtype: 'toolbar',
-            dock: 'bottom',
-            ui: 'footer',
-            layout: {
-                pack: 'center'
-            },
-            items: [{
-                minWidth: 80,
-                text: 'Salvar',
-                
-                listeners: {
-                    click: function( bt, e, eOpts ){
-                        var tag = Ext.getCmp('editorTA' + arc + msbt + id).getValue();
-                        Ext.Ajax.request({
-                            url: 'gravar.php',
-                            method : 'GET',
-                            params: {
-                                a : 'u',
-                                arc : arc,
-                                msbt : msbt,
-                                id : id,
-                                utf8 : tag 
-                            },
-                                
-                            success: function(response){
-                                alert(response.responseText);
-                            }
-
-                        })
-                    }
-                }
-            },{
-                minWidth: 80,
-                text: 'Previsualizar em HTML',
-                
-                listeners: {
-                    click: function( bt, e, eOpts ){
-                        var tag = Ext.getCmp('editorTA' + arc + msbt + id).getValue();
-                        Ext.Ajax.request({
-                            url: 'preview.php',
-                            method : 'GET',
-                            params: {
-                                tag : tag
-                            },
-                                
-                            success: function(response){
-                                Ext.getCmp('preview' + arc + msbt + id).update(response.responseText);
-                            }
-
-                        })
-                    }
-                
-                }
-                
-            },{
-                minWidth: 80,
-                text: 'set Approved',
-                id: 'btApprov' + msbt + id,
-                listeners: {
-                    click: function( bt, e, eOpts ){
-                                        
-                        Ext.Ajax.request({
-                            url: 'gravar.php',
-                            method : 'GET',
-                            params: {
-                                a: 'Approved',
-                                arc : arc,
-                                msbt : msbt,
-                                id : id,
-                                lang: 'pt_BR'
-                                                
-                            },
-                                
-                            success: function(response){
-                                alert(response.responseText);
-                            }
-
-                        })
-                    }
-                
-                }
-                
-            },
-            {
-                    minWidth: 80,
-                    text: 'set Rejected',
-                    id: 'btReject' + msbt + id,
-                    listeners: {
-                        click: function( bt, e, eOpts ){
-
-                            Ext.Ajax.request({
-                                url: 'gravar.php',
-                                method : 'GET',
-                                params: {
-                                    a: 'Rejected',
-                                    arc : arc,
-                                    msbt : msbt,
-                                    id : id,
-                                    lang: 'pt_BR'
-
-                                },
-
-                                success: function(response){
-                                    alert(response.responseText);
-                                }
-
-                            })
-                        }
-
-                    }
-
-                }
-    
-
-]
-
-
-
-        }]
     });
 
     onde.add(painelEditor);
-
-}
+}*/
     
-function criarWindowDialogo(arc, msbt, id){
-    Ext.create('Ext.window.Window', {
-        title: 'dialogo: ' + arc + '/'+ msbt + '/' + id,
+function criarWindowDialogo(id, name, dialogs) {
+    function onItemClick(item){
+        alert('You clicked save.');
+    }
+	
+	
 
-        //closeAction: 'hide',
+    var pan = Ext.create('Ext.panel.Panel', {
+        title: 'Dialogo ' + name,
         autoScroll:true,
-        //            collapsible: true,
-        //            animCollapse: true,
         maximizable: true,
-        width: 700,
-        height: '90%',
-            
-            
-        //            renderTo: onde,
+        width: '100%',
+        //width: 700,
+        //height: '90%',
         layout: {
             type:'vbox',
             padding:'2',
@@ -233,14 +144,40 @@ function criarWindowDialogo(arc, msbt, id){
             
         listeners: {
             render: function(w, opt) {
-                    
-                editar(arc, msbt, id, w);
-                var langs = Array('en_US','es_US','fr_US','it_IT','de_DE', 'ja_JP' );  
-                Ext.each(langs, function(lang, index, arraylangs){
+                //editar(id, w);
+                /*		
+				var updateStatus = function(dialogLangId, statusId) {
+					Ext.Ajax.request({
+						url: 'ajax/get_dialog.php',
+						method : 'POST',
+						params: {
+							dlid: dialogLangId,
+							sid: statusId
+						},
+						success: function(response){
+							alert(1);
+						},
+						failure: function(response){
+							alert(2);
+						}
+					}
+				};
+				*/
 
+				
+                Ext.each(dialogs, function(dialog){
+                    var action = Ext.create('Ext.Action', {
+                        text: 'Action 1',
+                        iconCls: 'icon-add',
+                        handler: function(){
+                            Ext.example.msg('Click', 'You clicked on "Action 1".');
+                        }
+                    });
+					
                     var p = Ext.create('Ext.panel.Panel', {
-                        title: '<img src=\"img/'+ lang + '.png\">&nbsp;' +  lang,
-                        id: 'PainelDialogOriginal' + arc + msbt + id + lang,
+                        title: '<img src=\"img/'+ dialog.lang_name + '.png\">&nbsp;' +  dialog.lang_name + " (" + dialog.version + ") - Current Status: " + dialog.status_name,
+
+                        id: 'Panel' + dialog.id + dialog.lang_name,
                             
                         collapsible: true,                           
                         collapsed: true,
@@ -250,33 +187,98 @@ function criarWindowDialogo(arc, msbt, id){
                             padding:'0',
                             align:'stretch'
                         },
-                        items:[
-                        {
-                            xtype:'panel',
-                            id: 'TAG' + msbt+ id + lang,
-                            width: '60%'
+                        items:[{
+                            xtype:'textarea',
+                            id: 'source' + dialog.id + dialog.lang_name,
+                            width: '100%',
+                            value: dialog.dialog,
+                            height: '50px',
+                            disabled: (dialog.status >= 4)
                         },{
-                            xtype:'panel',
-                            id : 'HTML' + msbt+ id + lang,                                
-                            width: '40%'
+                            xtype:'textarea',
+                            id : 'preview' + dialog.id + dialog.lang_name,                                
+                            width: '100%',
+                            hidden: true,
+                            value: dialog.dialog,
+                            height: '50px',
+                            disabled: true
                         }
                         ],
-                            
+                        dockedItems: {
+                            itemId: 'tb' + dialog.id + dialog.lang_name,
+                            xtype: 'toolbar',
+                            items: [{
+                                id: 'saveBtn' + dialog.id + dialog.lang_name,
+                                text: 'Save',
+                                hidden: (dialog.status >= 4),
+                                handler: function(item) {
+                                    Ext.Ajax.request({
+                                        url: 'ajax/update_text.php',
+                                        method : 'POST',
+                                        params: {
+                                            dlid: dialog.id,
+                                            txt: Ext.getCmp('source' + dialog.id + dialog.lang_name).value
+                                        },
+                                        success: function(response) {
+                                            Ext.MessageBox.show({
+                                                title: "Success",
+                                                msg: "Updated",
+                                                buttons: Ext.MessageBox.OK,
+                                                icon: Ext.MessageBox.INFO
+                                            });
+                                        },
+                                        failure: function(response) {
+                                            Ext.MessageBox.show({
+                                                title: "Error",
+                                                msg: "Problemas no envio",
+                                                buttons: Ext.MessageBox.OK,
+                                                icon: Ext.MessageBox.ERROR
+                                            });
+                                        }
+                                    })
+                                }
+                            }, '-', {
+                                text: 'HTML View',
+                                enableToggle: true,
+                                toggleHandler: function (btn, pressed) {
+                                    Ext.getCmp('source' + dialog.id + dialog.lang_name).getEl().toggle();
+                                    Ext.getCmp('preview' + dialog.id + dialog.lang_name).getEl().toggle();
+                                },
+                                pressed: false,
+                            }, '-', {
+                                text: 'Mark Status',
+                                hidden: (dialog.status >= 4),
+                                menu: {
+                                    xtype: 'menu',
+                                    plain: true,
+                                    items: {
+                                        xtype: 'buttongroup',
+                                        id: 'btngrp' + dialog.id + dialog.lang_name,
+                                        columns: 1,
+                                        defaults: {
+                                            xtype: 'button',
+                                            scale: 'large',
+                                            iconAlign: 'left'
+                                        },
+												
+                                    }
+                                }									
+                            }
+                            ]
+                        }/*,
                         listeners: {
-                            beforeexpand: function( p, animates, Opts ){
+							beforeexpand: function( p, animates, Opts ){
                                 Ext.Ajax.request({
                                     url: 'preview.php',
                                     method : 'GET',
                                     params: {
-                                        arc : arc,
-                                        msbt: msbt,
                                         id:   id,
-                                        lang: lang,
+                                        lang: dialog.lang_name,
                                         modo: 'tag'
                                     },
                                 
                                     success: function(response){
-                                        Ext.getCmp('TAG' + msbt+ id + lang).update(response.responseText);
+                                        Ext.getCmp('source' + dialog.id + dialog.lang_name).update(response.responseText);
                                     }
 
                                 });
@@ -284,17 +286,45 @@ function criarWindowDialogo(arc, msbt, id){
                                     url: 'preview.php',
                                     method : 'GET',
                                     params: {
-                                        arc : arc,
-                                        msbt: msbt,
                                         id: id,
-                                        lang: lang
+                                        lang: dialog.lang_name
                                     },
                                     success: function(response){
-                                        Ext.getCmp('HTML' + msbt+ id + lang).update(response.responseText);
+                                        //Ext.getCmp('preview' + dialog.id + dialog.lang_name).update(response.responseText);
                                     }
 
                                 });
-                            }               
+                            }
+
+                        }  */             
+                    });
+					
+                    Ext.each(statusListMenu, function(st) {
+                        if (st != undefined) {
+                            Ext.getCmp('btngrp' + dialog.id + dialog.lang_name).add(
+                            {
+                                text: st.text,
+                                scale: 'small',
+                                width: 130,			
+                                value: st.value,
+                                handler: function(item) {
+                                    Ext.Ajax.request({
+                                        url: 'ajax/update_status.php',
+                                        method : 'POST',
+                                        params: {
+                                            dlid: dialog.id,
+                                            sid: item.value
+                                        },
+                                        success: function(response){
+                                            alert(1);
+                                        },
+                                        failure: function(response){
+                                            alert(2);
+                                        }
+                                    });
+                                }
+                            }
+                            );
                         }
                     });
 
@@ -305,6 +335,13 @@ function criarWindowDialogo(arc, msbt, id){
             }
         }
     }).show();
-    Ext.getCmp('PainelDialogOriginal' + arc + msbt + id + 'en_US').toggleCollapse();
+	
+    Ext.each(dialogs, function(dialog) {
+        if (dialog.status != 6 || dialog.lang == 1) {
+        //			Ext.getCmp('Panel' + dialog.id + dialog.lang_name).getEl().toggle();			
+        }
+    });
+	
+    return pan;
 }
    

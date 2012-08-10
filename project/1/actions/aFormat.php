@@ -1,6 +1,6 @@
 <?php
 
-require_once 'model/mFormat.php';
+require_once(dirname(__FILE__) .'/../model/mFormat.php');
 
 class aFormat extends mFormat{
 
@@ -34,9 +34,15 @@ class aFormat extends mFormat{
         $sql = sprintf($this->sqlSelect, $this->getHex());
 
         $r = $this->runSelect($sql);
-        foreach ($r as $row) {
-            $this->setTag($row["tag"]);
-            $this->setHTML($row["html"]);
+        if(count($r) > 0 ){
+            foreach ($r as $row) {
+                $this->setTag($row["tag"]);
+                $this->setHTML($row["html"]);
+            }
+        
+        }else{
+            $sql = sprintf("INSERT INTO `tt_format`(`hex`, `project_id`) VALUES ('%s', 1 )", $this->getHex());
+            $this->RunQuery($sql);
         }
     }
 

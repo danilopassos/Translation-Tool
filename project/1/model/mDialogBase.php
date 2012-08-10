@@ -1,18 +1,6 @@
 <?php
+require_once(dirname(__FILE__) . '/../db/dbConnection.php');
 
-//[dialog_lang_id]
-//[dialog_id]
-//[lang_id]
-//[dialog_status_id]
-//[dialog_rev_id] 
-//[dialog_hist_id] 
-//[dialog]
-//[version]
-//[comment]
-//[last_updated]
-
-
-require_once 'db/dbConnection.php';
 class mDialogBase extends dbConnection{
     
     private $dialogLangId;

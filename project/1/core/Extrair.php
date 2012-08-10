@@ -1,8 +1,8 @@
 <?php
 
-require_once 'core/util.php';
-require_once 'core/Arc.php';
-require_once 'core/Msbt.php';
+require_once(dirname(__FILE__) .'/../core/util.php');
+require_once(dirname(__FILE__) .'/../core/Arc.php');
+require_once(dirname(__FILE__) .'/../core/Msbt.php');
 
 class Extrair {
 

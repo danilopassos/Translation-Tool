@@ -1,8 +1,7 @@
 <?php
-
-require_once 'model/mDialogBase.php';
-require_once 'core/util.php';
-require_once 'core/Format.php';
+require_once(dirname(__FILE__) .'/../model/mDialogBase.php');
+require_once(dirname(__FILE__) .'/../core/util.php');
+require_once(dirname(__FILE__) .'/../core/Format.php');
 
 abstract class mDialog extends mDialogBase {
 

@@ -1,7 +1,6 @@
 <?php
 
-require_once 'model/mDialog.php';
-require_once 'core/User.php';
+require_once(dirname(__FILE__) .'/../model/mDialog.php');
 
 class aDialog extends mDialog {
 
@@ -14,7 +13,7 @@ class aDialog extends mDialog {
         $sql = sprintf($this->sqlUpdate, mysql_real_escape_string($this->getDialogTagHex()), $this->getDialogId());
         $this->RunQuery($sql);
 
-        $sqlHist = sprintf($this->sqlUpdateHist, $this->getDialogId(), User::getId(), mysql_real_escape_string($this->getDialogTagHex()));
+        $sqlHist = sprintf($this->sqlUpdateHist, $this->getDialogId(), 9884 , mysql_real_escape_string($this->getDialogTagHex()));
         $this->RunQuery($sqlHist);
     }
 

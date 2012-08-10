@@ -1,3 +1,20 @@
+function gup(name) {
+	name = name.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+	var regexS = "[\\?&]"+name+"=([^&#]*)";
+	var regex = new RegExp( regexS );
+	var results = regex.exec( window.location.href );
+	if (results == null) {
+		return "";
+	} else {
+		return results[1];
+	}
+}
+
+var projectId = gup("p");
+var statusListMenu = [];
+// tab generation code
+var tabIdx = 0;
+
 Ext.Loader.setConfig({
     enabled:true
 });
@@ -15,16 +32,16 @@ Ext.require([
     'Ext.TaskManager.*',
     'Ext.ComponentQuery.*',
     'Ext.tab.*',
-    'Ext.ux.TabCloseMenu'
-    ]);
+    'Ext.ux.TabCloseMenu',
+	'Ext.JSON.decode'
+]);
 
 
 Ext.onReady(function() {
-    ////////////////
-
     var currentItem;
 
     var tabs = Ext.widget('tabpanel', {
+		id: 'tabpanel',
         region: 'center',
         resizeTabs: true,
         enableTabScroll: true,
@@ -34,12 +51,6 @@ Ext.onReady(function() {
             autoScroll: true,
             bodyPadding: 0
         },
-        //        items: [{
-        //            title: 'Tab 1',
-        //            iconCls: 'tabs',
-        //            html: 'Tab Body<br/><br/>',
-        //            closable: true
-        //        }],
         plugins: Ext.create('Ext.ux.TabCloseMenu', {
             extraItemsTail: [
             '-',
@@ -75,22 +86,14 @@ Ext.onReady(function() {
         })
     });
 
-    // tab generation code
-    var index = 0;
 
-    //    while(index < 3) {
-    //        addTab(index % 2);
-    //    }
     
-    
-    function addTabDialogos(arc,msbt){
-        ++index;
+    function addDialogSectionTab(dialogSectionId, dialogSectionTitle){
+        ++tabIdx;
         tabs.add({
             closable: true,
-            //            html: 'Tab Body ' + index + '<br/><br/>',
-            id: "tab" + arc + msbt,
-            title: msbt,
-            
+            id: "tab" + dialogSectionId,
+            title: dialogSectionTitle,
             layout: {
                 type:'hbox',
                 padding:'1',
@@ -101,37 +104,23 @@ Ext.onReady(function() {
             }
         }).show();
         
-        Ext.getCmp("tab" + arc + msbt).add( criarGridDialogos(arc, msbt));
-
+        Ext.getCmp("tab" + dialogSectionId).add(createSectionGrid(dialogSectionId));
     }
     
-    function addTab (closable) {
-        ++index;
-        tabs.add({
-            closable: !!closable,
-            html: 'Tab Body ' + index + '<br/><br/>',
-            iconCls: 'tabs',
-            title: "tab" + index
-        }).show();
-
-    }
-    /////////////
-	
-	
     //*****************************************************************//
     // TREE VIEW
     //*****************************************************************//
     var treeStore = Ext.create('Ext.data.TreeStore', {
         proxy: {
             type: 'ajax',
-            url: 'get.php'
+            url: 'ajax/get_project_tree.php?p=' + projectId
         }
     });
 
     categoryTree = Ext.create('Ext.tree.Panel', {
         id: 'category-tree-panel',
         store: treeStore,
-        title: "Arquivos",
+        title: "Project Sections",
         width: 200,
         useArrows:true,
         autoScroll:true,
@@ -143,13 +132,13 @@ Ext.onReady(function() {
         floatable: true,
         split: true,
         listeners: {
-            itemclick: function(view, record, item, index, event) {
+            itemclick: function(view, record, item, tabIdx, event) {
                 
                 if (record.isLeaf()) {
-                    if(Ext.getCmp("tab" + record.get('parentId') + record.get('id')) == undefined ){
-                        addTabDialogos(record.get('parentId'),record.get('id'));
+                    if(Ext.getCmp("tab" + record.get('id')) == undefined ){
+                        addDialogSectionTab(record.get('id'), record.get('text'));
                     }else{
-                        Ext.getCmp("tab" + record.get('parentId') + record.get('id')).show();
+                        Ext.getCmp("tab" + record.get('id')).show();
                     }
                 }else{
                     if(record.isExpanded()){
@@ -166,6 +155,59 @@ Ext.onReady(function() {
     // TREE VIEW END
     //*****************************************************************//
 	
+    //*****************************************************************//
+    // STATUS BEGIN
+	//  @TODO : Isso deveria vir pelo banco no join do dialogo... fazendo por aqui por enquanto
+    //*****************************************************************//
+	Ext.define('StatusModel', {
+		extend: 'Ext.data.Model',
+		fields: [
+			{name : 'id', type: 'int'},
+			{name : 'name', type : 'string'}
+		]		
+	});
+
+	var statusStore = Ext.create('Ext.data.Store', {
+		id: 'statusStore',
+		model: 'StatusModel',
+		proxy: {
+			simpleSortMode: true, 
+			type: 'ajax',
+			api: {
+				read: 'ajax/get_status_list.php'
+			},
+			reader: {
+				type: 'json',
+				root: 'data',
+				successProperty: 'success'
+			},
+			extraParams: {
+				parametro: 'param'
+			},
+			actionMethods: {
+				//opcional
+				read: 'POST'
+			}
+		},
+		listeners: {
+			 scope: this,
+			 load: function(statusStore, records){
+				statusStore.data.each(function(){					
+					statusListMenu[this.data.id] = { // ExtJS 4.0.7 -> [{
+						text: this.data.name,
+						scale: 'small',
+						width: 130,			
+						value: this.data.id
+					}; // ExtJS 4.0.7 -> }];					
+				});
+			}
+		}			
+	});
+    //*****************************************************************//
+    // STATUS END
+    //*****************************************************************//
+	
+	
     // Main View
     Ext.create('Ext.Viewport', {
         layout: {
@@ -177,4 +219,6 @@ Ext.onReady(function() {
         },
         items: [tabs,categoryTree]
     });
+	
+	statusStore.load();
 });

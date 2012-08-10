@@ -1,19 +1,11 @@
 <?php
-
-require_once 'config.php';
+include_once(dirname(__FILE__) . '/../../../config.php');
 
 class dbConnection {
 
-	private $user = "root";
-	private $pass = "";
-	private $host = "localhost";
-	private $database = "ZeldaSS_Translate_Tool";
-        protected $prefix = "tt_";
-
-
         private function connect(){
-		$conn = new PDO("mysql:host=$this->host;dbname=$this->database",$this->user, $this->pass);
-		return $conn;
+		$conn = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_DATABASE  , DB_USER , DB_PASS);
+                return $conn;
 	}
 	
 	//usar para selects e inserts no db
@@ -29,5 +21,4 @@ class dbConnection {
 		return $stm->fetchAll(PDO::FETCH_ASSOC);
 	}
 }
-
 ?>

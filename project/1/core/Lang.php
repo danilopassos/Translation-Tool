@@ -1,6 +1,6 @@
 <?php
 
-require_once 'util.php';
+require_once(dirname(__FILE__) .'/../core/util.php');
 
 class Lang {
 

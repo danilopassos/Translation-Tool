@@ -4,9 +4,9 @@
  * Classe destinada a manipulação dos arquivos *.arc contidos na iso
  * 
  */
-require_once 'core/util.php';
-require_once 'core/Msbt.php';
-require_once 'core/Lang.php';
+require_once(dirname(__FILE__) .'/../core/util.php');
+require_once(dirname(__FILE__) .'/../core/Msbt.php');
+require_once(dirname(__FILE__) .'/../core/Lang.php');
 
 class Arc {
 

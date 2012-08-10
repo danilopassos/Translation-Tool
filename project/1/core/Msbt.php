@@ -1,8 +1,8 @@
 <?php
 
-require_once 'core/util.php';
-require_once 'core/Dialog.php';
-require_once 'core/Lang.php';
+require_once(dirname(__FILE__) .'/../core/util.php');
+require_once(dirname(__FILE__) .'/../core/Dialog.php');
+require_once(dirname(__FILE__) .'/../core/Lang.php');
 
 class Msbt {
 

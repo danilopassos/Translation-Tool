@@ -1,110 +1,113 @@
-Ext.define('Dialogos', {
+Ext.define('Dialog', {
     extend: 'Ext.data.Model',
     fields: [
-        {name: 'pos',        type: 'string'},
+        {name: 'id',        type: 'string'},
         {name: 'name',       type: 'string'},
         {name: 'status',     type: 'string'},
 //        {name: 'por',        type: 'string'},
-        {name: 'em', type: 'date', dateFormat: 'Y-m-d H:i:s'}
+        {name: 'last_updated', type: 'date', dateFormat: 'Y-m-d H:i:s'}
     ]
 });
 
-function iconeEstado(val){
-    if(val == "1"){
-        return "<div class=\"st01\"> Peding Translation</div>";
-    }
-    if(val == "2"){
-        return "<div class=\"st02\"> Waiting for Review</div>";
-    }
-    if(val == "3"){
-        return "<div class=\"st03\"> Review / Problems</div>";
-    }
-    if(val == "4"){
-        return "<div class=\"st04\"> Approved</div>";
-    }
-    if(val == "5"){
-        return "<div class=\"st05\"> Rejected</div>";
-    }
-    if(val == "6"){
-        return "<div class=\"st06\"> Final</div>";
-    }
-
-return val;
+function statusIcon(val){
+	if (val != undefined && val.trim() != "") {
+		return "<div class=\"st0" + val + "\">" + statusListMenu[val].text + "</div>";
+	} else {
+		return "<div class=\"st01\">No text!</div>";
+	}
 }
 
-function criarGridDialogos(arc, msbt) {
-
+function createSectionGrid(sectionId) {
     // create the Grid
     var grid = Ext.create('Ext.grid.Panel', {
         store: Ext.create('Ext.data.Store',{
-            model: 'Dialogos',
+            model: 'Dialog',
             proxy: {
                 type: 'ajax',
-                url: 'get.php?quero=pos&msbt=' + msbt,
-
+                url: 'ajax/get_section.php?p=' + projectId + "&s=" + sectionId,
                 reader: {
                     type: 'json'
-                    //root: '',
-                    //record: ''
                 }
             },
             autoLoad: true
         }),
-
         stateful: true,
         stateId: 'stateGrid',
-        columns: [
-        {
-            text     : 'id',
+        columns: [{
+            text     : 'Id',
             width    : 50,
             sortable : true,
-            dataIndex: 'pos'
-        },
-        {
-            text     : 'Nome',
+            dataIndex: 'id'
+        },{
+            text     : 'Name',
             width    : 150,
             sortable : true,
-            //                renderer : 'usMoney',
             dataIndex: 'name'
-        },
-        {
-            text     : 'Estado',
+        },{
+            text     : 'Status',
             width    : 150,
             sortable : true,
-            renderer : iconeEstado,
+            renderer : statusIcon,
             dataIndex: 'status'
-        },
-//        {
-//            text     : 'ultima alteração',
-////            width    : 75,
-//            sortable : true,
-//            dataIndex: 'por'
-//        },
-        {
-            text     : 'ultima alteração',
+        },{
+            text     : 'Last Updated',
             width    : 150,
             sortable : true,
-            dataIndex: 'em',
-            renderer: Ext.util.Format.dateRenderer('H:i:s d/m/Y')
-            
-        }
-        ],
-//        height: 350,
-//        width: 600,
-//        title: 'Lista de Dialogos',
-        //renderTo: Ext.getBody(),
+            dataIndex: 'last_updated',
+            renderer: Ext.util.Format.dateRenderer('d/m/Y H:i:s')
+        }],
         viewConfig: {
             stripeRows: true,
             enableTextSelection: false
         },
         listeners: {
             beforeitemclick: function(view, record, item, index, event) {
-                var id = record.get('id');
-                var onde = Ext.get('p' + msbt);
-                criarWindowDialogo(arc, msbt, id);
+				if (Ext.getCmp("tabDialog" + record.get('id')) != undefined ) {
+					Ext.getCmp("tabDialog" + record.get('id')).show();
+					return;
+				}
+				
+				//alert(record.get('id'));
+				Ext.Ajax.request({
+					url: 'ajax/get_dialog.php',
+					method : 'GET',
+//					headers: { 'Content-Type': 'application/json;charset=utf-8' },
+//					headers: {"Content-Type": "application/x-www-form-urlencoded; charset=UTF-8"},						
+					params: {
+						id: record.get('id'),
+						pid: projectId
+					},
+					success: function(response){
+						//Ext.getCmp('HTML' + id + lang).update(response.responseText);
+						//alert(response.responseText);
+						var jsonData = Ext.JSON.decode(response.responseText);
+						
+						//Ext.getCmp("tab" + dialogSectionId).add(criarWindowDialogo(record.get('id'), record.get('id') + ": " + record.get('name'), jsonData));
+						//criarWindowDialogo(record.get('id'), record.get('id') + ": " + record.get('name'), jsonData);
+						// alert(response.responseText);
+
+						Ext.getCmp("tabpanel").add({
+							closable: true,
+							id: "tabDialog" + record.get('id'),
+							title: record.get('id') + ": " + record.get('name'),
+							layout: {
+								type:'hbox',
+								padding:'1',
+								align:'stretch'
+							},
+							defaults:{
+								margins:'0 0 0 0'
+							}
+						}).show();
+						
+						Ext.getCmp("tabDialog" + record.get('id')).add(criarWindowDialogo(record.get('id'), record.get('id') + ": " + record.get('name'), jsonData));
+						
+					}
+				});
+				
+                //criarWindowDialogo(record.get('id'), record.get('id') + ": " + record.get('name'));
             }
         }
-
     });
     return grid;
 }
