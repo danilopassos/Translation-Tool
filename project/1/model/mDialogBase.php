@@ -11,7 +11,7 @@ class mDialogBase extends dbConnection{
     private $msbt;
     private $pos;
     private $name;
-    private $dialogTagHex;
+    private $dialogTag;
     private $version;
     private $comment;
     private $lastUpdated;
@@ -94,12 +94,12 @@ class mDialogBase extends dbConnection{
         $this->name = $name;
     }
     
-    public function getDialogTagHex(){
+    public function getDialogTag(){
         return $this->dialogTagHex;
     }
     
-    public function setDialogTagHex($DialogTagHex){
-        $this->dialogTagHex = $DialogTagHex;
+    public function setDialogTag($DialogTag){
+        $this->dialogTagHex = $DialogTag;
     }
     
     public function getVersion(){

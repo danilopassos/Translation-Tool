@@ -24,30 +24,30 @@ require_once(dirname(__FILE__) .'/core/util.php');
 //        }
 //    }
 //}
-$lang = 6;
-$cont = ($lang * 7707);
-foreach (Arc::getFileNames() as $arc) {
-    foreach (Arc::getFileNamesInArc($arc) as $msbt) {
-        foreach (Arc::getFileNamesInArcSubs( $msbt) as $pos) { 
-            $o = new Dialog();
-            
-            $cont++;
-
-            $sql = "SELECT `dialog` d FROM `tt_dialog_lang` WHERE `dialog_lang_id`=" . $cont;
-            $ret = $o->runSelect($sql);
-            $o->setDialogTagHex($ret[0]['d']);
-            
-            
-            $sql = "UPDATE `tt_dialog_lang` SET `dialog`='". mysql_real_escape_string( $o->getDialogTag() ) ."' WHERE `dialog_lang_id`=" . $cont;
-            #$ret = $o->runQuery($sql);
-            
-            echo "\n" . $o->getDialogTagHex();
-            echo "\n" . $o->getDialogTag();
-            
-            echo "\n<br>" . $arc ."/". $msbt."/". $pos."\t\t " .$cont;
-        }
-    }
-}
+//$lang = 1;
+//$cont = ($lang * 7707);
+//foreach (Arc::getFileNames() as $arc) {
+//    foreach (Arc::getFileNamesInArc($arc) as $msbt) {
+//        foreach (Arc::getFileNamesInArcSubs( $msbt) as $pos) { 
+//            $o = new Dialog();
+//            
+//            $cont++;
+//
+//            $sql = "SELECT `dialog` d FROM `tt_dialog_lang` WHERE `dialog_lang_id`=" . $cont;
+//            $ret = $o->runSelect($sql);
+//            $o->setDialogTagHex($ret[0]['d']);
+//            
+//            
+//            $sql = "UPDATE `tt_dialog_lang` SET `dialog`='". mysql_real_escape_string( $o->getDialogTag() ) ."' WHERE `dialog_lang_id`=" . $cont;
+//            $ret = $o->runQuery($sql);
+//            
+//            #echo "\n" . $o->getDialogTagHex();
+//            #echo "\n" . $o->getDialogTag();
+//            
+//            echo "\n<br>" . $arc ."/". $msbt."/". $pos."\t\t " .$cont;
+//        }
+//    }
+//}
 //
 //echo "\n total dialogos\t\t" .$cont;
 //echo "\n total dialogos revisados\t\t" .$contRevisados;

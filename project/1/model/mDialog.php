@@ -25,40 +25,25 @@ abstract class mDialog extends mDialogBase {
     }
     
     public function getDialogBin(){
-        return self::dialogTagHexToDialogBin($this->getDialogTagHex());
+        return self::dialogTagToDialogBin($this->getDialogTag());
     }
 
     public function setDialogBin($dialogBin) {
-        $this->setDialogTagHex( self::dialogBinToDialogTagHex($dialogBin) );
+        $this->setDialogTagHex( self::dialogBinToDialogTag($dialogBin) );
     }
 
-    public function getDialogTag(){
-        return self::replaceTag( $this->getDialogTagHex() ) ;
+    public function getDialogTagHex(){
+        return self::replaceTag( $this->getDialogTag(), 'hex' ) ;
     }
 
-    public function setDialogTag($dialogTag) {
-        $this->setDialogTagHex( self::replaceTag($dialogTag,'hex') );
-    }
 
-    public function getDialogHtml($comAlertas = true) {
-        $html = $this->getDialogTagHex();            
-        $html = self::replaceTag($html,'html');
-//         
-//        $alertas = "";
-//        $linhas = explode("\n", $html);
-//        for($i = 0; $i < count($linhas); $i++ ){
-//            if( mb_strlen(strip_tags($linhas[$i]),"utf8") > 36){
-//                $alertas .= "<p style=\" background-color: red \"> a Linha " . ($i + 1) . " passou de 36 caracteres</p>";
-//            }
-//        }
-//        
+    public function getDialogHtml() {
+        $html = $this->getDialogTag();            
+        $html = self::replaceTag($html,'html');      
+        
         $html = str_replace("\n", "<br/>", $html);
-//        
+        
         $html = $this->closeHtmlTags($html);
-//        
-//        if($comAlertas){
-//            $html .= "<br>".$alertas;
-//        }
         
         return "<div class=\"htmlpreview\">" . $html . "</div>";
     }
@@ -125,41 +110,35 @@ abstract class mDialog extends mDialogBase {
         return $html;
     }
 
-  
-    public static function tagToHex($tag){
-        //remove spaces
-        $tag = str_replace(" ", "", $tag);
-        
-        if(substr($tag, 0, 2) == "0x"){
-            return substr($tag, 2);
-        }else{
-
-        }
-    }
     
     public  static function tagTo($tag , $mode="tag"){
+//        echo "\nTag:" . $tag;
+
         //remove 0x
         if( substr($tag, 0, 2) == "0x"){
             $tag = substr($tag, 2);
         }
         
         if($mode == "tag"){
-            $format = new Format($tag);
-            $tag = "[" . $format->getTag() . "]";
+            die("not implemented");
+            #$tag = "[" . $format->getTag() . "]";
         }
         if($mode == "html"){
-            $format = new Format($tag);
-            $tag = $format->getHTML();
+//            echo "\nTag:" . $tag; 
+//            echo "\nHtml:" . Format::getTagToHtml($tag);
+            $tag = Format::getTagToHtml($tag);
         }
         if($mode == "hex"){
-            $tag = "[0x" . Format::getHexOf($tag) . "]";
+//            echo "\nTag:" . $tag; 
+//            echo "\nHex:" . Format::getTagToHex($tag);
+            $tag = "[0x" . Format::getTagToHex($tag) . "]";
         }
         return $tag;
     }
 
 
 
-    public static function dialogBinToDialogTagHex($dialogBin) {
+    public static function dialogBinToDialogTag($dialogBin) {
         $dialogTagHex = "";
 
         //the -2 remove the EOF (0x0000)
@@ -173,23 +152,23 @@ abstract class mDialog extends mDialogBase {
                         ( bin2hex(substr($dialogBin, $offset, 6)) === "000e0001000c") ||
                         ( bin2hex(substr($dialogBin, $offset, 6)) === "000e00010012")
                 ) {
-                    $dialogTagHex .= "[0x" . (bin2hex(substr($dialogBin, $offset, 12))). "]" ;
+                    $dialogTagHex .= "[0x" . tagTo(bin2hex(substr($dialogBin, $offset, 12))). "]" ;
                     $offset += (12 - 2);
                 } elseif (( bin2hex(substr($dialogBin, $offset, 6)) === "000e0001000f")) {
-                    $dialogTagHex .=  "[0x" .(bin2hex(substr($dialogBin, $offset, 8))). "]" ;
+                    $dialogTagHex .=  "[0x" .tagTo(bin2hex(substr($dialogBin, $offset, 8))). "]" ;
                     $offset += (8 - 2);
                 } else {
-                    $dialogTagHex .=  "[0x" .(bin2hex(substr($dialogBin, $offset, 10))). "]";
+                    $dialogTagHex .=  "[0x" .tagTo(bin2hex(substr($dialogBin, $offset, 10))). "]";
                     $offset += (10 - 2);
                 }
             } elseif (bin2hex(substr($dialogBin, $offset, 2)) === "abab") {
                 /* ignored */
             } elseif (bin2hex(substr($dialogBin, $offset, 2)) === "0000") {
-                $dialogTagHex .=  "[0x" .("0000"). "]" ;
+                $dialogTagHex .=  "[0x" .tagTo("0000"). "]" ;
             } elseif (bin2hex(substr($dialogBin, $offset, 2)) === "03cd") {
-                $dialogTagHex .=  "[0x" .("03cd"). "]" ;
+                $dialogTagHex .=  "[0x" .tagTo("03cd"). "]" ;
             } elseif (bin2hex(substr($dialogBin, $offset, 2)) === "ffff") {
-                $dialogTagHex .= "[0x" .("ffff") . "]" ;
+                $dialogTagHex .= "[0x" .tagTo("ffff") . "]" ;
             }else {
                 $dialogTagHex .= utf16ToUtf8($dialogBin[$offset] . $dialogBin[$offset + 1]);
             }
@@ -198,7 +177,7 @@ abstract class mDialog extends mDialogBase {
         return $dialogTagHex;
     }
 
-    public static function dialogTagHexToDialogBin($dialogTagHex) {
+    public static function dialogTagToDialogBin($dialogTagHex) {
         $dialogBin = "";
         $utf8Temp = null;
         for ($offset = 0; $offset < strlen($dialogTagHex); $offset += 1) {
@@ -219,7 +198,7 @@ abstract class mDialog extends mDialogBase {
                     $dialogBin .= utf8ToUtf16($utf8Temp);
                     $utf8Temp = null;
                 }
-                $temp = self::tagToHex($temp);
+                $temp = self::tagTo($temp,"hex");
                 $dialogBin .= myHex2bin($temp);
             } else {
                 $utf8Temp .= $dialogTagHex[$offset];

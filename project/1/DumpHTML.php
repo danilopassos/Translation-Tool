@@ -50,10 +50,10 @@ require_once 'core/util.php';
                         echo "\t\n " . $arc ."/". $msbt."/". $pos . "  id: " . ($r[$cont]['dialog_id']);
 
                         $o = new Dialog();
-                        $o->setDialogTagHex($r[$cont]['dialog']);
+                        $o->setDialogTag($r[$cont]['dialog']);
 
-                        echo "\n" . $o->getDialogTagHex();
-            //            echo "\n" . $o->getDialogHtml();
+             //           echo "\n" . $o->getDialogTagHex();
+                        echo "\n" . $o->getDialogHtml();
 
 
                         $cont++;
