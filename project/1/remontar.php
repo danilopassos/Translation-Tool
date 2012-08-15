@@ -2,7 +2,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/> 
-        <title>Tradução .: The Legend of Zelda: Skyward Sword :.  pt_BR </title>
+        <title> insert </title>
         <link href="style/style.css" rel="stylesheet" type="text/css" media="screen" />
     </head>
 
@@ -41,40 +41,31 @@ WHERE  `lang_id` =7 AND version='last'";
 $r = $o->runSelect($sql);
 
 $cont = 0;
+
+/*create news msbt files*/
 foreach (Arc::getFileNames() as $arc) {
     foreach (Arc::getFileNamesInArc($arc) as $msbt) {
-        foreach (Arc::getFileNamesInArcSubs( $msbt) as $pos) { 
-//            echo "\n " . ($r[$cont]['dialog_id']) ;
-//            echo "\t " . $arc ."/". $msbt."/". $pos;
-            
+        $dialogs = array();
+        foreach (Arc::getFileNamesInArcSubs( $msbt) as $pos) {        
             $o = new Dialog();
             $o->setDialogTag($r[$cont]['dialog']);
-            $c = getDirTMP() . "pt_BR" . DIRECTORY_SEPARATOR . "$arc.d" . DIRECTORY_SEPARATOR . "$msbt.d" . DIRECTORY_SEPARATOR . $pos;
+           
+            array_push($dialogs, $o->getDialogBin());
             
-            gravarArquivo($c, $o->getDialogBin());
-            
-//             echo "\n" . $o->getDialogTag();
-//             echo "\n" . $o->getDialogTagHex();
             $cont++;
-//            echo "\t\t[OK]";
         }
+        Msbt::remount("en_US", $arc, $msbt,$dialogs);
+//        echo "\n" . $arc . "/" . $msbt;
     }
 }
 
-
-
-foreach (Arc::getFileNames() as $arc) 
-    foreach (Arc::getFileNamesInArc($arc) as $msbt) {
-        Msbt::remount("en_US", $arc, $msbt);
-        echo "\n" . $arc . "/" . $msbt;
-    }
-
-
-foreach (Arc::getFileNames() as $arc)
+/*create news arc files*/
+foreach (Arc::getFileNames() as $arc){
     Arc::remount("en_US", $arc);
-    echo "\n" . $arc;
-
-//
-#fazer validação do tamanho dos arquivos
+//    echo "\n" . $arc;   
+}
 
 echo "\n\n\tTime total (seg):" . ( microtime(true) - $timeStart);
+
+echo "\n\n"
+?>

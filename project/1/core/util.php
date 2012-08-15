@@ -6,7 +6,7 @@
  */
 
 function getDirROOT() {
-    return realpath(".") . DIRECTORY_SEPARATOR . "ISO" . DIRECTORY_SEPARATOR . "ROOT" . DIRECTORY_SEPARATOR;
+    return dirname(__FILE__) . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "ISO" . DIRECTORY_SEPARATOR . "ROOT" . DIRECTORY_SEPARATOR;
 }
 
 /*
@@ -15,7 +15,7 @@ function getDirROOT() {
  */
 
 function getDirTMP() {
-    return realpath(".") . DIRECTORY_SEPARATOR . "ISO" . DIRECTORY_SEPARATOR . "tmp" . DIRECTORY_SEPARATOR;
+    return dirname(__FILE__) . DIRECTORY_SEPARATOR . ".." . DIRECTORY_SEPARATOR . "ISO" . DIRECTORY_SEPARATOR . "tmp" . DIRECTORY_SEPARATOR;
 }
 
 /*
@@ -101,8 +101,8 @@ function rrmdir($dir) {
 }
 
 function gravarArquivo($caminhoArquivo, $Bin) {
-    if(!file_exists(dirname($caminhoArquivo))){
-        mkdir(dirname($caminhoArquivo), 0, true);
+    if (!file_exists(dirname($caminhoArquivo))) {
+        mkdir(dirname($caminhoArquivo), 0777, true);
     }
     $novoarquivo = fopen($caminhoArquivo, "w");
     fwrite($novoarquivo, $Bin, strlen($Bin));
@@ -110,8 +110,8 @@ function gravarArquivo($caminhoArquivo, $Bin) {
 }
 
 function lerArquivo($caminhoArquivo) {
-    
-    $handle = fopen($caminhoArquivo,"r");
+
+    $handle = fopen($caminhoArquivo, "r");
     $fileBin = fread($handle, filesize($caminhoArquivo));
     return $fileBin;
 }
