@@ -3,7 +3,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <meta http-equiv="Content-Language" content="en-us">
-        <title>Tadução Z:SS</title>
+        <title>Translation Tool</title>
 
         <!-- CSS -->
         <link rel="stylesheet" type="text/css" href="http://cdn.sencha.io/ext-4.1.1-gpl/resources/css/ext-all.css" />
@@ -12,9 +12,9 @@
         <!-- LIBS --> 
         <script type="text/javascript" charset="utf-8" src="http://cdn.sencha.io/ext-4.1.1-gpl/ext-all.js"></script>
         <!-- ENDLIBS --> 
-        <script src="windowDialogo.js?<?php echo filemtime('windowDialogo.js'); ?>"></script>
-        <script src="gridDialogos.js?<?php echo filemtime('gridDialogos.js'); ?>"></script>
-        <script src="Main.js?<?php echo filemtime('Main.js'); ?>"></script>
+        <script src="js/windowDialogo.js?<?php echo filemtime('js/windowDialogo.js'); ?>"></script>
+        <script src="js/gridDialogos.js?<?php echo filemtime('js/gridDialogos.js'); ?>"></script>
+        <script src="js/Main.js?<?php echo filemtime('js/Main.js'); ?>"></script>
 
         <style>
             .htmlpreview:hover{
