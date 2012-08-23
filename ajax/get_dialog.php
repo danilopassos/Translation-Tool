@@ -12,9 +12,9 @@ $dialog_id = $_GET['id'];
 $query = 'select      dl.dialog_lang_id     id
                     , dl.lang_id            lang
                     , l.lang_name           lang_name
-
                     , dl.dialog_status_id   status
-                    , dl.dialog   dialog
+					, s.dialog_status_name	status_name
+                    , dl.dialog   			dialog
                     , dl.version            version
                     , dl.last_updated       last_updated
 				from ' . DB_PREFIX . 'dialog_lang dl

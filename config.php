@@ -1,10 +1,10 @@
 <?php
-
-    const DB_USER = "root";
-    const DB_PASS = "";
-    const DB_HOST = "localhost";
-    const DB_DATABASE = "ZeldaSS_Translate_Tool";
-    const DB_PREFIX = "tt_";
+	const DB_USER = "root";
+	const DB_PASS = "";
+	const DB_HOST = "localhost";
+	const DB_DATABASE = "ZeldaSS_Translate_Tool";
+	const DB_PREFIX = "tt_";
+	const DB_PREFIX_FORUM = "forum2_";
     
     $connection = mysql_connect(DB_HOST, DB_USER, DB_PASS) or die('Problemas de conexção com o banco.');
     mysql_select_db (DB_DATABASE, $connection) or die('Problemas de conexção com o banco.');

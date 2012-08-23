@@ -1,9 +1,11 @@
 Ext.define('Dialog', {
     extend: 'Ext.data.Model',
     fields: [
-        {name: 'id',        type: 'string'},
+        {name: 'id',         type: 'string'},
         {name: 'name',       type: 'string'},
+		{name: 'username',   type: 'string'},
         {name: 'status',     type: 'string'},
+
 //        {name: 'por',        type: 'string'},
         {name: 'last_updated', type: 'date', dateFormat: 'Y-m-d H:i:s'}
     ]
@@ -11,15 +13,16 @@ Ext.define('Dialog', {
 
 function statusIcon(val){
 	if (val != undefined && val.trim() != "") {
-		return "<div class=\"st0" + val + "\">" + statusListMenu[val].text + "</div>";
+		return "<div class=\"st st0" + val + "\">" + statusListMenu[val].text + "</div>";
 	} else {
-		return "<div class=\"st01\">No text!</div>";
+		return "<div class=\"st st01\">No text!</div>";
 	}
 }
 
 function createSectionGrid(sectionId) {
     // create the Grid
     var grid = Ext.create('Ext.grid.Panel', {
+		id: "grd" + sectionId,
         store: Ext.create('Ext.data.Store',{
             model: 'Dialog',
             proxy: {
@@ -43,6 +46,11 @@ function createSectionGrid(sectionId) {
             width    : 150,
             sortable : true,
             dataIndex: 'name'
+        },{		
+            text     : 'User Name',
+            width    : 150,
+            sortable : true,
+            dataIndex: 'username'
         },{
             text     : 'Status',
             width    : 150,

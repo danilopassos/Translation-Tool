@@ -9,13 +9,16 @@
 	
     $query = 'select d.dialog_id				id
                    , d.name 					name
+				   , u.username					username
                    , min(dl.dialog_status_id)	status
-				   , dl.last_updated				last_updated
+				   , max(dl.last_updated)		last_updated
 				from ' . DB_PREFIX . 'dialog d
 				left join ' . DB_PREFIX . 'dialog_lang dl
 				  on d.dialog_id = dl.dialog_id
+				   , ' . DB_PREFIX_FORUM . 'users u
 			   where d.section_id = ' . $section_id . '
-			   group by 1,2,4
+				 and u.user_id = dl.user_id
+			   group by 1,2
 			   order by d.dialog_id';
 
     $result = @mysql_query($query) or die(mysql_error());

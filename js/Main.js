@@ -14,6 +14,8 @@ var projectId = gup("p");
 var statusListMenu = [];
 // tab generation code
 var tabIdx = 0;
+var user = {};
+user.is_registered = false;
 
 Ext.Loader.setConfig({
     enabled:true
@@ -40,6 +42,7 @@ Ext.require([
 Ext.onReady(function() {
     var currentItem;
 
+	// TABS
     var tabs = Ext.widget('tabpanel', {
 		id: 'tabpanel',
         region: 'center',
@@ -101,12 +104,208 @@ Ext.onReady(function() {
             },
             defaults:{
                 margins:'0 0 0 0'
-            }
+            },
+			listeners:{
+				beforeshow: function() {
+					grid = Ext.getCmp("grd" + dialogSectionId);
+					if (grid != undefined) {
+						grid.store.load();
+						grid.getView().refresh();
+					}
+				}
+			}
         }).show();
         
         Ext.getCmp("tab" + dialogSectionId).add(createSectionGrid(dialogSectionId));
     }
-    
+	// TABS END
+	
+    // Main View
+    Ext.create('Ext.Viewport', {
+        layout: {
+            type: 'border',
+            padding: 5
+        },
+        defaults: {
+            split: true
+        },
+        items: [{
+			id:'west-container',
+            region: 'west',
+            collapsible: true,
+            floatable: true,
+            split: true,
+            title: "Painel",
+			autoScroll: true,
+			title: "Project Sections",
+			width: 250
+		}, tabs]
+    });
+	
+	wrc = Ext.getCmp('west-container');
+	
+
+	
+	
+	//************************* USERS
+	Ext.define('UserModels', {
+		extend: 'Ext.data.Model',
+		fields: [
+			{name : 'user_id', type: 'int'},
+			{name : 'username', type : 'string'},
+			{name : 'is_registered', type : 'boolean'}			
+		],
+		proxy: {
+			type: 'rest',
+			url : '/users',
+			reader: {
+				type: 'json',
+				root: 'users'
+			}
+		}		
+	});
+	
+	var userStore = Ext.create('Ext.data.Store', {
+		id: 'userStore',
+		model: 'UserModels',
+		proxy: {
+			simpleSortMode: true, 
+			type: 'ajax',
+			api: {
+				read: 'ajax/forum_login.php' 
+			},
+			reader: {
+				type: 'json',
+				root: 'data',
+				successProperty: 'is_registered'
+			},
+			extraParams: {
+				parametro: 'param'
+			},
+			actionMethods: {
+				read: 'POST'
+			}
+		},
+		listeners: {
+			 scope: this,
+			 load: function(userStore, records){
+				userStore.data.each(function(){
+					if (this.data.is_registered) {
+						var userInfoForm = Ext.create('Ext.form.Panel', {
+							frame:true,
+							title: "Informa&#231;&#245;es do usu&#225;rio",
+							bodyStyle:'padding:5px 0px 0px',
+							width: "100%",
+							fieldDefaults: {
+								msgTarget: 'side',
+								labelWidth: 75
+							},
+							defaultType: 'textfield',
+							defaults: {
+								anchor: '100%'
+							},
+							items: [{
+								anchor:'95%',
+								xtype: 'displayfield',
+								name: 'displayFieldMarkwrcategory',
+								value: "Voc&#234; est&#225; logado como " + this.data.username
+							}]
+						});
+						
+						wrc.removeAll();	
+						wrc.add(userInfoForm);
+						wrc.add(categoryTree);
+						
+						user = this.data;
+					} else {
+						var userInfoForm = Ext.create('Ext.form.Panel', {
+							frame:true,
+							title: "Informa&#231;&#245;es do usu&#225;rio",
+							bodyStyle:'padding:5px 0px 0px',
+							width: "100%",
+							fieldDefaults: {
+								msgTarget: 'side',
+								labelWidth: 75
+							},
+							defaultType: 'textfield',
+							defaults: {
+								anchor: '100%'
+							},
+							items: [{
+								fieldLabel: "Usu&#225;rio",
+								name: 'username',
+								id: 'username',
+								allowBlank:false
+							},{
+								fieldLabel: "Senha",
+								name: 'password',
+								id: 'userpassword',
+								inputType: 'password',			
+								allowBlank:false
+							}],
+							buttons: [{
+								id: 'btnLogin',
+								xtype: 'button',
+								text: "Login",
+								handler:function(){
+									userInfoForm.getForm().submit({
+										url:'ajax/forum_login.php?s=1',
+										success: function(form, action) {
+											
+											var userInfoForm2 = Ext.create('Ext.form.Panel', {
+												frame:true,
+												title: "Informa&#231;&#245;es do usu&#225;rio",
+												bodyStyle:'padding:5px 0px 0px',
+												width: "100%",
+												fieldDefaults: {
+													msgTarget: 'side',
+													labelWidth: 75
+												},
+												defaultType: 'textfield',
+												defaults: {
+													anchor: '100%'
+												},
+												items: [{
+													anchor:'95%',
+													xtype: 'displayfield',
+													name: 'displayFieldMarkwrcategory',
+													value: "Voc&#234; est&#225; logado como " + Ext.getCmp('username').value
+												}]
+											});											
+											user = action.result;
+											
+											wrc.remove(userInfoForm, true);
+											wrc.removeAll(false);	
+											wrc.add(userInfoForm2);
+											wrc.add(categoryTree);
+											wrc.doLayout();	
+										},
+										failure: function(form, action) {
+											Ext.MessageBox.show({
+												   title: "Error",
+												   msg: "Houve algum problema! Contate um admin!",
+												   buttons: Ext.MessageBox.OK,
+												   icon: Ext.MessageBox.ERROR
+											});
+										}
+									});
+								}
+							}]
+
+						});	
+						wrc.removeAll();	
+						wrc.add(userInfoForm);
+						wrc.add(categoryTree);
+						wrc.doLayout();
+					};
+				});
+				
+			} 
+		}			
+	});	
+
+	//************************* END USERS
+	    
     //*****************************************************************//
     // TREE VIEW
     //*****************************************************************//
@@ -121,7 +320,7 @@ Ext.onReady(function() {
         id: 'category-tree-panel',
         store: treeStore,
         title: "Project Sections",
-        width: 200,
+        width: "100%",
         useArrows:true,
         autoScroll:true,
         animate:true,
@@ -133,7 +332,6 @@ Ext.onReady(function() {
         split: true,
         listeners: {
             itemclick: function(view, record, item, tabIdx, event) {
-                
                 if (record.isLeaf()) {
                     if(Ext.getCmp("tab" + record.get('id')) == undefined ){
                         addDialogSectionTab(record.get('id'), record.get('text'));
@@ -206,19 +404,7 @@ Ext.onReady(function() {
     //*****************************************************************//
     // STATUS END
     //*****************************************************************//
-	
-	
-    // Main View
-    Ext.create('Ext.Viewport', {
-        layout: {
-            type: 'border',
-            padding: 5
-        },
-        defaults: {
-            split: true
-        },
-        items: [tabs,categoryTree]
-    });
-	
+		
+	userStore.load();
 	statusStore.load();
 });
