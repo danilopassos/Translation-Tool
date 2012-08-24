@@ -1,13 +1,30 @@
 <?php
-	const DB_USER = "root";
-	const DB_PASS = "";
-	const DB_HOST = "localhost";
-	const DB_DATABASE = "ZeldaSS_Translate_Tool";
-	const DB_PREFIX = "tt_";
-	const DB_PREFIX_FORUM = "forum2_";
-    
-    $connection = mysql_connect(DB_HOST, DB_USER, DB_PASS) or die('Problemas de conexção com o banco.');
-    mysql_select_db (DB_DATABASE, $connection) or die('Problemas de conexção com o banco.');
+	// LOCAL
+	if ($_SERVER['SERVER_ADDR'] == "127.0.0.1") {		
+		$dbms = 'mysql';
+		$dbhost = 'localhost';
+		$dbport = '';
+		$dbname = 'ZeldaSS_Translate_Tool';
+		$dbuser = 'root';
+		$dbpasswd = '';	
+		
+		$db_prefix = "tt_";
+		$forum_prefix = "forum2_";
+	// LIVE SERVER
+	} else {
+		$dbms = 'mysql';
+		$dbhost = '';
+		$dbport = '';
+		$dbname = '';
+		$dbuser = '';
+		$dbpasswd = '';
+		
+		$db_prefix = "tt_";
+		$forum_prefix = "forum2_";
+	}
+	
+    $connection = mysql_connect($dbhost, $dbuser, $dbpasswd) or die('Problemas de conexão com o banco.');
+    mysql_select_db ($dbname, $connection) or die('Problemas de conexão com o banco.');
 	/*
     mysql_query("SET NAMES 'utf8'");
     mysql_query('SET character_set_connection=utf8');

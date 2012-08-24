@@ -12,14 +12,15 @@
 				   , u.username					username
                    , min(dl.dialog_status_id)	status
 				   , max(dl.last_updated)		last_updated
-				from ' . DB_PREFIX . 'dialog d
-				left join ' . DB_PREFIX . 'dialog_lang dl
+				from ' . $db_prefix . 'dialog d
+				left join ' . $db_prefix . 'dialog_lang dl
 				  on d.dialog_id = dl.dialog_id
-				   , ' . DB_PREFIX_FORUM . 'users u
+				   , ' . $forum_prefix . 'users u
 			   where d.section_id = ' . $section_id . '
 				 and u.user_id = dl.user_id
 			   group by 1,2
 			   order by d.dialog_id';
+			   
 
     $result = @mysql_query($query) or die(mysql_error());
 

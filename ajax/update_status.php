@@ -17,7 +17,7 @@
 	$dialogLangId = mysql_real_escape_string($_POST['dlid']);
 	$statusId = mysql_real_escape_string($_POST['sid']);
 	
-    $query = 'update ' . DB_PREFIX . 'dialog_lang 
+    $query = 'update ' . $db_prefix . 'dialog_lang 
 	             set dialog_status_id = ' . $statusId . '
 				   , user_id = \'' . $_POST['uid'] . '\'
 				   , last_updated = now()

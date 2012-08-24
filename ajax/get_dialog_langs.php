@@ -10,8 +10,8 @@
 	
     $query = 'select dl.lang_id						lang
 				   , l.lang_name					lang_name
-				from ' . DB_PREFIX . 'dialog_lang dl
-				   , ' . DB_PREFIX . 'lang l
+				from ' . $db_prefix . 'dialog_lang dl
+				   , ' . $db_prefix . 'lang l
 			   where dl.dialog_id = ' . $dialog_id . '
 			     and l.lang_id = dl.lang_id
 			   order by dl.dialog_id';

@@ -9,7 +9,7 @@
 	$project = $_GET["p"];
 	
     $query = 'select *
-			    from ' . DB_PREFIX . 'section
+			    from ' . $db_prefix . 'section
 			   where parent_id is null
 			     and project_id = ' . $project . '
 				 and visible = 1
@@ -29,7 +29,7 @@
 		$node['id'] = $row['section_id'];
 
 		$query = 'select *
-					from ' . DB_PREFIX . 'section
+					from ' . $db_prefix . 'section
 				   where parent_id = ' . $row['section_id'] . '
 					 and project_id = ' . $project . '
 					 and visible = 1

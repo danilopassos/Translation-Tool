@@ -7,7 +7,7 @@
 	
     $query = 'select ds.dialog_status_id				id
                    , ds.dialog_status_name				name
-				from ' . DB_PREFIX . 'dialog_status ds
+				from ' . $db_prefix . 'dialog_status ds
 			   where visible = 1
 			   order by 1';
 
