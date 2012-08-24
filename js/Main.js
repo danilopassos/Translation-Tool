@@ -40,6 +40,113 @@ Ext.require([
 
 
 Ext.onReady(function() {
+
+    //*****************************************************************//
+    // TOOLBOX BEGIN
+    //*****************************************************************//
+	Ext.define('ToolBoxModel', {
+		extend: 'Ext.data.Model',
+		fields: [
+			{name : 'toolbox_id', type: 'int'},
+			{name : 'toolbox_name', type : 'string'}
+		]		
+	});
+
+	var toolBoxStore = Ext.create('Ext.data.Store', {
+		id: 'toolboxStore',
+		model: 'ToolBoxModel',
+		proxy: {
+			simpleSortMode: true, 
+			type: 'ajax',
+			api: {
+				read: 'ajax/get_toolbox_list.php'
+			},
+			reader: {
+				type: 'json',
+				root: 'data',
+				successProperty: 'success'
+			},
+			extraParams: {
+				pId: projectId
+			},
+			actionMethods: {
+				read: 'POST'
+			}
+		},
+		listeners: {
+			 scope: this,
+			 load: function(toolBoxStore, records){
+				toolBoxStore.data.each(function() {
+					accordion.add(Ext.create('Ext.grid.Panel', {
+						id: "toolBox" + this.data.toolbox_id,
+						columnLines: true,
+						collapsed: true,
+						//hideCollapseTool: true,
+						store: Ext.create('Ext.data.Store',{
+							model: 'ToolBoxModels',
+							proxy: {
+								type: 'ajax',
+								url: 'ajax/toolbox.php?tId=' + this.data.toolbox_id,
+								reader: {
+									type: 'json'
+								}
+							},
+							autoLoad: true
+						}),
+						title: this.data.toolbox_name,		
+						stateful: true,
+						stateId: 'stateGrid',
+						columns: [{
+							text     : 'English',
+							width    : 100,
+							sortable : true,
+							dataIndex: 'english'
+						},{
+							text     : 'Portuguese',
+							width    : 100,
+							sortable : true,
+							dataIndex: 'portuguese'
+						},{		
+							text     : 'Japanese',
+							width    : 100,
+							sortable : true,
+							dataIndex: 'japanese'
+						},{
+							text     : 'Spanish',
+							width    : 100,
+							sortable : true,
+							dataIndex: 'spanish'
+						},{
+							text     : 'Italian',
+							width    : 100,
+							sortable : true,
+							dataIndex: 'italian'
+						},{
+							text     : 'Deutch',
+							width    : 100,
+							sortable : true,
+							dataIndex: 'deutch'
+						},{
+							text     : 'French',
+							width    : 100,
+							sortable : true,
+							dataIndex: 'french'
+						}],
+						viewConfig: {
+							stripeRows: true,
+							enableTextSelection: true
+						}
+					}));
+				});
+			}
+		}			
+	});
+    //*****************************************************************//
+    // TOOLBOX END
+    //*****************************************************************//
+
+	
+	
     var currentItem;
 
 	// TABS
@@ -120,6 +227,31 @@ Ext.onReady(function() {
     }
 	// TABS END
 	
+	// Accordion
+	Ext.define('ToolBoxModels', {
+		extend: 'Ext.data.Model',
+		fields: [
+		   {name: 'english', type: 'string'},
+		   {name: 'portuguese', type: 'string'},
+		   {name: 'japanese', type: 'string'},
+		   {name: 'spanish', type: 'string'},
+		   {name: 'italian', type: 'string'},
+		   {name: 'deutch', type: 'string'},
+		   {name: 'french', type: 'string'}
+		]
+	});
+	
+	var accordion = Ext.create('Ext.Panel', {
+		title: 'Tables',
+		collapsible: true,
+		region:'east',
+		split:true,
+		width: 350,
+		layout:'accordion'
+	});	
+	// Accordion
+		
+	
     // Main View
     Ext.create('Ext.Viewport', {
         layout: {
@@ -139,10 +271,11 @@ Ext.onReady(function() {
 			autoScroll: true,
 			title: "Project Sections",
 			width: 250
-		}, tabs]
+		}, tabs, accordion]
     });
 	
 	wrc = Ext.getCmp('west-container');
+
 	
 
 	
@@ -301,7 +434,7 @@ Ext.onReady(function() {
 				});
 				
 			} 
-		}			
+		}
 	});	
 
 	//************************* END USERS
@@ -404,7 +537,8 @@ Ext.onReady(function() {
     //*****************************************************************//
     // STATUS END
     //*****************************************************************//
-		
+	
 	userStore.load();
 	statusStore.load();
+	toolBoxStore.load();
 });
