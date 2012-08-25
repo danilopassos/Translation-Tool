@@ -538,7 +538,94 @@ Ext.onReady(function() {
     // STATUS END
     //*****************************************************************//
 	
+    //*****************************************************************//
+    // STATUS BEGIN
+	//  @TODO : Isso deveria vir pelo banco no join do dialogo... fazendo por aqui por enquanto
+    //*****************************************************************//
+	Ext.define('HistoryModel', {
+		extend: 'Ext.data.Model',
+		fields: [
+			{name : 'dialog_id', type: 'int'},
+			{name : 'dialog_name', type: 'string'},
+			{name : 'user_id', type : 'string'},
+			{name : 'username', type : 'string'},
+			{name : 'changed', type : 'string'},
+			{name : 'last_updated', type : 'string'},
+			{name : 'dialog_status_name', type : 'string'}
+			
+		]		
+	});
+
+	var historyStore = Ext.create('Ext.data.Store', {
+		id: 'historyStore',
+		model: 'HistoryModel',
+		proxy: {
+			simpleSortMode: true, 
+			type: 'ajax',
+			api: {
+				read: 'ajax/get_hist.php'
+			},
+			reader: {
+				type: 'json',
+				root: 'data',
+				successProperty: 'success'
+			},
+			extraParams: {
+				pId: projectId
+			},
+			actionMethods: {
+				//opcional
+				read: 'POST'
+			}
+		},
+		listeners: {
+			 load: function(historyStore, records){
+				++tabIdx;
+				tabs.add({
+					closable: false,
+					id: "tabHist",
+					title: "Atualiza&#231;&#245;es do Projeto",
+					layout: {
+						type:'hbox',
+						padding:'1',
+						align:'stretch'
+					},
+					defaults:{
+						margins:'0 0 0 0'
+					},
+					listeners:{
+/*						beforeshow: function() {
+							grid = Ext.getCmp("grd" + dialogSectionId);
+							if (grid != undefined) {
+								grid.store.load();
+								grid.getView().refresh();
+							}							
+						}
+*/						
+					}
+				}).show();
+				
+				var str = "";
+				historyStore.data.each(function(){					
+					if (this.data.changed == 'D') {
+						str = str + "<div> " + this.data.dialog_id + ": " + this.data.dialog_name + " had its text changed by " + this.data.username + " on " + this.data.last_updated + "</div><BR>";
+					} else {
+						str = str + "<div> " + this.data.dialog_id + ": " + this.data.dialog_name + " had its status changed to " + this.data.dialog_status_name + " by " + this.data.username + " on " + this.data.last_updated + "</div><BR>";
+					}
+
+				});
+				
+				Ext.getCmp("tabHist").add({width: "99.6%", html: str});
+
+			}
+		}			
+	});
+    //*****************************************************************//
+    // STATUS END
+    //*****************************************************************//	
+	
 	userStore.load();
 	statusStore.load();
 	toolBoxStore.load();
+	historyStore.load();
 });
