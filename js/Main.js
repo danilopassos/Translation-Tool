@@ -15,7 +15,8 @@ var statusListMenu = [];
 // tab generation code
 var tabIdx = 0;
 var user = {};
-user.is_registered = false;
+user.is_registered = 0;
+user.permission = 0;
 
 Ext.Loader.setConfig({
     enabled:true
@@ -40,6 +41,7 @@ Ext.require([
 
 
 Ext.onReady(function() {
+    Ext.QuickTips.init();
 
     //*****************************************************************//
     // TOOLBOX BEGIN
@@ -86,7 +88,7 @@ Ext.onReady(function() {
 							model: 'ToolBoxModels',
 							proxy: {
 								type: 'ajax',
-								url: 'ajax/toolbox.php?tId=' + this.data.toolbox_id,
+								url: 'ajax/toolbox.php?pId=' + projectId + '&tId=' + this.data.toolbox_id,
 								reader: {
 									type: 'json'
 								}
@@ -94,48 +96,68 @@ Ext.onReady(function() {
 							autoLoad: true
 						}),
 						title: this.data.toolbox_name,		
-						stateful: true,
-						stateId: 'stateGrid',
 						columns: [{
 							text     : 'English',
-							width    : 100,
 							sortable : true,
-							dataIndex: 'english'
+							dataIndex: 'english',
+							renderer:function(value, metaData, record, row, col, store, gridView){
+								metaData.tdAttr= 'data-qtip="'+record.get('english')+'"';
+								return value;
+							}
 						},{
 							text     : 'Portuguese',
-							width    : 100,
 							sortable : true,
-							dataIndex: 'portuguese'
+							dataIndex: 'portuguese',
+							renderer:function(value, metaData, record, row, col, store, gridView){
+								metaData.tdAttr= 'data-qtip="'+record.get('portuguese')+'"';
+								return value;
+							}							
 						},{		
 							text     : 'Japanese',
-							width    : 100,
 							sortable : true,
-							dataIndex: 'japanese'
+							dataIndex: 'japanese',
+							renderer:function(value, metaData, record, row, col, store, gridView){
+								metaData.tdAttr= 'data-qtip="'+record.get('japanese')+'"';
+								return value;
+							}									
 						},{
 							text     : 'Spanish',
-							width    : 100,
 							sortable : true,
-							dataIndex: 'spanish'
+							dataIndex: 'spanish',
+							renderer:function(value, metaData, record, row, col, store, gridView){
+								metaData.tdAttr= 'data-qtip="'+record.get('spanish')+'"';
+								return value;
+							}										
 						},{
 							text     : 'Italian',
-							width    : 100,
 							sortable : true,
-							dataIndex: 'italian'
+							dataIndex: 'italian',
+							renderer:function(value, metaData, record, row, col, store, gridView){
+								metaData.tdAttr= 'data-qtip="'+record.get('italian')+'"';
+								return value;
+							}								
 						},{
 							text     : 'Deutch',
-							width    : 100,
 							sortable : true,
-							dataIndex: 'deutch'
+							dataIndex: 'deutch',
+							renderer:function(value, metaData, record, row, col, store, gridView){
+								metaData.tdAttr= 'data-qtip="'+record.get('deutch')+'"';
+								return value;
+							}
 						},{
 							text     : 'French',
-							width    : 100,
 							sortable : true,
-							dataIndex: 'french'
+							dataIndex: 'french',
+							renderer:function(value, metaData, record, row, col, store, gridView){
+								metaData.tdAttr= 'data-qtip="'+record.get('french')+'"';
+								return value;
+							}							
 						}],
 						viewConfig: {
 							stripeRows: true,
-							enableTextSelection: true
-						}
+							enableTextSelection: true,
+							shrinkWrap : true
+						}					
 					}));
 				});
 			}
@@ -214,11 +236,15 @@ Ext.onReady(function() {
             },
 			listeners:{
 				beforeshow: function() {
+		
+	
 					grid = Ext.getCmp("grd" + dialogSectionId);
 					if (grid != undefined) {
 						grid.store.load();
 						grid.getView().refresh();
+						grid.getView().select(0);
 					}
+					
 				}
 			}
         }).show();
@@ -286,7 +312,8 @@ Ext.onReady(function() {
 		fields: [
 			{name : 'user_id', type: 'int'},
 			{name : 'username', type : 'string'},
-			{name : 'is_registered', type : 'boolean'}			
+			{name : 'is_registered', type : 'boolean'},
+			{name : 'permission', type : 'int'}
 		],
 		proxy: {
 			type: 'rest',
@@ -350,6 +377,12 @@ Ext.onReady(function() {
 						wrc.add(categoryTree);
 						
 						user = this.data;
+
+						Ext.each(statusListMenu, function(st) {
+							if (st != undefined) {
+								st.disabled = (user.is_registered == 0 || (user.permission <= 5 && st.value >= 4) || (user.permission == 10 && st.value >= 6));
+							}
+						});
 					} else {
 						var userInfoForm = Ext.create('Ext.form.Panel', {
 							frame:true,
@@ -412,6 +445,14 @@ Ext.onReady(function() {
 											wrc.add(userInfoForm2);
 											wrc.add(categoryTree);
 											wrc.doLayout();	
+
+											Ext.each(statusListMenu, function(st) {
+												if (st != undefined) {
+													st.disabled = (user.is_registered == 0 || (user.permission <= 5 && st.value >= 4) || (user.permission == 10 && st.value >= 6));
+												}
+											});
+											
+											
 										},
 										failure: function(form, action) {
 											Ext.MessageBox.show({
@@ -528,7 +569,8 @@ Ext.onReady(function() {
 						text: this.data.name,
 						scale: 'small',
 						width: 130,			
-						value: this.data.id
+						value: this.data.id,
+						disabled: (user.is_registered == 0 || (user.permission <= 5 && this.data.id >= 4) || (user.permission == 10 && this.data.id >= 6))
 					}; // ExtJS 4.0.7 -> }];					
 				});
 			}

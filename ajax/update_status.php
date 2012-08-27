@@ -12,10 +12,16 @@
 	if (!is_numeric($_POST['dlid']) && !is_numeric($_POST['sid'])) {
 		echo json_encode(array("success"=>false, "msg"=>"N&#227;o funcionar&#225;!"));
 		exit();
-	}	
-	
+	}
 	$dialogLangId = mysql_real_escape_string($_POST['dlid']);
 	$statusId = mysql_real_escape_string($_POST['sid']);
+	
+	if ($_SESSION['permission_lvl'] < 5
+		|| ($_SESSION['permission_lvl'] == 5 && $statusId > 3)) {
+		echo json_encode(array("success"=>false, "msg"=>"No permission!"));
+		exit();
+	}
+	
 	
     $query = 'update ' . $db_prefix . 'dialog_lang 
 	             set dialog_status_id = ' . $statusId . '

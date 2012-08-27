@@ -23,6 +23,8 @@
 		$forum_prefix = "forum2_";
 	}
 	
+	
+	
     $connection = mysql_connect($dbhost, $dbuser, $dbpasswd) or die('Problemas de conexão com o banco.');
     mysql_select_db ($dbname, $connection) or die('Problemas de conexão com o banco.');
 	/*
@@ -31,6 +33,9 @@
     mysql_query('SET character_set_client=utf8');
     mysql_query('SET character_set_results=utf8');
 	*/
+	
+	@mysql_query("SET time_zone = '-3:00';");
+	
 	function begin() {
 		@mysql_query("BEGIN");
 	}

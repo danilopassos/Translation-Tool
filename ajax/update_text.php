@@ -17,6 +17,12 @@
 	$dialogLangId = mysql_real_escape_string($_POST['dlid']);
 	$dialogLangText = mysql_real_escape_string($_POST['txt']);
 	
+	if ($_SESSION['permission_lvl'] < 5
+		|| ($_SESSION['permission_lvl'] == 5 && $statusId > 3)) {
+		echo json_encode(array("success"=>false, "msg"=>"No permission!"));
+		exit();
+	}
+		
     $query = 'update ' . $db_prefix . 'dialog_lang 
 	             set dialog = \'' . $dialogLangText . '\'
 				   , user_id = \'' . $_POST['uid'] . '\'

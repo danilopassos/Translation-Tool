@@ -4,16 +4,15 @@ function criarWindowDialogo(id, name, dialogs) {
     }
 
     var pan = Ext.create('Ext.panel.Panel', {
-        //title: 'dialog ' + name,
+        title: 'dialog ' + name,
         autoScroll:true,
-	border: false,
-        //maximizable: true,
-        width: 'auto',
+        maximizable: true,
+        width: '100%',
         //width: 700,
         //height: '90%',
         layout: {
-            type:'hbox',
-            //padding:'2',
+            type:'vbox',
+            padding:'2',
             align:'stretch'
         },
         defaults:{
@@ -37,8 +36,8 @@ function criarWindowDialogo(id, name, dialogs) {
 
                         id: 'panel' + dialog.id + dialog.lang_name,
                             
-                        //collapsible: true,                           
-                        //collapsed: true,
+                        collapsible: true,                           
+                        collapsed: true,
                                 
                         layout: {
                             type:'hbox',
@@ -48,9 +47,10 @@ function criarWindowDialogo(id, name, dialogs) {
                         items:[{
                             xtype:'textarea',
                             id: 'source' + dialog.id + dialog.lang_name,
-                            width: '300px',
+                            width: '100%',
                             value: dialog.dialog,
-                            disabled: (user.is_registered == 0 || (user.permission <= 5 && dialog.status >= 4) || (user.permission == 10 && dialog.status >= 6))
+                            height: '50px',
+                            disabled: (dialog.status >= 4 || user.is_registered == 0)
                         },{
                             xtype:'textarea',
                             id : 'preview' + dialog.id + dialog.lang_name,                                
@@ -67,7 +67,7 @@ function criarWindowDialogo(id, name, dialogs) {
                             items: [{
                                 id: 'saveBtn' + dialog.id + dialog.lang_name,
                                 text: 'Save',
-                                hidden: (user.is_registered == 0 || (user.permission <= 5 && dialog.status >= 4) || (user.permission == 10 && dialog.status >= 6)),
+                                hidden: (dialog.status >= 4 || user.is_registered == 0),
                                 handler: function(item) {
                                     Ext.Ajax.request({
                                         url: 'ajax/update_text.php',
@@ -105,7 +105,7 @@ function criarWindowDialogo(id, name, dialogs) {
                                 pressed: false,
                             }, '-', {
                                 text: 'Mark Status',
-                                hidden: (user.is_registered == 0 || (user.permission <= 5 && dialog.status >= 4) || (user.permission == 10 && dialog.status >= 6)),
+                                hidden: (dialog.status >= 4 || user.is_registered == 0),
                                 menu: {
 									id: 'dialogMenu' + dialog.id + dialog.lang_name,
                                     xtype: 'menu',
@@ -170,7 +170,7 @@ function criarWindowDialogo(id, name, dialogs) {
                     });
 					
                     Ext.each(statusListMenu, function(st) {
-                        if (st != undefined && !st.disabled) {
+                        if (st != undefined) {
                             Ext.getCmp('btngrp' + dialog.id + dialog.lang_name).add(
                             {
                                 text: st.text,
@@ -189,11 +189,6 @@ function criarWindowDialogo(id, name, dialogs) {
                                         success: function(response){
 											Ext.getCmp('panel' + dialog.id + dialog.lang_name).setTitle('<img src=\"img/'+ dialog.lang_name + '.png\">&nbsp;' +  dialog.lang_name + " (" + dialog.version + ") - Current Status: " + st.text);
 											Ext.getCmp('dialogMenu' + dialog.id + dialog.lang_name).hide( );
-											if (item.value >= 4) { 
-												Ext.getCmp('source' + dialog.id + dialog.lang_name).disable();
-											} else {
-												Ext.getCmp('source' + dialog.id + dialog.lang_name).enable();
-											}
                                             Ext.MessageBox.show({
                                                 title: "Success",
                                                 msg: "Updated",

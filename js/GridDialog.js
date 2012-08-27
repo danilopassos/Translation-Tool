@@ -3,6 +3,7 @@ Ext.define('Dialog', {
     fields: [
         {name: 'id',         type: 'string'},
         {name: 'name',       type: 'string'},
+        {name: 'dialog',       type: 'string'},		
 		{name: 'username',   type: 'string'},
         {name: 'status',     type: 'string'},
 
@@ -34,6 +35,7 @@ function createSectionGrid(sectionId) {
             },
             autoLoad: true
         }),
+		width: '99.6%',
         stateful: true,
         stateId: 'stateGrid',
         columns: [{
@@ -43,12 +45,21 @@ function createSectionGrid(sectionId) {
             dataIndex: 'id'
         },{
             text     : 'Name',
-            width    : 150,
+            width    : 100,
             sortable : true,
             dataIndex: 'name'
+        },{
+            text     : 'Dialog',
+            width    : 200,
+            sortable : true,
+            dataIndex: 'dialog',
+			renderer:function(value, metaData, record, row, col, store, gridView){
+				metaData.tdAttr= 'data-qtip="'+record.get('dialog')+'"';
+				return value;
+			}		
         },{		
             text     : 'User Name',
-            width    : 150,
+            width    : 100,
             sortable : true,
             dataIndex: 'username'
         },{
@@ -66,7 +77,8 @@ function createSectionGrid(sectionId) {
         }],
         viewConfig: {
             stripeRows: true,
-            enableTextSelection: false
+            enableTextSelection: false,
+			preserveScrollOnRefresh: true
         },
         listeners: {
             beforeitemclick: function(view, record, item, index, event) {
