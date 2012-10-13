@@ -14,6 +14,11 @@
 		exit();
 	}
 	
+	$rev = false;
+	if (isset($_POST['rev'])) {
+		$rev = true;
+	}
+	
 	$dialogLangId = mysql_real_escape_string($_POST['dlid']);
 	$dialogLangText = mysql_real_escape_string($_POST['txt']);
 	
@@ -27,6 +32,12 @@
 	             set dialog = \'' . $dialogLangText . '\'
 				   , user_id = \'' . $_POST['uid'] . '\'
 				   , last_updated = now()
+				   
+			 ';
+	if ($rev) {
+	$query .= '   , dialog_status_id = 2';
+	}
+	$query .= '
 			   where dialog_lang_id = ' . $dialogLangId;
 
     $result = @mysql_query($query) or die(mysql_error());

@@ -1,12 +1,10 @@
 function criarWindowDialogo(id, name, dialogs) {
-    function onItemClick(item){
-        alert('You clicked save.');
-    }
-
+	this.wdwDlgId = id;
     var pan = Ext.create('Ext.panel.Panel', {
         //title: 'dialog ' + name,
+		//id: 'wndDlg' + id,
         autoScroll:true,
-	border: false,
+		border: false,
         //maximizable: true,
         width: 'auto',
         //width: 700,
@@ -24,22 +22,26 @@ function criarWindowDialogo(id, name, dialogs) {
         listeners: {
             render: function(w, opt) {
                 Ext.each(dialogs, function(dialog){
-                    var action = Ext.create('Ext.Action', {
+                    /*var action = Ext.create('Ext.Action', {
                         text: 'Action 1',
                         iconCls: 'icon-add',
                         handler: function(){
                             Ext.example.msg('Click', 'You clicked on "Action 1".');
                         }
-                    });
+                    });*/
+					
+					var collapsed = dialog.lang_name != "pt_BR" || dialog.status == 6;
+					var userPermission = (user.is_registered == 0 || user.permission == 0 || (user.permission <= 5 && dialog.status >= 4) || (user.permission == 10 && dialog.status >= 6));
 					
                     var p = Ext.create('Ext.panel.Panel', {
-                        title: '<img src=\"img/'+ dialog.lang_name + '.png\">&nbsp;' +  dialog.lang_name + " (" + dialog.version + ") - Current Status: " + dialog.status_name,
+                        title: dialog.lang_name + " (" + dialog.version + ") - Status: " + dialog.status_name,
 
                         id: 'panel' + dialog.id + dialog.lang_name,
-                            
-                        //collapsible: true,                           
-                        //collapsed: true,
-                                
+						icon: "img/" + dialog.lang_name + ".png",
+                        collapseDirection: 'left',
+                        collapsible: collapsed,
+                        collapsed: (collapsed && dialog.lang_name != "en_US" && dialog.lang_name != "ja_JP" ? true : false),
+						titleCollapse: collapsed,
                         layout: {
                             type:'hbox',
                             padding:'0',
@@ -50,7 +52,7 @@ function criarWindowDialogo(id, name, dialogs) {
                             id: 'source' + dialog.id + dialog.lang_name,
                             width: '300px',
                             value: dialog.dialog,
-                            disabled: (user.is_registered == 0 || (user.permission <= 5 && dialog.status >= 4) || (user.permission == 10 && dialog.status >= 6))
+                            disabled: userPermission
                         },{
                             xtype:'textarea',
                             id : 'preview' + dialog.id + dialog.lang_name,                                
@@ -65,9 +67,12 @@ function criarWindowDialogo(id, name, dialogs) {
                             itemId: 'tb' + dialog.id + dialog.lang_name,
                             xtype: 'toolbar',
                             items: [{
+								text: 'Login to view options',
+								hidden: (user.is_registered != 0 || dialog.status >= 6)
+							}, {
                                 id: 'saveBtn' + dialog.id + dialog.lang_name,
                                 text: 'Save',
-                                hidden: (user.is_registered == 0 || (user.permission <= 5 && dialog.status >= 4) || (user.permission == 10 && dialog.status >= 6)),
+                                hidden: userPermission,
                                 handler: function(item) {
                                     Ext.Ajax.request({
                                         url: 'ajax/update_text.php',
@@ -95,7 +100,51 @@ function criarWindowDialogo(id, name, dialogs) {
                                         }
                                     })
                                 }
-                            }, '-', {
+                            }, {
+                                text: 'Save to Review',
+                                id: 'saveRevBtn' + dialog.id + dialog.lang_name,
+                                hidden: userPermission,
+                                handler: function(item) {
+                                    Ext.Ajax.request({
+                                        url: 'ajax/update_text.php',
+                                        method : 'POST',
+                                        params: {
+                                            dlid: dialog.id,
+											uid: user.user_id,
+                                            txt: Ext.getCmp('source' + dialog.id + dialog.lang_name).value,
+											rev: true
+                                        },
+                                        success: function(response) {
+											Ext.getCmp('panel' + dialog.id + dialog.lang_name).setTitle('<img src=\"img/'+ dialog.lang_name + '.png\">&nbsp;' +  dialog.lang_name + " (" + dialog.version + ") - Status: Waiting for Review");
+/*                                            Ext.MessageBox.show({
+                                                title: "Success",
+                                                msg: "Updated",
+                                                buttons: Ext.MessageBox.OK,
+                                                icon: Ext.MessageBox.INFO
+                                            });
+*/
+											Ext.MessageBox.confirm('Confirm', 'Dialog was updated!<br><br>Do you want to close it?', 
+												function(btn) {
+													if (btn == 'yes') {
+														Ext.getCmp('tabDialog' + this.wdwDlgId).close();
+													}
+													//Ext.example.msg('Button Click', 'You clicked the {0} button', btn);
+												}
+											);
+											
+											
+                                        },
+                                        failure: function(response) {
+                                            Ext.MessageBox.show({
+                                                title: "Error",
+                                                msg: "Problemas no envio",
+                                                buttons: Ext.MessageBox.OK,
+                                                icon: Ext.MessageBox.ERROR
+                                            });
+                                        }
+                                    })
+                                }
+                            }/*, '-', {
                                 text: 'HTML View',
                                 enableToggle: true,
                                 toggleHandler: function (btn, pressed) {
@@ -103,9 +152,9 @@ function criarWindowDialogo(id, name, dialogs) {
                                     Ext.getCmp('preview' + dialog.id + dialog.lang_name).getEl().toggle();
                                 },
                                 pressed: false,
-                            }, '-', {
+                            }*/, {
                                 text: 'Mark Status',
-                                hidden: (user.is_registered == 0 || (user.permission <= 5 && dialog.status >= 4) || (user.permission == 10 && dialog.status >= 6)),
+                                hidden: userPermission,
                                 menu: {
 									id: 'dialogMenu' + dialog.id + dialog.lang_name,
                                     xtype: 'menu',
@@ -122,19 +171,38 @@ function criarWindowDialogo(id, name, dialogs) {
 												
                                     }
                                 }									
-                            }
-                            ]
+                            }, {
+								text: 'This dialog can\'t be edit',
+								hidden: (dialog.status < 4)
+							}]
                         },
 						scope: this,
-						listeners: {
+/*						listeners: {
 							afterrender : function(p) {
+								if (dialog.lang_name != "pt_BR") {
+									p.header.on('click', function(e, h) {
+										p.toggleCollapse();
+									}, p, {
+										stopEvent: true
+									});
+								}
+							},
+						},
+*/
+/*												
+						listeners: {
+							collpase : function( p, animates, Opts ) {
+								alert(1);
 								p.header.on('click', function(e, h) {
+									alert(3);
 									p.toggleCollapse();
 								}, p, {
 									stopEvent: true
 								});
-							},
+								alert(2);
+							}							
 						}
+*/						
 						/*,
                         listeners: {
 							beforeexpand: function( p, animates, Opts ){
@@ -187,7 +255,7 @@ function criarWindowDialogo(id, name, dialogs) {
 											uid: user.user_id
                                         },
                                         success: function(response){
-											Ext.getCmp('panel' + dialog.id + dialog.lang_name).setTitle('<img src=\"img/'+ dialog.lang_name + '.png\">&nbsp;' +  dialog.lang_name + " (" + dialog.version + ") - Current Status: " + st.text);
+											Ext.getCmp('panel' + dialog.id + dialog.lang_name).setTitle('<img src=\"img/'+ dialog.lang_name + '.png\">&nbsp;' +  dialog.lang_name + " (" + dialog.version + ") - Status: " + st.text);
 											Ext.getCmp('dialogMenu' + dialog.id + dialog.lang_name).hide( );
 											if (item.value >= 4) { 
 												Ext.getCmp('source' + dialog.id + dialog.lang_name).disable();

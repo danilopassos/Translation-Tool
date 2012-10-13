@@ -23,7 +23,7 @@ $query =  'select dl.dialog_lang_id     id
 		   where dl.dialog_id = ' . $dialog_id . '
 			 and l.lang_id = dl.lang_id
 			 and s.dialog_status_id = dl.dialog_status_id
-		   order by dl.dialog_status_id, dl.lang_id, dl.dialog_lang_id desc';
+		   order by dl.dialog_status_id, l.position, dl.lang_id, dl.dialog_lang_id desc';
 
 $result = @mysql_query($query) or die(mysql_error());
 

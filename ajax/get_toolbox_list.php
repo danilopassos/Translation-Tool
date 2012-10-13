@@ -15,8 +15,12 @@
 	               , t.toolbox_name
 				from ' . $db_prefix . 'toolbox t
 				   , ' . $db_prefix . 'project_has_' . $db_prefix . 'toolbox tt
+				   , ' . $db_prefix . 'toolbox_term te
 			   where t.toolbox_id = tt.toolbox_id
-			     and tt.project_id = ' . $projectId;
+			     and te.toolbox_id = t.toolbox_id
+			     and tt.project_id = ' . $projectId . '
+			   group by 1, 2
+			  having count(te.toolbox_term_id) > 0';
 
     $result = @mysql_query($query) or die(mysql_error());
 

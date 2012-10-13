@@ -3,7 +3,8 @@ Ext.define('Dialog', {
     fields: [
         {name: 'id',         type: 'string'},
         {name: 'name',       type: 'string'},
-        {name: 'dialog',       type: 'string'},		
+        {name: 'dialog_br',       type: 'string'},
+		{name: 'dialog_en',       type: 'string'},
 		{name: 'username',   type: 'string'},
         {name: 'status',     type: 'string'},
 
@@ -49,12 +50,22 @@ function createSectionGrid(sectionId) {
             sortable : true,
             dataIndex: 'name'
         },{
-            text     : 'Dialog',
+            text     : 'Dialog BR',
             width    : 200,
             sortable : true,
-            dataIndex: 'dialog',
+            dataIndex: 'dialog_br',
 			renderer:function(value, metaData, record, row, col, store, gridView){
-				metaData.tdAttr= 'data-qtip="'+record.get('dialog')+'"';
+				metaData.tdAttr= 'data-qtip="'+record.get('dialog_br')+'"';
+				return value;
+			}		
+        },{
+            text     : 'Dialog US',
+            width    : 200,
+            sortable : true,
+			hidden   : true,			
+            dataIndex: 'dialog_en',
+			renderer:function(value, metaData, record, row, col, store, gridView){
+				metaData.tdAttr= 'data-qtip="'+record.get('dialog_en')+'"';
 				return value;
 			}		
         },{		

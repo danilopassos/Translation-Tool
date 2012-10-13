@@ -236,15 +236,12 @@ Ext.onReady(function() {
             },
 			listeners:{
 				beforeshow: function() {
-		
-	
 					grid = Ext.getCmp("grd" + dialogSectionId);
 					if (grid != undefined) {
 						grid.store.load();
 						grid.getView().refresh();
 						grid.getView().select(0);
-					}
-					
+					}					
 				}
 			}
         }).show();
@@ -621,46 +618,50 @@ Ext.onReady(function() {
 			}
 		},
 		listeners: {
-			 load: function(historyStore, records){
-				++tabIdx;
-				tabs.add({
-					closable: false,
-					id: "tabHist",
-					title: "Atualiza&#231;&#245;es do Projeto",
-					layout: {
-						type:'hbox',
-						padding:'1',
-						align:'stretch'
-					},
-					defaults:{
-						margins:'0 0 0 0'
-					},
-					listeners:{
-/*						beforeshow: function() {
-							grid = Ext.getCmp("grd" + dialogSectionId);
-							if (grid != undefined) {
-								grid.store.load();
-								grid.getView().refresh();
-							}							
+			 beforeshow: function() {
+			 },
+			 load: function(historyStore, records){		
+				if (Ext.getCmp("tabHist") == undefined) {
+					++tabIdx;
+					tabs.add({
+						closable: false,
+						id: "tabHist",
+						title: "Atualiza&#231;&#245;es do Projeto",
+						layout: {
+							type:'hbox',
+							padding:'1',
+							align:'stretch'
+						},
+						defaults:{
+							margins:'0 0 0 0'
+						},
+						listeners:{
+							beforeshow: function() {
+								historyStore.load();
+							}
 						}
-*/						
-					}
-				}).show();
+					}).show();
+				}
 				
 				var str = "";
 				historyStore.data.each(function(){					
 					if (this.data.changed == 'D') {
 						str = str + "<div> " + this.data.dialog_id + ": " + this.data.dialog_name + " had its text changed by " + this.data.username + " on " + this.data.last_updated + "</div><BR>";
-					} else {
+					} else if (this.data.changed == 'S') {
 						str = str + "<div> " + this.data.dialog_id + ": " + this.data.dialog_name + " had its status changed to " + this.data.dialog_status_name + " by " + this.data.username + " on " + this.data.last_updated + "</div><BR>";
+					} else {
+						str = str + "<div> " + this.data.dialog_id + ": " + this.data.dialog_name + " had its text changed and its status changed to " + this.data.dialog_status_name + " by " + this.data.username + " on " + this.data.last_updated + "</div><BR>";
 					}
 
 				});
 				
-				Ext.getCmp("tabHist").add({width: "99.6%", html: str});
+				if (Ext.getCmp("tabHist") != undefined) {
+					Ext.getCmp("tabHist").removeAll();
+					Ext.getCmp("tabHist").add({width: "99.6%", html: str});
+				}
 
 			}
-		}			
+		}
 	});
     //*****************************************************************//
     // STATUS END

@@ -21,7 +21,7 @@
 				   , ' . $db_prefix . 'dialog d
 				   , ' . $db_prefix . 'section s
 				   , ' . $db_prefix . 'dialog_status ds
-			   where dl.user_id = u.user_id
+			   where dh.user_id = u.user_id
 				 and dl.dialog_lang_id = dh.dialog_lang_id
 			     and dl.dialog_id = d.dialog_id
 				 and d.section_id = s.section_id

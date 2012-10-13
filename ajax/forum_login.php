@@ -2,10 +2,10 @@
 	// LOCAL TESTS
 	if ($_SERVER['SERVER_ADDR'] == "127.0.0.1") {
 		if (isset($_GET['s'])) {
-			echo json_encode(array("success"=>true, "msg"=>"Login Successful", "user_id"=>25, "username"=>"|N|NjA|", "permission"=>"5", "is_registered"=>true));
+			echo json_encode(array("success"=>true, "msg"=>"Login Successful", "user_id"=>25, "username"=>"|N|NjA|", "permission"=>"10", "is_registered"=>true));
 			session_start("map");
 			$_SESSION["user_id"] = "25";
-			$_SESSION["permission_lvl"] = 5;
+			$_SESSION["permission_lvl"] = 10;
 			//echo '[{"user_id":"25","username":"\u4e28n\u4e28nja\u4e28","is_registered":true}]';
 		} else {
 			$user_array[0]['user_id'] = 0;
